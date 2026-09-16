@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REDCHAMBU CA | Internet de confianza en tu zona</title>
+  <!-- Font Awesome para íconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Reset y variables - Colores corporativos: Azul Marino y Mostaza */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy: #0a1f44;          /* Azul Marino principal */
+      --navy-light: #1a2f5a;    /* Azul Marino más claro */
+      --navy-soft: #2a3f6a;     /* Azul Marino suave */
+      --mustard: #e6b422;       /* Mostaza principal */
+      --mustard-dark: #c99f1a;  /* Mostaza oscuro para hover */
+      --mustard-light: #f5d76e; /* Mostaza claro para detalles */
+      --light-bg: #f8f9fc;
+      --dark-text: #0a1f44;
+      --gray-text: #4a5a6a;
+      --white: #ffffff;
+      --shadow: 0 10px 25px -5px rgba(10, 31, 68, 0.08), 0 8px 10px -6px rgba(10, 31, 68, 0.02);
+      --border-radius: 18px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background-color: var(--white);
+      color: var(--dark-text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: var(--gray-text);
+      font-size: 1.1rem;
+    }
+
+    /* Botones */
+    .btn {
+      display: inline-block;
+      background-color: var(--mustard);
+      color: var(--navy);
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(230, 180, 34, 0.3);
+    }
+
+    .btn:hover {
+      background-color: var(--mustard-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(230, 180, 34, 0.4);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--mustard);
+      color: var(--mustard);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--mustard);
+      color: var(--navy);
+    }
+
+    /* Header / Nav */
+    header {
+      padding: 16px 0;
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(10, 31, 68, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(6px);
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Logo con espacio para imagen */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 55px;
+      height: 55px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--mustard);
+      font-size: 1.8rem;
+      box-shadow: 0 4px 10px rgba(10, 31, 68, 0.2);
+      overflow: hidden;
+    }
+
+    .logo-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-text .brand {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text .brand span {
+      color: var(--mustard);
+    }
+
+    .logo-text .tagline {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gray-text);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--dark-text);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav ul li a:hover {
+      color: var(--mustard);
+    }
+
+    /* Hero section */
+    .hero {
+      padding: 80px 0 70px;
+      background: linear-gradient(135deg, #f8f9fc 0%, #eef2fa 100%);
+      border-radius: 0 0 40px 40px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(230, 180, 34, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .hero-text .badge {
+      display: inline-block;
+      background-color: rgba(10, 31, 68, 0.08);
+      color: var(--navy);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 6px 16px;
+      border-radius: 40px;
+      margin-bottom: 20px;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(230, 180, 34, 0.3);
+    }
+
+    .hero-text h1 {
+      margin-bottom: 20px;
+      color: var(--navy);
+    }
+
+    .hero-text h1 .highlight {
+      color: var(--mustard);
+      position: relative;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      margin-bottom: 32px;
+      max-width: 550px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      flex: 1;
+      background: var(--white);
+      border-radius: 36px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-illustration {
+      background: linear-gradient(145deg, #ffffff, #f0f4ff);
+      width: 100%;
+      aspect-ratio: 1.1/1;
+      border-radius: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+      padding: 30px 20px;
+    }
+
+    .hero-illustration i {
+      font-size: 6rem;
+      color: var(--mustard);
+      margin-bottom: 20px;
+      opacity: 0.95;
+    }
+
+    .hero-illustration .wifi-signal {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: var(--navy);
+    }
+
+    .hero-illustration .small-text {
+      font-size: 1rem;
+      color: var(--gray-text);
+      margin-top: 12px;
+    }
+
+    /* Sección servicios / Planes */
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 56px;
+    }
+
+    .section-header h2 {
+      font-size: 2.2rem;
+      color: var(--navy);
+    }
+
+    .section-header p {
+      font-size: 1.2rem;
+    }
+
+    /* Planes */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .plan-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 36px 28px;
+      box-shadow: var(--shadow);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(10, 31, 68, 0.06);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.15);
+      border-color: rgba(230, 180, 34, 0.3);
+    }
+
+    .plan-card.featured {
+      border: 2px solid var(--mustard);
+      position: relative;
+    }
+
+    .plan-card.featured::before {
+      content: 'MÁS POPULAR';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--mustard);
+      color: var(--navy);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 16px;
+      border-radius: 40px;
+      letter-spacing: 1px;
+    }
+
+    .plan-type {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 40px;
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    .plan-type.fiber {
+      background: rgba(10, 31, 68, 0.08);
+      color: var(--navy);
+    }
+
+    .plan-type.antenna {
+      background: rgba(230, 180, 34, 0.15);
+      color: var(--navy);
+    }
+
+    .plan-speed {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .plan-speed span {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--gray-text);
+    }
+
+    .plan-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 28px;
+      flex-grow: 1;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: var(--gray-text);
+      font-size: 0.95rem;
+    }
+
+    .plan-features li i {
+      color: var(--mustard);
+      font-size: 0.9rem;
+    }
+
+    .plan-card .btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Servicios adicionales */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(10, 31, 68, 0.06);
+      text-align: center;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.12);
+      border-color: rgba(230, 180, 34, 0.3);
+    }
+
+    .service-icon {
+      background: rgba(230, 180, 34, 0.12);
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .service-icon i {
+      font-size: 2.2rem;
+      color: var(--mustard);
+    }
+
+    .service-card h3 {
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      font-size: 1rem;
+    }
+
+    /* Proyecto Zonas WiFi */
+    .wifi-project {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      border-radius: 40px;
+      padding: 60px 48px;
+      margin: 40px 0;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wifi-project::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(230, 180, 34, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .wifi-project h2 {
+      color: var(--mustard);
+      font-size: 2rem;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .wifi-project p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.15rem;
+      max-width: 800px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .wifi-project .status-badge {
+      display: inline-block;
+      background: var(--mustard);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 6px 18px;
+      border-radius: 40px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Confianza */
+    .trust-section {
+      background: var(--light-bg);
+      border-radius: 40px;
+      padding: 70px 40px;
+      margin: 40px 0;
+    }
+
+    .trust-flex {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .trust-text {
+      flex: 1.2;
+    }
+
+    .trust-text h2 {
+      color: var(--navy);
+      font-size: 2.2rem;
+    }
+
+    .trust-list {
+      list-style: none;
+      margin-top: 32px;
+    }
+
+    .trust-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+      font-size: 1.1rem;
+    }
+
+    .trust-list li i {
+      color: var(--mustard);
+      font-size: 1.6rem;
+      background: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(10, 31, 68, 0.04);
+      flex-shrink: 0;
+    }
+
+    .trust-list li strong {
+      color: var(--navy);
+    }
+
+    .trust-stats {
+      flex: 0.8;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .stat-item {
+      background: var(--white);
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .stat-item i {
+      font-size: 2.2rem;
+      color: var(--mustard);
+    }
+
+    .stat-item .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+
+    .stat-item .stat-label {
+      color: var(--gray-text);
+      font-size: 0.95rem;
+    }
+
+    /* Cobertura */
+    .coverage-section {
+      padding: 80px 0;
+    }
+
+    .coverage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .coverage-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 32px 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(10, 31, 68, 0.06);
+      border-top: 5px solid var(--mustard);
+    }
+
+    .coverage-card h3 {
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .coverage-card h3 i {
+      color: var(--mustard);
+    }
+
+    .coverage-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .coverage-tag {
+      background: var(--light-bg);
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-weight: 500;
+      color: var(--navy);
+      font-size: 0.9rem;
+      transition: all 0.15s;
+      border: 1px solid rgba(10, 31, 68, 0.06);
+    }
+
+    .coverage-tag:hover {
+      background: var(--mustard);
+      color: var(--navy);
+      border-color: var(--mustard);
+    }
+
+    /* Contacto */
+    .contact-section {
+      padding: 60px 0 80px;
+    }
+
+    .contact-box {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 50px 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(10, 31, 68, 0.06);
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-box i.main-icon {
+      font-size: 2.5rem;
+      color: var(--mustard);
+      margin-bottom: 20px;
+    }
+
+    .contact-box h3 {
+      color: var(--navy);
+      font-size: 1.6rem;
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin: 30px 0;
+    }
+
+    .contact-info p {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      background: var(--light-bg);
+      padding: 12px 22px;
+      border-radius: 40px;
+    }
+
+    .contact-info i {
+      color: var(--mustard);
+      font-size: 1.2rem;
+    }
+
+    .contact-box .btn {
+      padding: 14px 40px;
+      font-size: 1.1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--navy);
+      color: #cdd9e9;
+      padding: 40px 0 30px;
+      margin-top: 20px;
+      border-radius: 40px 40px 0 0;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .footer-logo .logo-img {
+      width: 45px;
+      height: 45px;
+      font-size: 1.4rem;
+    }
+
+    .footer-logo .brand {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    .footer-logo .brand span {
+      color: var(--mustard);
+    }
+
+    .footer-copy {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-cta {
+        justify-content: center;
+      }
+
+      .trust-flex {
+        flex-direction: column;
+      }
+
+      .trust-stats {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .stat-item {
+        flex: 1;
+        min-width: 160px;
+      }
+
+      h1 {
+        font-size: 2.3rem;
+      }
+
+      .wifi-project {
+        padding: 40px 24px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .header-flex {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      nav ul {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .trust-section {
+        padding: 40px 20px;
+      }
+
+      .hero {
+        padding: 50px 0 40px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .contact-info p {
+        width: 100%;
+        justify-content: center;
+      }
+
+      h1 {
+        font-size: 1.9rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.8rem;
+      }
+
+      .plan-speed {
+        font-size: 2.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-flex">
+      <a href="#" class="logo">
+        <!-- Espacio para logo: reemplazar el div por <img src="logo.png" alt="REDCHAMBU CA"> -->
+        <div class="logo-img">
+          <i class="fas fa-wifi"></i>
+        </div>
+        <div class="logo-text">
+          <span class="brand">RED<span>CHAMBU</span> CA</span>
+          <span class="tagline">Internet de confianza</span>
+        </div>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#planes">Planes</a></li>
+          <li><a href="#proyecto">Proyecto WiFi</a></li>
+          <li><a href="#cobertura">Cobertura</a></li>
+          <li><a href="#contacto" class="btn" style="padding: 8px 22px;">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-content">
+        <div class="hero-text">
+          <span class="badge"><i class="fas fa-map-pin" style="margin-right: 6px;"></i> Proveedor local de confianza</span>
+          <h1>Internet rápido y estable para <span class="highlight">tu hogar o negocio</span></h1>
+          <p>Conectamos tu zona con la mejor tecnología. Sin letras pequeñas, con soporte cercano y la velocidad que necesitas para trabajar, estudiar y disfrutar.</p>
+          <div class="hero-cta">
+            <a href="#contacto" class="btn"><i class="fas fa-headset" style="margin-right: 8px;"></i> Solicitar información</a>
+            <a href="#planes" class="btn btn-outline">Ver planes</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="hero-illustration">
+            <i class="fas fa-tower-broadcast"></i>
+            <div class="wifi-signal"><i class="fas fa-wifi"></i> <i class="fas fa-wifi"></i> <i class="fas fa-wifi"></i></div>
+            <div class="small-text">Fibra Óptica • Antena • Radio Enlaces</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Planes -->
+    <section id="planes" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Nuestros Planes</h2>
+          <p>Elige la tecnología y velocidad que mejor se adapte a tus necesidades</p>
+        </div>
+
+        <div class="plans-grid">
+          <!-- Plan Fibra Básico -->
+          <div class="plan-card">
+            <span class="plan-type fiber"><i class="fas fa-network-wired" style="margin-right: 6px;"></i> Fibra Óptica</span>
+            <div class="plan-speed">100 <span>Mbps</span></div>
+            <div class="plan-name">Plan Básico</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> Velocidad simétrica 100 Mbps</li>
+              <li><i class="fas fa-check"></i> Ideal para streaming HD y teletrabajo</li>
+              <li><i class="fas fa-check"></i> Instalación gratuita</li>
+              <li><i class="fas fa-check"></i> Soporte técnico local</li>
+              <li><i class="fas fa-check"></i> Sin contrato de permanencia</li>
+            </ul>
+            <a href="#contacto" class="btn">Contratar</a>
+          </div>
+
+          <!-- Plan Fibra Avanzado (destacado) -->
+          <div class="plan-card featured">
+            <span class="plan-type fiber"><i class="fas fa-network-wired" style="margin-right: 6px;"></i> Fibra Óptica</span>
+            <div class="plan-speed">200 <span>Mbps</span></div>
+            <div class="plan-name">Plan Avanzado</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> Velocidad simétrica 200 Mbps</li>
+              <li><i class="fas fa-check"></i> Perfecto para gaming y 4K</li>
+              <li><i class="fas fa-check"></i> Múltiples dispositivos sin lag</li>
+              <li><i class="fas fa-check"></i> Instalación gratuita</li>
+              <li><i class="fas fa-check"></i> Soporte prioritario</li>
+            </ul>
+            <a href="#contacto" class="btn">Contratar</a>
+          </div>
+
+          <!-- Plan Antena -->
+          <div class="plan-card">
+            <span class="plan-type antenna"><i class="fas fa-satellite-dish" style="margin-right: 6px;"></i> Antena</span>
+            <div class="plan-speed">10 <span>Mbps</span></div>
+            <div class="plan-name">Plan Antena</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> Velocidad 10 Mbps</li>
+              <li><i class="fas fa-check"></i> Ideal para navegación y redes sociales</li>
+              <li><i class="fas fa-check"></i> Cobertura en zonas rurales</li>
+              <li><i class="fas fa-check"></i> Instalación incluida</li>
+              <li><i class="fas fa-check"></i> Soporte técnico local</li>
+            </ul>
+            <a href="#contacto" class="btn">Contratar</a>
+          </div>
+        </div>
+
+        <!-- Servicios adicionales -->
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon"><i class="fas fa-home"></i></div>
+            <h3>Internet Hogar</h3>
+            <p>Planes para toda la familia. Streaming, juegos y teletrabajo sin interrupciones.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+            <h3>Internet Comercial</h3>
+            <p>Conectividad para pequeños comercios, oficinas y emprendedores. Soporte prioritario.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><i class="fas fa-tools"></i></div>
+            <h3>Instalación y Soporte</h3>
+            <p>Equipo técnico local, instalación rápida y mantenimiento preventivo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proyecto Zonas WiFi -->
+    <section id="proyecto" class="container">
+      <div class="wifi-project">
+        <span class="status-badge"><i class="fas fa-hard-hat" style="margin-right: 6px;"></i> Proyecto en desarrollo</span>
+        <h2><i class="fas fa-wifi" style="margin-right: 10px;"></i> Proyecto de Zonas WiFi Comunitarias</h2>
+        <p>Estamos expandiendo nuestra red para llevar internet gratuito y de calidad a más sectores de la comunidad. Próximamente habilitaremos zonas WiFi en:</p>
+        <div class="coverage-tags" style="margin-top: 24px;">
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Arenales</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Yumarito</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Las Velas</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">La Plumita</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Barrio Nuevo</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Barrio Ajuro</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">San Antonio</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Perdomera</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">El Palmar</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">5 y 7 Casas</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Patios</span>
+          <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Los Tubos (con antena y FTTH)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Confianza -->
+    <section id="confianza" class="container trust-section">
+      <div class="trust-flex">
+        <div class="trust-text">
+          <h2>¿Por qué confiar en REDCHAMBU CA?</h2>
+          <p style="margin-bottom: 20px;">Somos vecinos, conocemos la zona y nos comprometemos con cada cliente.</p>
+          <ul class="trust-list">
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <div><strong>Atención local e inmediata:</strong> Respondemos rápido, sin call centers lejanos.</div>
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <div><strong>Precios justos y transparentes:</strong> Sin aumentos sorpresa ni cargos ocultos.</div>
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <div><strong>Estabilidad garantizada:</strong> Monitoreo constante y redundancia para que no te quedes sin conexión.</div>
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <div><strong>Crecemos contigo:</strong> Planes flexibles que se adaptan a tu medida.</div>
+            </li>
+          </ul>
+        </div>
+        <div class="trust-stats">
+          <div class="stat-item">
+            <i class="fas fa-smile"></i>
+            <div>
+              <div class="stat-number">+500</div>
+              <div class="stat-label">Clientes satisfechos</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-clock"></i>
+            <div>
+              <div class="stat-number">99.5%</div>
+              <div class="stat-label">Tiempo de actividad</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <div class="stat-number">+15</div>
+              <div class="stat-label">Zonas con cobertura</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cobertura -->
+    <section id="cobertura" class="coverage-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Zonas de Cobertura</h2>
+          <p>Consulta si llegamos a tu sector. Estamos en constante expansión.</p>
+        </div>
+
+        <div class="coverage-grid">
+          <!-- Cobertura FTTH -->
+          <div class="coverage-card">
+            <h3><i class="fas fa-network-wired"></i> Fibra Óptica (FTTH)</h3>
+            <div class="coverage-tags">
+              <span class="coverage-tag">El Cardón</span>
+              <span class="coverage-tag">Los Tubos</span>
+            </div>
+          </div>
+
+          <!-- Cobertura Antena -->
+          <div class="coverage-card">
+            <h3><i class="fas fa-satellite-dish"></i> Antena</h3>
+            <div class="coverage-tags">
+              <span class="coverage-tag">Agua Negra</span>
+              <span class="coverage-tag">Tapa La Lucha</span>
+              <span class="coverage-tag">Maporita</span>
+              <span class="coverage-tag">CDI</span>
+              <span class="coverage-tag">Valles de Peña</span>
+              <span class="coverage-tag">San José</span>
+              <span class="coverage-tag">El Cardón</span>
+              <span class="coverage-tag">Los Tubos</span>
+            </div>
+          </div>
+
+          <!-- Cobertura Radio Enlaces -->
+          <div class="coverage-card">
+            <h3><i class="fas fa-broadcast-tower"></i> Radio Enlaces</h3>
+            <div class="coverage-tags">
+              <span class="coverage-tag">Agua Negra</span>
+              <span class="coverage-tag">Tapa La Lucha</span>
+              <span class="coverage-tag">Maporita</span>
+              <span class="coverage-tag">CDI</span>
+              <span class="coverage-tag">Valles de Peña</span>
+              <span class="coverage-tag">San José</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto" class="contact-section">
+      <div class="container">
+        <div class="contact-box">
+          <i class="fas fa-paper-plane main-icon"></i>
+          <h3>Contacto rápido</h3>
+          <p>¿Listo para conectarte o tienes dudas? Escríbenos y te respondemos en breve.</p>
+          <div class="contact-info">
+            <p><i class="fas fa-phone-alt"></i> +58 412 123 4567</p>
+            <p><i class="fas fa-envelope"></i> hola@redchambu.com</p>
+            <p><i class="fas fa-clock"></i> Lun a Sáb: 8:00 am - 6:00 pm</p>
+          </div>
+          <a href="mailto:hola@redchambu.com" class="btn"><i class="fas fa-envelope" style="margin-right: 8px;"></i> Enviar mensaje</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <a href="#" class="footer-logo">
+        <div class="logo-img">
+          <i class="fas fa-wifi"></i>
+        </div>
+        <span class="brand">RED<span>CHAMBU</span> CA</span>
+      </a>
+      <div class="footer-copy">
+        &copy; 2025 REDCHAMBU CA. Proveedor de internet local. Comprometidos con nuestra comunidad.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
