@@ -104,83 +104,70 @@
     }
 
     /* Header / Nav */
-    header {
-      padding: 16px 0;
-      box-shadow: 0 2px 10px rgba(10, 31, 68, 0.05);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(6px);
-      background-color: rgba(255, 255, 255, 0.95);
-    }
+   /* Header / Nav */
+header {
+  padding: 10px 0;              /* Reducido para que quepa el logo de 100px */
+  box-shadow: 0 2px 10px rgba(10, 31, 68, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.95);
+}
 
-    .header-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    /* Logo con espacio para imagen */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
 
-    /* Logo directo en <img> (header/footer sin caja) */
-.logo > img,
-.footer-logo > img {
-  height: 60px;          /* Ajusta según tu logo (prueba 50, 60 o 70) */
-  width: auto;           /* Mantiene la proporción original */
+.logo > img {
+  height: 100px;          /* Más grande = más nítido */
+  width: auto;
   display: block;
-  object-fit: contain;   /* No deforma */
-  image-rendering: -webkit-optimize-contrast;  /* Mejora nitidez */
-  image-rendering: crisp-edges;                /* Mejora nitidez */
-  filter: drop-shadow(0 2px 4px rgba(10, 31, 68, 0.15)); /* Sombra sutil opcional */
-}
-
-/* Solo si usas la caja .logo-img con imagen */
-.logo-img {
-  width: auto;
-  height: 60px;
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  overflow: visible;
-}
-
-.logo-img img {
-  height: 100%;
-  width: auto;
   object-fit: contain;
-  image-rendering: crisp-edges;
+  /* Sin filter ni image-rendering: se ven mejor en logos detallados */
 }
 
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-    }
+.footer-logo > img {
+  height: 90px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
 
-    .logo-text .brand {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--navy);
-      line-height: 1.1;
-      letter-spacing: -0.5px;
-    }
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
 
-    .logo-text .brand span {
-      color: var(--mustard);
-    }
+.logo-text .brand {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
 
-    .logo-text .tagline {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--gray-text);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+.logo-text .brand span {
+  color: var(--mustard);
+}
+
+.logo-text .tagline {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gray-text);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
 
     nav ul {
       display: flex;
