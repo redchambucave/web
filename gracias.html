@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1f44">
+  <meta name="description" content="Reporte enviado con éxito - REDCHAMBU CA. Gracias por contactarnos, revisaremos tu caso lo antes posible.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>¡Reporte enviado! | REDCHAMBU CA</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="RedChambuCA.png">
+  <link rel="apple-touch-icon" href="RedChambuCA.png">
+
+  <!-- Fuente Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="gracias.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-flex">
+      <a href="index.html" class="logo">
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <i class="fas fa-bars" id="menuIcon"></i>
+      </button>
+
+      <nav id="mainNav">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#planes">Planes</a></li>
+          <li><a href="index.html#cobertura">Cobertura</a></li>
+          <li><a href="reporte.html" class="btn" style="padding: 10px 22px;">Reportar falla</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero de agradecimiento -->
+    <section class="thanks-hero">
+      <div class="container">
+        <span class="badge"><i class="fas fa-check-circle" style="margin-right: 6px;"></i> Reporte recibido</span>
+        <h1>¡Gracias por <span class="highlight">tu reporte</span>!</h1>
+        <p>Hemos recibido tu solicitud correctamente. Nuestro equipo técnico la revisará y se pondrá en contacto contigo lo antes posible.</p>
+      </div>
+    </section>
+
+    <!-- Tarjeta de confirmación -->
+    <section class="thanks-section">
+      <div class="container">
+        <div class="thanks-card">
+
+          <div class="thanks-icon">
+            <i class="fas fa-paper-plane"></i>
+            <span class="check-badge"><i class="fas fa-check"></i></span>
+          </div>
+
+          <h2>Tu reporte fue enviado</h2>
+          <p class="thanks-subtitle">
+            Gracias por ayudarnos a mejorar el servicio. Si tu caso es urgente, puedes comunicarte directamente con nosotros.
+          </p>
+
+          <div class="thanks-info">
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <div>
+                <strong>Tiempo de respuesta</strong>
+                <span>Normalmente en menos de 24 horas hábiles</span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-phone-alt"></i>
+              <div>
+                <strong>Teléfono / WhatsApp</strong>
+                <span>+58 426 8731 872</span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-envelope"></i>
+              <div>
+                <strong>Correo electrónico</strong>
+                <span>redchambuca@gmail.com</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="thanks-actions">
+            <a href="index.html" class="btn">
+              <i class="fas fa-home" style="margin-right: 8px;"></i> Volver al inicio
+            </a>
+            <a href="reporte.html" class="btn btn-outline">
+              <i class="fas fa-plus" style="margin-right: 8px;"></i> Enviar otro reporte
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <a href="index.html" class="footer-logo">
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
+      </a>
+      <div class="footer-copy">
+        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script menú hamburguesa -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('menuToggle');
+      const nav = document.getElementById('mainNav');
+      const icon = document.getElementById('menuIcon');
+
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function() {
+        const isOpen = nav.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', isOpen);
+        icon.classList.toggle('fa-bars', !isOpen);
+        icon.classList.toggle('fa-times', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      });
+
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+          toggle.setAttribute('aria-label', 'Abrir menú');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
