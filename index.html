@@ -2,14 +2,33 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1f44">
+  <meta name="description" content="REDCHAMBU CA - Proveedor de internet local con Fibra Óptica, Antena y Radio Enlaces. Cobertura en tu zona con soporte cercano y precios justos.">
+
+  <!-- Open Graph (WhatsApp, Facebook, etc.) -->
+  <meta property="og:title" content="REDCHAMBU CA | Internet de confianza en tu zona">
+  <meta property="og:description" content="Fibra Óptica, Antena y Radio Enlaces con soporte local. Consulta nuestra cobertura.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="RedChambuCA.png">
+
   <title>REDCHAMBU CA | Internet de confianza en tu zona</title>
-  <!-- Favicon (opcional, reemplaza con tu archivo) -->
+
+  <!-- Favicons -->
   <link rel="icon" type="image/png" href="RedChambuCA.png">
-  <!-- Font Awesome para íconos -->
+  <link rel="apple-touch-icon" href="RedChambuCA.png">
+
+  <!-- Fuente Inter (carga real) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <style>
-    /* Reset y variables - Colores corporativos: Azul Marino y Mostaza */
+    /* Reset y variables */
     * {
       margin: 0;
       padding: 0;
@@ -29,6 +48,15 @@
       --white: #ffffff;
       --shadow: 0 10px 25px -5px rgba(10, 31, 68, 0.08), 0 8px 10px -6px rgba(10, 31, 68, 0.02);
       --border-radius: 18px;
+      --header-height: 90px;
+    }
+
+    /* Scroll suave + offset para header sticky */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 10px);
+      -webkit-text-size-adjust: 100%;    /* Evita zoom de texto en iOS */
+      -webkit-tap-highlight-color: transparent; /* Sin flash azul al tocar */
     }
 
     body {
@@ -36,6 +64,18 @@
       background-color: var(--white);
       color: var(--dark-text);
       line-height: 1.5;
+      overflow-x: hidden;
+      /* Safe area para iPhone con notch */
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    /* Evita arrastre accidental de imágenes */
+    img {
+      -webkit-user-drag: none;
+      user-select: none;
+      max-width: 100%;
+      height: auto;
     }
 
     .container {
@@ -69,13 +109,16 @@
       font-size: 1.1rem;
     }
 
-    /* Botones */
+    /* Botones - con tamaño táctil mínimo */
     .btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background-color: var(--mustard);
       color: var(--navy);
       font-weight: 700;
       padding: 12px 28px;
+      min-height: 48px;
       border-radius: 40px;
       text-decoration: none;
       transition: all 0.2s ease;
@@ -83,12 +126,7 @@
       cursor: pointer;
       font-size: 1rem;
       box-shadow: 0 4px 12px rgba(230, 180, 34, 0.3);
-    }
-
-    .btn:hover {
-      background-color: var(--mustard-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(230, 180, 34, 0.4);
+      -webkit-tap-highlight-color: transparent;
     }
 
     .btn-outline {
@@ -98,77 +136,89 @@
       box-shadow: none;
     }
 
-    .btn-outline:hover {
-      background-color: var(--mustard);
-      color: var(--navy);
+    /* Hover solo en dispositivos con mouse */
+    @media (hover: hover) {
+      .btn:hover {
+        background-color: var(--mustard-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(230, 180, 34, 0.4);
+      }
+
+      .btn-outline:hover {
+        background-color: var(--mustard);
+        color: var(--navy);
+      }
+
+      .plan-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.15);
+        border-color: rgba(230, 180, 34, 0.3);
+      }
+
+      .service-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.12);
+        border-color: rgba(230, 180, 34, 0.3);
+      }
+
+      .coverage-tag:hover {
+        background: var(--mustard);
+        color: var(--navy);
+        border-color: var(--mustard);
+      }
+
+      nav ul li a:hover {
+        color: var(--mustard);
+      }
     }
 
     /* Header / Nav */
-   /* Header / Nav */
-header {
-  padding: 10px 0;              /* Reducido para que quepa el logo de 100px */
-  box-shadow: 0 2px 10px rgba(10, 31, 68, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(6px);
-  background-color: rgba(255, 255, 255, 0.95);
-}
+    header {
+      padding: 10px 0;
+      box-shadow: 0 2px 10px rgba(10, 31, 68, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(255, 255, 255, 0.95);
+      /* Fallback para navegadores sin backdrop-filter */
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      padding-top: calc(10px + env(safe-area-inset-top));
+    }
 
-.header-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
 
-/* Logo */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-}
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
 
-.logo > img {
-  height: 100px;          /* Más grande = más nítido */
-  width: auto;
-  display: block;
-  object-fit: contain;
-  /* Sin filter ni image-rendering: se ven mejor en logos detallados */
-}
+    .logo > img {
+      height: 70px;
+      width: auto;
+      max-width: 220px;
+      display: block;
+      object-fit: contain;
+    }
 
-.footer-logo > img {
-  height: 90px;
-  width: auto;
-  display: block;
-  object-fit: contain;
-}
+    .footer-logo > img {
+      height: 70px;
+      width: auto;
+      max-width: 220px;
+      display: block;
+      object-fit: contain;
+    }
 
-.logo-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.logo-text .brand {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--navy);
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-}
-
-.logo-text .brand span {
-  color: var(--mustard);
-}
-
-.logo-text .tagline {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--gray-text);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
+    /* Nav */
     nav ul {
       display: flex;
       list-style: none;
@@ -181,10 +231,22 @@ header {
       color: var(--dark-text);
       font-weight: 500;
       transition: color 0.2s;
+      padding: 8px 0;
+      display: inline-block;
     }
 
-    nav ul li a:hover {
-      color: var(--mustard);
+    /* Botón hamburguesa (oculto en desktop) */
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.6rem;
+      color: var(--navy);
+      cursor: pointer;
+      padding: 10px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 8px;
     }
 
     /* Hero section */
@@ -206,6 +268,7 @@ header {
       height: 600px;
       background: radial-gradient(circle, rgba(230, 180, 34, 0.06) 0%, transparent 70%);
       border-radius: 50%;
+      pointer-events: none;
     }
 
     .hero-content {
@@ -218,6 +281,7 @@ header {
 
     .hero-text {
       flex: 1;
+      min-width: 0;
     }
 
     .hero-text .badge {
@@ -240,7 +304,6 @@ header {
 
     .hero-text h1 .highlight {
       color: var(--mustard);
-      position: relative;
     }
 
     .hero-text p {
@@ -261,16 +324,16 @@ header {
       border-radius: 36px;
       padding: 20px;
       box-shadow: var(--shadow);
-      text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
+      min-width: 0;
     }
 
     .hero-illustration {
       background: linear-gradient(145deg, #ffffff, #f0f4ff);
       width: 100%;
-      aspect-ratio: 1.1/1;
+      aspect-ratio: 1.1 / 1;
       border-radius: 28px;
       display: flex;
       flex-direction: column;
@@ -298,9 +361,10 @@ header {
       font-size: 1rem;
       color: var(--gray-text);
       margin-top: 12px;
+      text-align: center;
     }
 
-    /* Sección servicios / Planes */
+    /* Secciones */
     .section {
       padding: 80px 0;
     }
@@ -340,15 +404,8 @@ header {
       flex-direction: column;
     }
 
-    .plan-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.15);
-      border-color: rgba(230, 180, 34, 0.3);
-    }
-
     .plan-card.featured {
       border: 2px solid var(--mustard);
-      position: relative;
     }
 
     .plan-card.featured::before {
@@ -364,6 +421,7 @@ header {
       padding: 4px 16px;
       border-radius: 40px;
       letter-spacing: 1px;
+      white-space: nowrap;
     }
 
     .plan-type {
@@ -415,7 +473,7 @@ header {
 
     .plan-features li {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       margin-bottom: 12px;
       color: var(--gray-text);
@@ -425,6 +483,8 @@ header {
     .plan-features li i {
       color: var(--mustard);
       font-size: 0.9rem;
+      margin-top: 5px;
+      flex-shrink: 0;
     }
 
     .plan-card .btn {
@@ -447,12 +507,6 @@ header {
       transition: all 0.25s ease;
       border: 1px solid rgba(10, 31, 68, 0.06);
       text-align: center;
-    }
-
-    .service-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.12);
-      border-color: rgba(230, 180, 34, 0.3);
     }
 
     .service-icon {
@@ -500,6 +554,7 @@ header {
       height: 400px;
       background: radial-gradient(circle, rgba(230, 180, 34, 0.15) 0%, transparent 70%);
       border-radius: 50%;
+      pointer-events: none;
     }
 
     .wifi-project h2 {
@@ -548,6 +603,7 @@ header {
 
     .trust-text {
       flex: 1.2;
+      min-width: 0;
     }
 
     .trust-text h2 {
@@ -591,6 +647,7 @@ header {
       display: flex;
       flex-direction: column;
       gap: 24px;
+      min-width: 0;
     }
 
     .stat-item {
@@ -606,6 +663,7 @@ header {
     .stat-item i {
       font-size: 2.2rem;
       color: var(--mustard);
+      flex-shrink: 0;
     }
 
     .stat-item .stat-number {
@@ -668,12 +726,7 @@ header {
       font-size: 0.9rem;
       transition: all 0.15s;
       border: 1px solid rgba(10, 31, 68, 0.06);
-    }
-
-    .coverage-tag:hover {
-      background: var(--mustard);
-      color: var(--navy);
-      border-color: var(--mustard);
+      display: inline-block;
     }
 
     /* Contacto */
@@ -707,7 +760,7 @@ header {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 24px;
+      gap: 16px;
       margin: 30px 0;
     }
 
@@ -715,15 +768,18 @@ header {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.05rem;
+      font-size: 1rem;
       background: var(--light-bg);
       padding: 12px 22px;
       border-radius: 40px;
+      margin: 0;
+      word-break: break-word;
     }
 
     .contact-info i {
       color: var(--mustard);
       font-size: 1.2rem;
+      flex-shrink: 0;
     }
 
     .contact-box .btn {
@@ -731,13 +787,15 @@ header {
       font-size: 1.1rem;
     }
 
-   footer {
-  background: var(--mustard);
-  color: var(--navy);               /* Texto azul marino */
-  padding: 40px 0 30px;
-  margin-top: 20px;
-  border-radius: 40px 40px 0 0;
-}
+    /* Footer */
+    footer {
+      background: var(--mustard);
+      color: var(--navy);
+      padding: 40px 0 30px;
+      padding-bottom: calc(30px + env(safe-area-inset-bottom));
+      margin-top: 20px;
+      border-radius: 40px 40px 0 0;
+    }
 
     .footer-content {
       display: flex;
@@ -754,30 +812,27 @@ header {
       text-decoration: none;
     }
 
-    .footer-logo .logo-img {
-      width: 45px;
-      height: 45px;
-      font-size: 1.4rem;
+    .footer-copy {
+      color: var(--navy);
+      opacity: 0.9;
+      font-size: 0.9rem;
+      font-weight: 500;
     }
 
-.footer-logo .brand {
-  color: var(--navy);
-}
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
 
-.footer-logo .brand span {
-  color: var(--white);
-}
-
-.footer-copy {
-  color: var(--navy);
-  opacity: 0.85;
-}
-
-    /* Responsive */
+    /* Tablet grande */
     @media (max-width: 900px) {
+      .hero {
+        padding: 60px 0 50px;
+      }
+
       .hero-content {
         flex-direction: column;
         text-align: center;
+        gap: 40px;
       }
 
       .hero-text p {
@@ -791,6 +846,7 @@ header {
 
       .trust-flex {
         flex-direction: column;
+        gap: 40px;
       }
 
       .trust-stats {
@@ -801,7 +857,7 @@ header {
 
       .stat-item {
         flex: 1;
-        min-width: 160px;
+        min-width: 180px;
       }
 
       h1 {
@@ -809,55 +865,233 @@ header {
       }
 
       .wifi-project {
-        padding: 40px 24px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .header-flex {
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      nav ul {
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: center;
+        padding: 40px 28px;
       }
 
       .trust-section {
-        padding: 40px 20px;
+        padding: 50px 28px;
+      }
+    }
+
+    /* Móvil / tablet pequeña - MENÚ HAMBURGUESA */
+    @media (max-width: 768px) {
+      :root {
+        --header-height: 70px;
       }
 
-      .hero {
-        padding: 50px 0 40px;
+      header {
+        padding: 8px 0;
       }
 
-      .footer-content {
+      .logo > img,
+      .footer-logo > img {
+        height: 55px;
+        max-width: 180px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        box-shadow: 0 10px 20px rgba(10, 31, 68, 0.08);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        border-top: 1px solid rgba(10, 31, 68, 0.06);
+      }
+
+      nav.active {
+        max-height: 500px;
+      }
+
+      nav ul {
         flex-direction: column;
-        text-align: center;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 24px 20px;
       }
 
-      .contact-info {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .contact-info p {
+      nav ul li {
         width: 100%;
-        justify-content: center;
+        border-bottom: 1px solid rgba(10, 31, 68, 0.06);
+      }
+
+      nav ul li:last-child {
+        border-bottom: none;
+        margin-top: 12px;
+      }
+
+      nav ul li a {
+        display: block;
+        padding: 16px 0;
+        font-size: 1.05rem;
+        min-height: 48px;
+      }
+
+      nav ul li a.btn {
+        text-align: center;
+        padding: 14px 20px;
+        margin: 8px 0;
       }
 
       h1 {
-        font-size: 1.9rem;
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
       }
 
       .section-header h2 {
         font-size: 1.8rem;
       }
 
+      .section-header p {
+        font-size: 1rem;
+      }
+
+      .hero-text p {
+        font-size: 1.05rem;
+      }
+
+      .section {
+        padding: 60px 0;
+      }
+
+      .wifi-project {
+        padding: 32px 20px;
+        border-radius: 24px;
+      }
+
+      .wifi-project h2 {
+        font-size: 1.5rem;
+      }
+
+      .wifi-project p {
+        font-size: 1rem;
+      }
+
+      .trust-section {
+        padding: 40px 20px;
+        border-radius: 24px;
+      }
+
+      .trust-text h2 {
+        font-size: 1.7rem;
+      }
+
+      .trust-list li {
+        font-size: 1rem;
+      }
+
+      .trust-stats {
+        flex-direction: column;
+      }
+
+      .stat-item {
+        min-width: auto;
+      }
+
       .plan-speed {
         font-size: 2.4rem;
+      }
+
+      .contact-box {
+        padding: 36px 24px;
+      }
+
+      .contact-info {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .contact-info p {
+        width: 100%;
+        justify-content: flex-start;
+        font-size: 0.95rem;
+        padding: 12px 16px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+      }
+
+      .footer-copy {
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+    }
+
+    /* Móvil pequeño */
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
+
+      .hero-text .badge {
+        font-size: 0.8rem;
+      }
+
+      .hero-illustration i {
+        font-size: 4rem;
+      }
+
+      .hero-illustration .wifi-signal {
+        font-size: 1.5rem;
+      }
+
+      .hero-illustration .small-text {
+        font-size: 0.85rem;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        width: 100%;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .plan-card {
+        padding: 28px 20px;
+      }
+
+      .coverage-card {
+        padding: 24px 20px;
+      }
+
+      .contact-info p {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Respeta la preferencia del usuario de no animaciones */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
       }
     }
   </style>
@@ -868,20 +1102,20 @@ header {
   <header>
     <div class="container header-flex">
       <a href="#" class="logo">
-        <img src="RedChambuCA.png" 
-     srcset="RedChambuCA.png 1x, RedChambuCA@2x.png 2x" 
-     alt="REDCHAMBU CA" 
-     style="height: 80px; width: auto;">
-        <div class="logo-text">
-
-        </div>
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
       </a>
-      <nav>
+
+      <!-- Botón hamburguesa -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <i class="fas fa-bars" id="menuIcon"></i>
+      </button>
+
+      <nav id="mainNav">
         <ul>
           <li><a href="#planes">Planes</a></li>
           <li><a href="#proyecto">Proyecto WiFi</a></li>
           <li><a href="#cobertura">Cobertura</a></li>
-          <li><a href="#contacto" class="btn" style="padding: 8px 22px;">Contacto</a></li>
+          <li><a href="#contacto" class="btn" style="padding: 10px 22px;">Contacto</a></li>
         </ul>
       </nav>
     </div>
@@ -927,25 +1161,25 @@ header {
             <ul class="plan-features">
               <li><i class="fas fa-check"></i> Velocidad 100 Mbps</li>
               <li><i class="fas fa-check"></i> Ideal para streaming HD y teletrabajo</li>
-              <li><i class="fas fa-check"></i> Instalación Promocion de 5$</li>
-              <li><i class="fas fa-check"></i> Soporte técnico 7am a 10 pm</li>
+              <li><i class="fas fa-check"></i> Instalación promoción de $5</li>
+              <li><i class="fas fa-check"></i> Soporte técnico 7am a 10pm</li>
               <li><i class="fas fa-check"></i> Sin contrato de permanencia</li>
               <li><i class="fas fa-check"></i> 1 mes gratis del servicio</li>
             </ul>
             <a href="#contacto" class="btn">Contratar</a>
           </div>
 
-          <!-- Plan Fibra Avanzado (destacado) -->
+          <!-- Plan Fibra Avanzado -->
           <div class="plan-card featured">
             <span class="plan-type fiber"><i class="fas fa-network-wired" style="margin-right: 6px;"></i> Fibra Óptica</span>
-            <div class="plan-speed">250 <span>Mbps</span></div>
+            <div class="plan-speed">200 <span>Mbps</span></div>
             <div class="plan-name">Plan Avanzado</div>
             <ul class="plan-features">
-              <li><i class="fas fa-check"></i> Velocidad simétrica 200 Mbps</li>
+              <li><i class="fas fa-check"></i> Velocidad 200 Mbps</li>
               <li><i class="fas fa-check"></i> Perfecto para gaming y 4K</li>
               <li><i class="fas fa-check"></i> Múltiples dispositivos sin lag</li>
-              <li><i class="fas fa-check"></i> Instalación Promocion de 5$</li>
-              <li><i class="fas fa-check"></i> Soporte técnico 7am a 10 pm</li>
+              <li><i class="fas fa-check"></i> Instalación promoción de $5</li>
+              <li><i class="fas fa-check"></i> Soporte técnico 7am a 10pm</li>
               <li><i class="fas fa-check"></i> Sin contrato de permanencia</li>
               <li><i class="fas fa-check"></i> 1 mes gratis del servicio</li>
             </ul>
@@ -958,12 +1192,12 @@ header {
             <div class="plan-speed">20 <span>Mbps</span></div>
             <div class="plan-name">Plan Antena</div>
             <ul class="plan-features">
-              <li><i class="fas fa-check"></i> Velocidad 10 Mbps</li>
+              <li><i class="fas fa-check"></i> Velocidad 20 Mbps</li>
               <li><i class="fas fa-check"></i> Ideal para navegación y redes sociales</li>
               <li><i class="fas fa-check"></i> Cobertura en zonas rurales</li>
-              <li><i class="fas fa-check"></i> Soporte técnico 7am a 10 pm</li>
-            <a href="#contacto" class="btn">Contratar</a>
+              <li><i class="fas fa-check"></i> Soporte técnico 7am a 10pm</li>
             </ul>
+            <a href="#contacto" class="btn">Contratar</a>
           </div>
         </div>
 
@@ -992,7 +1226,7 @@ header {
     <section id="proyecto" class="container">
       <div class="wifi-project">
         <span class="status-badge"><i class="fas fa-hard-hat" style="margin-right: 6px;"></i> Proyecto en desarrollo</span>
-        <h2><i class="fas fa-wifi" style="margin-right: 10px;"></i> Proyecto de Zonas WiFi </h2>
+        <h2><i class="fas fa-wifi" style="margin-right: 10px;"></i> Proyecto de Zonas WiFi</h2>
         <p>Nuestro proyecto de zonas WiFi ofrece conexión para un dispositivo por cliente sin costo adicional, como alternativa temporal a la telefonía móvil. Actualmente contamos con 7 zonas WiFi en funcionamiento, y el proyecto está en desarrollo con planes de seguir agregando más zonas en el futuro. Próximamente habilitaremos zonas WiFi en:</p>
         <div class="coverage-tags" style="margin-top: 24px;">
           <span class="coverage-tag" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.2);">Arenales</span>
@@ -1067,7 +1301,6 @@ header {
         </div>
 
         <div class="coverage-grid">
-          <!-- Cobertura FTTH -->
           <div class="coverage-card">
             <h3><i class="fas fa-network-wired"></i> Fibra Óptica (FTTH)</h3>
             <div class="coverage-tags">
@@ -1087,7 +1320,6 @@ header {
             </div>
           </div>
 
-          <!-- Cobertura Antena -->
           <div class="coverage-card">
             <h3><i class="fas fa-satellite-dish"></i> Antena</h3>
             <div class="coverage-tags">
@@ -1114,7 +1346,7 @@ header {
           <div class="contact-info">
             <p><i class="fas fa-phone-alt"></i> +58 426 8731 872</p>
             <p><i class="fas fa-envelope"></i> redchambuca@gmail.com</p>
-            <p><i class="fas fa-clock"></i> Lun a Vier: 8:00 am - 7:00 pm</p>
+            <p><i class="fas fa-clock"></i> Lun a Vie: 8:00 am - 7:00 pm</p>
             <p><i class="fas fa-clock"></i> Sáb a Dom: 9:00 am - 6:00 pm</p>
           </div>
           <a href="mailto:redchambuca@gmail.com" class="btn"><i class="fas fa-envelope" style="margin-right: 8px;"></i> Enviar mensaje</a>
@@ -1127,16 +1359,43 @@ header {
   <footer>
     <div class="container footer-content">
       <a href="#" class="footer-logo">
-        <img src="RedChambuCA.png" 
-     srcset="RedChambuCA.png 1x, RedChambuCA@2x.png 2x" 
-     alt="REDCHAMBU CA" 
-     style="height: 80px; width: auto;">
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
       </a>
       <div class="footer-copy">
-        &copy; 2026 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
       </div>
     </div>
   </footer>
+
+  <!-- Script menú hamburguesa -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('menuToggle');
+      const nav = document.getElementById('mainNav');
+      const icon = document.getElementById('menuIcon');
+
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function() {
+        const isOpen = nav.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', isOpen);
+        icon.classList.toggle('fa-bars', !isOpen);
+        icon.classList.toggle('fa-times', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      });
+
+      // Cierra el menú al hacer clic en un enlace
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+          toggle.setAttribute('aria-label', 'Abrir menú');
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
