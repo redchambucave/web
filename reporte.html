@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1f44">
+  <meta name="description" content="Reporte de fallas - REDCHAMBU CA. Informa cualquier problema con tu servicio de internet de forma rápida.">
+
+  <title>Reporte de Fallas | REDCHAMBU CA</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="RedChambuCA.png">
+  <link rel="apple-touch-icon" href="RedChambuCA.png">
+
+  <!-- Fuente Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="reporte.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-flex">
+      <a href="index.html" class="logo">
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <i class="fas fa-bars" id="menuIcon"></i>
+      </button>
+
+      <nav id="mainNav">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#planes">Planes</a></li>
+          <li><a href="index.html#cobertura">Cobertura</a></li>
+          <li><a href="reporte.html" class="btn" style="padding: 10px 22px;">Reportar falla</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero del reporte -->
+    <section class="report-hero">
+      <div class="container">
+        <span class="badge"><i class="fas fa-tools" style="margin-right: 6px;"></i> Soporte técnico</span>
+        <h1>Reporte de <span class="highlight">Fallas</span></h1>
+        <p>Cuéntanos qué está pasando con tu servicio. Nuestro equipo técnico revisará tu reporte lo antes posible.</p>
+      </div>
+    </section>
+
+    <!-- Formulario de reporte -->
+    <section class="report-section">
+      <div class="container">
+        <div class="report-card">
+
+          <div class="report-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+
+          <h2>Información del reporte</h2>
+          <p class="report-subtitle">Todos los campos marcados con <span style="color: var(--mustard); font-weight: 700;">*</span> son obligatorios.</p>
+
+          <form class="report-form" action="https://formsubmit.co/redchambuca@gmail.com" method="POST">
+            <!-- Configuración de FormSubmit -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="Nuevo reporte de falla - REDCHAMBU CA">
+            <input type="hidden" name="_next" value="gracias.html">
+            <input type="hidden" name="_template" value="table">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Nombre completo <span>*</span></label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Ej: Juan Pérez" required>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Teléfono / WhatsApp <span>*</span></label>
+                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Ej: +58 426 8731 872" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="tucorreo@ejemplo.com">
+              </div>
+
+              <div class="form-group">
+                <label for="zone">Zona / Sector <span>*</span></label>
+                <input type="text" id="zone" name="zone" class="form-control" placeholder="Ej: Barrio Nuevo" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="service_type">Tipo de servicio <span>*</span></label>
+                <select id="service_type" name="service_type" class="form-control" required>
+                  <option value="" disabled selected>Selecciona una opción</option>
+                  <option value="Fibra Óptica">Fibra Óptica</option>
+                  <option value="Antena">Antena</option>
+                  <option value="Zona WiFi">Zona WiFi</option>
+                  <option value="Radio Enlace">Radio Enlace</option>
+                  <option value="No estoy seguro">No estoy seguro</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="failure_type">Tipo de falla <span>*</span></label>
+                <select id="failure_type" name="failure_type" class="form-control" required>
+                  <option value="" disabled selected>Selecciona una opción</option>
+                  <option value="Sin conexión">Sin conexión</option>
+                  <option value="Internet lento">Internet lento</option>
+                  <option value="Intermitencias">Intermitencias / cortes</option>
+                  <option value="Problema con el router">Problema con el router</option>
+                  <option value="Cable dañado">Cable dañado</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="urgency">Nivel de urgencia <span>*</span></label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="urgency" value="Baja" required>
+                  <span><i class="fas fa-circle" style="color: #4caf50;"></i> Baja</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="urgency" value="Media" required>
+                  <span><i class="fas fa-circle" style="color: #e6b422;"></i> Media</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="urgency" value="Alta" required>
+                  <span><i class="fas fa-circle" style="color: #e53935;"></i> Alta</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Descripción del problema <span>*</span></label>
+              <textarea id="message" name="message" class="form-control" rows="5" placeholder="Describe con detalle qué está pasando, desde cuándo y si afecta a toda la zona o solo a tu hogar..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn">
+              <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Enviar reporte
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <a href="index.html" class="footer-logo">
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
+      </a>
+      <div class="footer-copy">
+        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script menú hamburguesa -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('menuToggle');
+      const nav = document.getElementById('mainNav');
+      const icon = document.getElementById('menuIcon');
+
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function() {
+        const isOpen = nav.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', isOpen);
+        icon.classList.toggle('fa-bars', !isOpen);
+        icon.classList.toggle('fa-times', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      });
+
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+          toggle.setAttribute('aria-label', 'Abrir menú');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
