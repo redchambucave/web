@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1f44">
+  <meta name="description" content="Tasa de cambio del día - REDCHAMBU CA. Consulta el monto en Bolívares para tu plan de internet.">
+
+  <title>Tasa del Día | REDCHAMBU CA</title>
+
+  <link rel="icon" type="image/png" href="RedChambuCA.png">
+  <link rel="apple-touch-icon" href="RedChambuCA.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #0a1f44;
+      --navy-light: #1a2f5a;
+      --mustard: #e6b422;
+      --mustard-dark: #c99f1a;
+      --mustard-light: #f5d76e;
+      --light-bg: #f8f9fc;
+      --dark-text: #0a1f44;
+      --gray-text: #4a5a6a;
+      --white: #ffffff;
+      --green: #16a34a;
+      --red: #dc2626;
+      --shadow: 0 10px 25px -5px rgba(10, 31, 68, 0.08), 0 8px 10px -6px rgba(10, 31, 68, 0.02);
+      --border-radius: 18px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--white);
+      color: var(--dark-text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    img {
+      -webkit-user-drag: none;
+      user-select: none;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      padding: 10px 0;
+      box-shadow: 0 2px 10px rgba(10, 31, 68, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(255, 255, 255, 0.95);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      padding-top: calc(10px + env(safe-area-inset-top));
+    }
+
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo > img {
+      height: 70px;
+      width: auto;
+      max-width: 220px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 40px;
+      background: var(--navy);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
+
+    .back-btn:hover {
+      background: var(--navy-light);
+      transform: translateX(-2px);
+    }
+
+    /* Hero de la página */
+    .page-hero {
+      padding: 50px 0 30px;
+      background: linear-gradient(135deg, #f8f9fc 0%, #eef2fa 100%);
+      border-radius: 0 0 40px 40px;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .page-hero h1 .highlight {
+      color: var(--mustard);
+    }
+
+    .page-hero p {
+      color: var(--gray-text);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Tarjeta principal de tasa */
+    .rate-section {
+      padding: 50px 0;
+      flex: 1;
+    }
+
+    .rate-card {
+      background: var(--white);
+      border-radius: 32px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 40px -10px rgba(10, 31, 68, 0.12);
+      border: 1px solid rgba(10, 31, 68, 0.06);
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rate-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--mustard) 0%, var(--mustard-dark) 100%);
+    }
+
+    .rate-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(230, 180, 34, 0.12);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 20px;
+      border-radius: 40px;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .rate-label i {
+      color: var(--mustard-dark);
+    }
+
+    .rate-value {
+      font-size: 4.5rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+      word-break: break-word;
+    }
+
+    .rate-value .currency {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gray-text);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .rate-subtitle {
+      font-size: 1.1rem;
+      color: var(--gray-text);
+      margin-bottom: 30px;
+    }
+
+    .rate-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      padding: 24px 0;
+      border-top: 1px solid rgba(10, 31, 68, 0.08);
+      border-bottom: 1px solid rgba(10, 31, 68, 0.08);
+      margin-bottom: 30px;
+    }
+
+    .rate-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+    }
+
+    .rate-meta-item .label {
+      font-size: 0.85rem;
+      color: var(--gray-text);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .rate-meta-item .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .rate-meta-item .value.green { color: var(--green); }
+    .rate-meta-item .value.red { color: var(--red); }
+
+    /* Estado del sistema */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--green);
+      padding: 8px 18px;
+      background: rgba(22, 163, 74, 0.1);
+      border-radius: 40px;
+    }
+
+    .status-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Sección de planes en Bs */
+    .plans-bs-section {
+      padding: 40px 0 80px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      color: var(--navy);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--gray-text);
+      font-size: 1rem;
+      margin-bottom: 40px;
+    }
+
+    .plans-bs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .plan-bs-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(10, 31, 68, 0.06);
+      text-align: center;
+      transition: all 0.25s;
+    }
+
+    .plan-bs-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.12);
+    }
+
+    .plan-bs-card .plan-name-bs {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .plan-bs-card .plan-speed-bs {
+      display: inline-block;
+      background: rgba(10, 31, 68, 0.08);
+      color: var(--navy);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 40px;
+      margin-bottom: 20px;
+    }
+
+    .plan-bs-card .plan-bs-price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.1;
+      margin-bottom: 4px;
+      word-break: break-word;
+    }
+
+    .plan-bs-card .plan-bs-price .currency {
+      font-size: 1.1rem;
+      color: var(--gray-text);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .plan-bs-card .plan-usd {
+      font-size: 0.95rem;
+      color: var(--gray-text);
+      font-weight: 500;
+    }
+
+    .plan-bs-card .btn {
+      display: inline-block;
+      background-color: var(--mustard);
+      color: var(--navy);
+      font-weight: 700;
+      padding: 12px 28px;
+      min-height: 48px;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-top: 20px;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(230, 180, 34, 0.3);
+    }
+
+    .plan-bs-card .btn:hover {
+      background-color: var(--mustard-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(230, 180, 34, 0.4);
+    }
+
+    /* Info adicional */
+    .info-note {
+      max-width: 720px;
+      margin: 40px auto 0;
+      padding: 20px 24px;
+      background: var(--light-bg);
+      border-radius: 16px;
+      border-left: 4px solid var(--mustard);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .info-note i {
+      color: var(--mustard-dark);
+      font-size: 1.3rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .info-note p {
+      font-size: 0.95rem;
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    .info-note strong {
+      color: var(--navy);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--mustard);
+      color: var(--navy);
+      padding: 30px 0;
+      padding-bottom: calc(30px + env(safe-area-inset-bottom));
+      margin-top: auto;
+      border-radius: 40px 40px 0 0;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .footer-logo > img {
+      height: 60px;
+      width: auto;
+      max-width: 200px;
+    }
+
+    .footer-copy {
+      color: var(--navy);
+      opacity: 0.9;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-hero h1 { font-size: 1.8rem; }
+      .page-hero p { font-size: 1rem; }
+      .rate-card { padding: 36px 24px; }
+      .rate-value { font-size: 3rem; }
+      .rate-value .currency { font-size: 1.2rem; }
+      .rate-meta { gap: 20px; }
+      .section-title { font-size: 1.4rem; }
+      .plan-bs-card .plan-bs-price { font-size: 1.8rem; }
+      .back-btn span { display: none; }
+      .back-btn { padding: 10px 14px; }
+      .footer-content { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .page-hero { padding: 30px 0 20px; }
+      .page-hero h1 { font-size: 1.5rem; }
+      .rate-card { padding: 28px 18px; border-radius: 24px; }
+      .rate-value { font-size: 2.4rem; }
+      .rate-value .currency { font-size: 1rem; }
+      .logo > img { height: 55px; }
+      .rate-meta { flex-direction: column; gap: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-flex">
+      <a href="index.html" class="logo">
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
+      </a>
+      <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> <span>Volver al inicio</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <h1>Tasa del <span class="highlight">Día</span></h1>
+        <p>Consulta el monto actualizado en Bolívares para el pago de tu servicio</p>
+      </div>
+    </section>
+
+    <!-- Tarjeta principal de tasa -->
+    <section class="rate-section">
+      <div class="container">
+        <div class="rate-card">
+          <span class="rate-label">
+            <i class="fas fa-calendar-day"></i> Tasa oficial BCV
+          </span>
+
+          <div class="rate-value" id="rateValue">
+            Cargando... <span class="currency">Bs/USD</span>
+          </div>
+
+          <p class="rate-subtitle">Bolívares por 1 dólar estadounidense</p>
+
+          <div class="rate-meta">
+            <div class="rate-meta-item">
+              <span class="label">Fecha</span>
+              <span class="value" id="rateDate">—</span>
+            </div>
+            <div class="rate-meta-item">
+              <span class="label">Hora</span>
+              <span class="value" id="rateTime">—</span>
+            </div>
+            <div class="rate-meta-item">
+              <span class="label">Estado</span>
+              <span class="value green" id="rateStatus">
+                <span class="status-badge"><span class="dot"></span> Actualizado</span>
+              </span>
+            </div>
+          </div>
+
+          <p style="color: var(--gray-text); font-size: 0.95rem;">
+            Última actualización: <strong id="lastUpdate" style="color: var(--navy);">—</strong>
+          </p>
+        </div>
+
+        <!-- Info adicional -->
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          <p>
+            <strong>Importante:</strong> Esta tasa es referencial y corresponde al valor publicado por el Banco Central de Venezuela (BCV). El monto exacto a pagar puede variar ligeramente al momento de la transacción. Para confirmar tu monto exacto, contáctanos por <strong>WhatsApp</strong> o <strong>correo</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Planes en Bolívares -->
+    <section class="plans-bs-section">
+      <div class="container">
+        <h2 class="section-title">Precios en Bolívares</h2>
+        <p class="section-subtitle">Calculado automáticamente con la tasa del día</p>
+
+        <div class="plans-bs-grid">
+          <!-- Plan Básico -->
+          <div class="plan-bs-card">
+            <div class="plan-name-bs">Plan Básico</div>
+            <span class="plan-speed-bs">100 Mbps · Fibra Óptica</span>
+            <div class="plan-bs-price">
+              <span id="planBasicBs">—</span>
+              <span class="currency">Bs/mes</span>
+            </div>
+            <div class="plan-usd">$20 USD / mes (referencial)</div>
+            <a href="index.html#contacto" class="btn">Contratar</a>
+          </div>
+
+          <!-- Plan Avanzado -->
+          <div class="plan-bs-card">
+            <div class="plan-name-bs">Plan Avanzado</div>
+            <span class="plan-speed-bs">200 Mbps · Fibra Óptica</span>
+            <div class="plan-bs-price">
+              <span id="planAdvancedBs">—</span>
+              <span class="currency">Bs/mes</span>
+            </div>
+            <div class="plan-usd">$30 USD / mes (referencial)</div>
+            <a href="index.html#contacto" class="btn">Contratar</a>
+          </div>
+
+          <!-- Plan Antena -->
+          <div class="plan-bs-card">
+            <div class="plan-name-bs">Plan Antena</div>
+            <span class="plan-speed-bs">20 Mbps · Antena</span>
+            <div class="plan-bs-price">
+              <span id="planAntennaBs">—</span>
+              <span class="currency">Bs/mes</span>
+            </div>
+            <div class="plan-usd">$15 USD / mes (referencial)</div>
+            <a href="index.html#contacto" class="btn">Contratar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <a href="index.html" class="footer-logo">
+        <img src="RedChambuCA.png" alt="REDCHAMBU CA" width="200" height="60" loading="lazy" decoding="async">
+      </a>
+      <div class="footer-copy">
+        &copy; 2025 REDCHAMBU CA. Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       CONFIGURACIÓN DE LA TASA
+       ============================================
+       👇 AQUÍ EDITAS EL VALOR MANUALMENTE CADA DÍA
+       ============================================ -->
+  <script>
+    // ⚙️ CONFIGURACIÓN — Edita estos valores cada día
+    const TASA_MANUAL = {
+      valor: 847.44,              // 👈 Cambia aquí la tasa del día (Bs por USD)
+      fecha: "17-09-2026",       // 👈 Fecha (YYYY-MM-DD) - la del día
+      planesUSD: {
+        basico: 23.2,              // 👈 Precio en USD del plan básico
+        avanzado: 29,            // 👈 Precio en USD del plan avanzado
+        antena: 23.2               // 👈 Precio en USD del plan antena
+      }
+    };
+
+    // ============================================
+    // NO TOCAR DE AQUÍ EN ADELANTE
+    // ============================================
+    (function() {
+      const rate = TASA_MANUAL;
+
+      // Formatear la tasa
+      document.getElementById('rateValue').innerHTML =
+        rate.valor.toFixed(2).replace('.', ',') + ' <span class="currency">Bs/USD</span>';
+
+      // Fecha
+      const fecha = new Date(rate.fecha + 'T12:00:00');
+      const opciones = { day: 'numeric', month: 'long', year: 'numeric' };
+      document.getElementById('rateDate').textContent =
+        fecha.toLocaleDateString('es-VE', opciones);
+
+      // Hora
+      document.getElementById('rateTime').textContent = rate.hora;
+
+      // Última actualización
+      document.getElementById('lastUpdate').textContent =
+        `${fecha.toLocaleDateString('es-VE', opciones)} a las ${rate.hora}`;
+
+      // Calcular precios en Bs
+      const formatearBs = (usd) => {
+        const bs = usd * rate.valor;
+        return bs.toLocaleString('es-VE', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      };
+
+      document.getElementById('planBasicBs').textContent    = formatearBs(rate.planesUSD.basico);
+      document.getElementById('planAdvancedBs').textContent = formatearBs(rate.planesUSD.avanzado);
+      document.getElementById('planAntennaBs').textContent  = formatearBs(rate.planesUSD.antena);
+    })();
+  </script>
+
+</body>
+</html>
