@@ -1064,3 +1064,16 @@ footer {
     scroll-behavior: auto;
   }
 }
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+@media (hover: hover) {
+  .btn-whatsapp:hover {
+    background-color: #1da851;
+    box-shadow: 0 8px 18px rgba(37, 211, 102, 0.4);
+  }
+}
