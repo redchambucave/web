@@ -208,7 +208,6 @@
       margin-bottom: 12px;
       letter-spacing: -0.03em;
       word-break: break-word;
-      transition: opacity 0.3s;
     }
 
     .rate-value .currency {
@@ -217,12 +216,6 @@
       color: var(--gray-text);
       margin-left: 8px;
       vertical-align: middle;
-    }
-
-    /* Skeleton de carga */
-    .rate-value.loading {
-      color: var(--gray-text);
-      opacity: 0.5;
     }
 
     .rate-subtitle {
@@ -538,7 +531,7 @@
             <i class="fas fa-calendar-day"></i> Tasa oficial BCV
           </span>
 
-          <div class="rate-value loading" id="rateValue">
+          <div class="rate-value" id="rateValue">
             Cargando... <span class="currency">Bs/USD</span>
           </div>
 
@@ -636,16 +629,16 @@
   </footer>
 
   <!-- ============================================
-       LÓGICA DE TASA AUTOMÁTICA (pydolarve.org)
+       LÓGICA DE TASA AUTOMÁTICA
        ============================================
-       🥇 Fuente principal: https://pydolarve.org/api/v1/dollar?page=bcv
+       🌐 API: https://ve.dolarapi.com/v1/dolares/oficial
        💾 Caché: localStorage (1 consulta por día)
        🛟 Respaldo: TASA_FALLBACK (manual)
        ============================================ -->
   <script>
     // ⚙️ CONFIGURACIÓN
     // ─────────────────────────────────────────────
-    // Precios de tus planes en USD (edítalos si cambian)
+    // Precios de tus planes en USD
     const PLANES_USD = {
       basico:   23.2,
       avanzado: 29,
@@ -653,53 +646,56 @@
     };
 
     // 🛟 RESPALDO MANUAL — Solo se usa si la API falla
-    // Actualízalo de vez en cuando para que el respaldo sea realista
     const TASA_FALLBACK = {
       valor: 848.54,
       fecha: "2026-09-17",   // YYYY-MM-DD
       hora:  "6:00 PM"
     };
 
-    // 🌐 URL de la API
-    const API_URL = 'https://pydolarve.org/api/v1/dollar?page=bcv';
+    // 🌐 API oficial
+    const API_URL = 'https://ve.dolarapi.com/v1/dolares/oficial';
 
-    // 🔑 Clave de caché
-    const CACHE_KEY = 'redchambu_tasa_bcv_v1';
+    // 🔑 Clave de caché (nueva versión para invalidar las anteriores)
+    const CACHE_KEY = 'redchambu_tasa_bcv_v3';
     // ─────────────────────────────────────────────
 
-    // ============================================
-    // Helpers de formato
-    // ============================================
-    const fmtBs = (valor) =>
-      Number(valor).toLocaleString('es-VE', {
+    /* ============================================
+       HELPERS
+       ============================================ */
+    const fmtBs = (v) =>
+      Number(v).toLocaleString('es-VE', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
 
     const fmtFecha = (iso) => {
-      const f = new Date(iso + 'T12:00:00');
-      return f.toLocaleDateString('es-VE', {
-        day: 'numeric', month: 'long', year: 'numeric'
-      });
+      try {
+        return new Date(iso + 'T12:00:00').toLocaleDateString('es-VE', {
+          day: 'numeric', month: 'long', year: 'numeric'
+        });
+      } catch { return iso; }
     };
 
-    // ============================================
-    // Render principal
-    // ============================================
+    const fetchConTimeout = (url, ms = 9000) => {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), ms);
+      return fetch(url, { signal: ctrl.signal, cache: 'no-store' })
+        .finally(() => clearTimeout(t));
+    };
+
+    /* ============================================
+       RENDER
+       ============================================ */
     function renderTasa({ valor, fecha, hora }, fuente) {
-      // Valor principal
       const rateValueEl = document.getElementById('rateValue');
       rateValueEl.classList.remove('loading');
-      rateValueEl.innerHTML =
-        fmtBs(valor) + ' <span class="currency">Bs/USD</span>';
+      rateValueEl.innerHTML = fmtBs(valor) + ' <span class="currency">Bs/USD</span>';
 
-      // Fecha y hora
       document.getElementById('rateDate').textContent = fmtFecha(fecha);
       document.getElementById('rateTime').textContent = hora;
       document.getElementById('lastUpdate').textContent =
         `${fmtFecha(fecha)} a las ${hora}`;
 
-      // Estado visual
       const badge = document.getElementById('statusBadge');
       if (fuente === 'api') {
         badge.className = 'status-badge';
@@ -709,98 +705,72 @@
         badge.innerHTML = '<span class="dot"></span> Modo respaldo';
       }
 
-      // Precios de planes en Bs
       document.getElementById('planBasicBs').textContent    = fmtBs(PLANES_USD.basico   * valor);
       document.getElementById('planAdvancedBs').textContent = fmtBs(PLANES_USD.avanzado * valor);
       document.getElementById('planAntennaBs').textContent  = fmtBs(PLANES_USD.antena   * valor);
     }
 
-    // ============================================
-    // Caché
-    // ============================================
+    /* ============================================
+       CACHÉ
+       ============================================ */
     function leerCache() {
       try {
         const raw = localStorage.getItem(CACHE_KEY);
         if (!raw) return null;
         const data = JSON.parse(raw);
         const hoy = new Date().toISOString().split('T')[0];
-        // Solo usar caché si es del mismo día
         if (data.fechaCache === hoy && data.valor) return data;
         return null;
-      } catch {
-        return null;
-      }
+      } catch { return null; }
     }
 
-    function guardarCache({ valor, fecha, hora }) {
+    function guardarCache(d) {
       try {
         const hoy = new Date().toISOString().split('T')[0];
-        localStorage.setItem(CACHE_KEY, JSON.stringify({
-          valor, fecha, hora, fechaCache: hoy
-        }));
-      } catch {
-        /* localStorage no disponible: ignorar */
-      }
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ ...d, fechaCache: hoy }));
+      } catch {}
     }
 
-    // ============================================
-    // Consulta a la API
-    // ============================================
+    /* ============================================
+       CONSULTA A LA API
+       ============================================ */
     async function consultarAPI() {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000); // 8s máx
+      const res = await fetchConTimeout(API_URL);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
 
-      try {
-        const res = await fetch(API_URL, {
-          cache: 'no-store',
-          signal: controller.signal,
-          headers: { 'Accept': 'application/json' }
-        });
-        clearTimeout(timeout);
-
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-
-        const data = await res.json();
-        const bcv = data?.monitors?.bcv;
-
-        if (!bcv || typeof bcv.price !== 'number') {
-          throw new Error('Respuesta sin dato BCV');
-        }
-
-        // pydolarve devuelve last_update tipo "2026-09-17 18:00:00"
-        const [fecha, horaFull] = (bcv.last_update || '').split(' ');
-        const hora = (horaFull || '').slice(0, 5);
-
-        return {
-          valor: bcv.price,
-          fecha: fecha || new Date().toISOString().split('T')[0],
-          hora:  hora  || '—'
-        };
-      } catch (err) {
-        clearTimeout(timeout);
-        throw err;
+      const data = await res.json();
+      if (typeof data?.promedio !== 'number') {
+        throw new Error('Respuesta sin promedio');
       }
+
+      const f = new Date(data.fechaActualizacion || Date.now());
+      return {
+        valor: data.promedio,
+        fecha: f.toISOString().split('T')[0],
+        hora:  f.toTimeString().slice(0, 5)
+      };
     }
 
-    // ============================================
-    // Flujo principal
-    // ============================================
+    /* ============================================
+       FLUJO PRINCIPAL
+       ============================================ */
     async function cargarTasa() {
-      // 1) Intentar caché del día
+      // 1) Caché del día
       const cache = leerCache();
       if (cache) {
+        console.log('[Tasa BCV] 💾 Caché del día:', cache);
         renderTasa(cache, 'api');
         return;
       }
 
-      // 2) Consultar API
+      // 2) API
       try {
         const tasa = await consultarAPI();
+        console.log('[Tasa BCV] ✅ dolarapi:', tasa);
         guardarCache(tasa);
         renderTasa(tasa, 'api');
       } catch (err) {
-        console.warn('[Tasa BCV] API falló, usando respaldo manual:', err);
-        // 3) Fallback manual
+        console.warn('[Tasa BCV] ❌ API falló, usando respaldo manual:', err);
         renderTasa(
           {
             valor: TASA_FALLBACK.valor,
@@ -811,6 +781,12 @@
         );
       }
     }
+
+    // Limpia cachés viejas automáticamente
+    try {
+      localStorage.removeItem('redchambu_tasa_bcv_v1');
+      localStorage.removeItem('redchambu_tasa_bcv_v2');
+    } catch {}
 
     // Ejecutar
     cargarTasa();
