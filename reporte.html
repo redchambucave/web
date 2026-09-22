@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0a1f44">
-  <meta name="description" content="Reporte de fallas - REDCHAMBU CA. Informa cualquier problema con tu servicio de internet de forma rápida.">
+  <meta name="description" content="Reporte de fallas - REDCHAMBU CA. Informa cualquier problema con tu servicio de internet de forma rápida por WhatsApp.">
 
   <title>Reporte de Fallas | REDCHAMBU CA</title>
 
@@ -52,7 +52,7 @@
       <div class="container">
         <span class="badge"><i class="fas fa-tools" style="margin-right: 6px;"></i> Soporte técnico</span>
         <h1>Reporte de <span class="highlight">Fallas</span></h1>
-        <p>Cuéntanos qué está pasando con tu servicio. Nuestro equipo técnico revisará tu reporte lo antes posible.</p>
+        <p>Cuéntanos qué está pasando con tu servicio. Tu reporte se enviará directo a nuestro WhatsApp de soporte.</p>
       </div>
     </section>
 
@@ -143,7 +143,7 @@
             </div>
 
             <button type="submit" class="btn">
-              <i class="fas fa-phone-volume" style="margin-right: 8px;"></i> Enviar reporte y llamar
+              <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Enviar reporte por WhatsApp
             </button>
           </form>
         </div>
@@ -192,27 +192,41 @@
     })();
   </script>
 
-  <!-- Script: guarda los datos y redirige a llamada.html -->
+  <!-- Script: enviar reporte por WhatsApp -->
   <script>
+    // ⚠️ CAMBIA ESTE NÚMERO por el de soporte (código país + número, sin + ni espacios)
+    const WHATSAPP_SOPORTE = '584262954205';
+
     document.getElementById('reportForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const datos = {
-        name:         document.getElementById('name').value.trim(),
-        phone:        document.getElementById('phone').value.trim(),
-        email:        document.getElementById('email').value.trim(),
-        zone:         document.getElementById('zone').value.trim(),
-        service_type: document.getElementById('service_type').value,
-        failure_type: document.getElementById('failure_type').value,
-        urgency:      (document.querySelector('input[name="urgency"]:checked') || {}).value || '',
-        message:      document.getElementById('message').value.trim()
-      };
+      const name         = document.getElementById('name').value.trim();
+      const phone        = document.getElementById('phone').value.trim();
+      const email        = document.getElementById('email').value.trim();
+      const zone         = document.getElementById('zone').value.trim();
+      const service_type = document.getElementById('service_type').value;
+      const failure_type = document.getElementById('failure_type').value;
+      const urgency      = (document.querySelector('input[name="urgency"]:checked') || {}).value || '';
+      const message      = document.getElementById('message').value.trim();
 
-      // Guardar en sessionStorage para leerlos en llamada.html
-      sessionStorage.setItem('reporteData', JSON.stringify(datos));
+      let texto =
+        `*NUEVO REPORTE DE FALLA - REDCHAMBU CA*\n\n` +
+        `👤 *Nombre:* ${name}\n` +
+        `📞 *Teléfono:* ${phone}\n`;
 
-      // Redirigir a la página de llamada
-      window.location.href = 'llamada.html';
+      if (email) {
+        texto += `✉️ *Correo:* ${email}\n`;
+      }
+
+      texto +=
+        `📍 *Zona:* ${zone}\n` +
+        `📡 *Servicio:* ${service_type}\n` +
+        `⚠️ *Tipo de falla:* ${failure_type}\n` +
+        `🔥 *Urgencia:* ${urgency}\n\n` +
+        `📝 *Descripción:*\n${message}`;
+
+      const url = `https://wa.me/${WHATSAPP_SOPORTE}?text=${encodeURIComponent(texto)}`;
+      window.open(url, '_blank');
     });
   </script>
 
