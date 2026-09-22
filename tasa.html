@@ -208,6 +208,7 @@
       margin-bottom: 12px;
       letter-spacing: -0.03em;
       word-break: break-word;
+      transition: opacity 0.3s;
     }
 
     .rate-value .currency {
@@ -216,6 +217,12 @@
       color: var(--gray-text);
       margin-left: 8px;
       vertical-align: middle;
+    }
+
+    /* Skeleton de carga */
+    .rate-value.loading {
+      color: var(--gray-text);
+      opacity: 0.5;
     }
 
     .rate-subtitle {
@@ -278,6 +285,15 @@
       border-radius: 50%;
       background: var(--green);
       animation: pulse 1.5s infinite;
+    }
+
+    .status-badge.red {
+      color: var(--red);
+      background: rgba(220, 38, 38, 0.1);
+    }
+
+    .status-badge.red .dot {
+      background: var(--red);
     }
 
     @keyframes pulse {
@@ -522,7 +538,7 @@
             <i class="fas fa-calendar-day"></i> Tasa oficial BCV
           </span>
 
-          <div class="rate-value" id="rateValue">
+          <div class="rate-value loading" id="rateValue">
             Cargando... <span class="currency">Bs/USD</span>
           </div>
 
@@ -540,7 +556,7 @@
             <div class="rate-meta-item">
               <span class="label">Estado</span>
               <span class="value green" id="rateStatus">
-                <span class="status-badge"><span class="dot"></span> Actualizado</span>
+                <span class="status-badge" id="statusBadge"><span class="dot"></span> Actualizado</span>
               </span>
             </div>
           </div>
@@ -620,60 +636,184 @@
   </footer>
 
   <!-- ============================================
-       CONFIGURACIÓN DE LA TASA
+       LÓGICA DE TASA AUTOMÁTICA (pydolarve.org)
        ============================================
-       👇 AQUÍ EDITAS EL VALOR MANUALMENTE CADA DÍA
+       🥇 Fuente principal: https://pydolarve.org/api/v1/dollar?page=bcv
+       💾 Caché: localStorage (1 consulta por día)
+       🛟 Respaldo: TASA_FALLBACK (manual)
        ============================================ -->
   <script>
-    // ⚙️ CONFIGURACIÓN — Edita estos valores cada día
-    const TASA_MANUAL = {
-      valor: 848.54,              // 👈 Cambia aquí la tasa del día (Bs por USD)
-      fecha: "2026-09-17",       // 👈 Fecha (YYYY-MM-DD) - la del día
-      hora: "6:00 PM",           // 👈 Hora
+    // ⚙️ CONFIGURACIÓN
+    // ─────────────────────────────────────────────
+    // Precios de tus planes en USD (edítalos si cambian)
+    const PLANES_USD = {
+      basico:   23.2,
+      avanzado: 29,
+      antena:   23.2
+    };
 
-      planesUSD: {
-        basico: 23.2,              // 👈 Precio en USD del plan básico
-        avanzado: 29,            // 👈 Precio en USD del plan avanzado
-        antena: 23.2               // 👈 Precio en USD del plan antena
-      }
+    // 🛟 RESPALDO MANUAL — Solo se usa si la API falla
+    // Actualízalo de vez en cuando para que el respaldo sea realista
+    const TASA_FALLBACK = {
+      valor: 848.54,
+      fecha: "2026-09-17",   // YYYY-MM-DD
+      hora:  "6:00 PM"
+    };
+
+    // 🌐 URL de la API
+    const API_URL = 'https://pydolarve.org/api/v1/dollar?page=bcv';
+
+    // 🔑 Clave de caché
+    const CACHE_KEY = 'redchambu_tasa_bcv_v1';
+    // ─────────────────────────────────────────────
+
+    // ============================================
+    // Helpers de formato
+    // ============================================
+    const fmtBs = (valor) =>
+      Number(valor).toLocaleString('es-VE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+    const fmtFecha = (iso) => {
+      const f = new Date(iso + 'T12:00:00');
+      return f.toLocaleDateString('es-VE', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
     };
 
     // ============================================
-    // NO TOCAR DE AQUÍ EN ADELANTE
+    // Render principal
     // ============================================
-    (function() {
-      const rate = TASA_MANUAL;
+    function renderTasa({ valor, fecha, hora }, fuente) {
+      // Valor principal
+      const rateValueEl = document.getElementById('rateValue');
+      rateValueEl.classList.remove('loading');
+      rateValueEl.innerHTML =
+        fmtBs(valor) + ' <span class="currency">Bs/USD</span>';
 
-      // Formatear la tasa
-      document.getElementById('rateValue').innerHTML =
-        rate.valor.toFixed(2).replace('.', ',') + ' <span class="currency">Bs/USD</span>';
-
-      // Fecha
-      const fecha = new Date(rate.fecha + 'T12:00:00');
-      const opciones = { day: 'numeric', month: 'long', year: 'numeric' };
-      document.getElementById('rateDate').textContent =
-        fecha.toLocaleDateString('es-VE', opciones);
-
-      // Hora
-      document.getElementById('rateTime').textContent = rate.hora;
-
-      // Última actualización
+      // Fecha y hora
+      document.getElementById('rateDate').textContent = fmtFecha(fecha);
+      document.getElementById('rateTime').textContent = hora;
       document.getElementById('lastUpdate').textContent =
-        `${fecha.toLocaleDateString('es-VE', opciones)} a las ${rate.hora}`;
+        `${fmtFecha(fecha)} a las ${hora}`;
 
-      // Calcular precios en Bs
-      const formatearBs = (usd) => {
-        const bs = usd * rate.valor;
-        return bs.toLocaleString('es-VE', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
+      // Estado visual
+      const badge = document.getElementById('statusBadge');
+      if (fuente === 'api') {
+        badge.className = 'status-badge';
+        badge.innerHTML = '<span class="dot"></span> Actualizado';
+      } else {
+        badge.className = 'status-badge red';
+        badge.innerHTML = '<span class="dot"></span> Modo respaldo';
+      }
+
+      // Precios de planes en Bs
+      document.getElementById('planBasicBs').textContent    = fmtBs(PLANES_USD.basico   * valor);
+      document.getElementById('planAdvancedBs').textContent = fmtBs(PLANES_USD.avanzado * valor);
+      document.getElementById('planAntennaBs').textContent  = fmtBs(PLANES_USD.antena   * valor);
+    }
+
+    // ============================================
+    // Caché
+    // ============================================
+    function leerCache() {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        const hoy = new Date().toISOString().split('T')[0];
+        // Solo usar caché si es del mismo día
+        if (data.fechaCache === hoy && data.valor) return data;
+        return null;
+      } catch {
+        return null;
+      }
+    }
+
+    function guardarCache({ valor, fecha, hora }) {
+      try {
+        const hoy = new Date().toISOString().split('T')[0];
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          valor, fecha, hora, fechaCache: hoy
+        }));
+      } catch {
+        /* localStorage no disponible: ignorar */
+      }
+    }
+
+    // ============================================
+    // Consulta a la API
+    // ============================================
+    async function consultarAPI() {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000); // 8s máx
+
+      try {
+        const res = await fetch(API_URL, {
+          cache: 'no-store',
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' }
         });
-      };
+        clearTimeout(timeout);
 
-      document.getElementById('planBasicBs').textContent    = formatearBs(rate.planesUSD.basico);
-      document.getElementById('planAdvancedBs').textContent = formatearBs(rate.planesUSD.avanzado);
-      document.getElementById('planAntennaBs').textContent  = formatearBs(rate.planesUSD.antena);
-    })();
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        const data = await res.json();
+        const bcv = data?.monitors?.bcv;
+
+        if (!bcv || typeof bcv.price !== 'number') {
+          throw new Error('Respuesta sin dato BCV');
+        }
+
+        // pydolarve devuelve last_update tipo "2026-09-17 18:00:00"
+        const [fecha, horaFull] = (bcv.last_update || '').split(' ');
+        const hora = (horaFull || '').slice(0, 5);
+
+        return {
+          valor: bcv.price,
+          fecha: fecha || new Date().toISOString().split('T')[0],
+          hora:  hora  || '—'
+        };
+      } catch (err) {
+        clearTimeout(timeout);
+        throw err;
+      }
+    }
+
+    // ============================================
+    // Flujo principal
+    // ============================================
+    async function cargarTasa() {
+      // 1) Intentar caché del día
+      const cache = leerCache();
+      if (cache) {
+        renderTasa(cache, 'api');
+        return;
+      }
+
+      // 2) Consultar API
+      try {
+        const tasa = await consultarAPI();
+        guardarCache(tasa);
+        renderTasa(tasa, 'api');
+      } catch (err) {
+        console.warn('[Tasa BCV] API falló, usando respaldo manual:', err);
+        // 3) Fallback manual
+        renderTasa(
+          {
+            valor: TASA_FALLBACK.valor,
+            fecha: TASA_FALLBACK.fecha,
+            hora:  TASA_FALLBACK.hora
+          },
+          'manual'
+        );
+      }
+    }
+
+    // Ejecutar
+    cargarTasa();
   </script>
 
 </body>
