@@ -67,14 +67,8 @@
 
           <h2>Información del reporte</h2>
           <p class="report-subtitle">Todos los campos marcados con <span style="color: var(--mustard); font-weight: 700;">*</span> son obligatorios.</p>
-          <form class="report-form" action="https://formsubmit.co/redchambuca@gmail.com" method="POST">
-            <!-- Configuración de FormSubmit -->
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_subject" value="Nuevo reporte de falla - REDCHAMBU CA">
-            <input type="hidden" name="_next" value="https://redchambucave.github.io/web/gracias.html">
 
-            <input type="hidden" name="_template" value="table">
-
+          <form class="report-form" id="reportForm">
             <div class="form-row">
               <div class="form-group">
                 <label for="name">Nombre completo <span>*</span></label>
@@ -149,7 +143,7 @@
             </div>
 
             <button type="submit" class="btn">
-              <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Enviar reporte
+              <i class="fas fa-phone-volume" style="margin-right: 8px;"></i> Enviar reporte y llamar
             </button>
           </form>
         </div>
@@ -196,6 +190,30 @@
         });
       });
     })();
+  </script>
+
+  <!-- Script: guarda los datos y redirige a llamada.html -->
+  <script>
+    document.getElementById('reportForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const datos = {
+        name:         document.getElementById('name').value.trim(),
+        phone:        document.getElementById('phone').value.trim(),
+        email:        document.getElementById('email').value.trim(),
+        zone:         document.getElementById('zone').value.trim(),
+        service_type: document.getElementById('service_type').value,
+        failure_type: document.getElementById('failure_type').value,
+        urgency:      (document.querySelector('input[name="urgency"]:checked') || {}).value || '',
+        message:      document.getElementById('message').value.trim()
+      };
+
+      // Guardar en sessionStorage para leerlos en llamada.html
+      sessionStorage.setItem('reporteData', JSON.stringify(datos));
+
+      // Redirigir a la página de llamada
+      window.location.href = 'llamada.html';
+    });
   </script>
 
 </body>
