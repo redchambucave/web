@@ -1,18 +1,33 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --navy: #0a1f44;
-  --navy-light: #1a2f5a;
+  /* --- Nuevos colores de marca (logo) --- */
+  --azul-violaceo: #1F10B7;   /* Color de las ondas del logo */
+  --azul-electrico: #0019FF;  /* Color de las letras "RED" */
+  --negro: #000000;
+  --gris: #7A7A7A;
+
+  /* --- Paleta remapeada a la nueva identidad --- */
+  --navy: #1F10B7;            /* antes #0a1f44 → azul violáceo */
+  --navy-light: #0019FF;      /* azul eléctrico */
+
+  /* --- Acentos que se mantienen --- */
   --mustard: #e6b422;
   --mustard-dark: #c99f1a;
   --mustard-light: #f5d76e;
+
+  /* --- Neutros y base --- */
   --light-bg: #f8f9fc;
-  --dark-text: #0a1f44;
-  --gray-text: #4a5a6a;
+  --dark-text: #000000;       /* antes navy → ahora negro */
+  --gray-text: #7A7A7A;       /* antes #4a5a6a → ahora gris de marca */
   --white: #ffffff;
+
+  /* --- Estados --- */
   --green: #16a34a;
   --red: #dc2626;
-  --shadow: 0 10px 25px -5px rgba(10, 31, 68, 0.08), 0 8px 10px -6px rgba(10, 31, 68, 0.02);
+
+  /* --- Sombras, radios y medidas --- */
+  --shadow: 0 10px 25px -5px rgba(31, 16, 183, 0.10), 0 8px 10px -6px rgba(0, 25, 255, 0.05);
   --border-radius: 18px;
 }
 
@@ -51,7 +66,7 @@ img {
 /* Header */
 header {
   padding: 10px 0;
-  box-shadow: 0 2px 10px rgba(10, 31, 68, 0.05);
+  box-shadow: 0 2px 10px rgba(31, 16, 183, 0.06);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -141,8 +156,8 @@ header {
   background: var(--white);
   border-radius: 32px;
   padding: 50px 40px;
-  box-shadow: 0 20px 40px -10px rgba(10, 31, 68, 0.12);
-  border: 1px solid rgba(10, 31, 68, 0.06);
+  box-shadow: 0 20px 40px -10px rgba(31, 16, 183, 0.14);
+  border: 1px solid rgba(31, 16, 183, 0.06);
   max-width: 720px;
   margin: 0 auto;
   text-align: center;
@@ -209,8 +224,8 @@ header {
   gap: 32px;
   flex-wrap: wrap;
   padding: 24px 0;
-  border-top: 1px solid rgba(10, 31, 68, 0.08);
-  border-bottom: 1px solid rgba(10, 31, 68, 0.08);
+  border-top: 1px solid rgba(31, 16, 183, 0.08);
+  border-bottom: 1px solid rgba(31, 16, 183, 0.08);
   margin-bottom: 30px;
 }
 
@@ -306,14 +321,14 @@ header {
   border-radius: var(--border-radius);
   padding: 32px 24px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(10, 31, 68, 0.06);
+  border: 1px solid rgba(31, 16, 183, 0.06);
   text-align: center;
   transition: all 0.25s;
 }
 
 .plan-bs-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 30px -10px rgba(10, 31, 68, 0.12);
+  box-shadow: 0 20px 30px -10px rgba(31, 16, 183, 0.16);
 }
 
 .plan-bs-card .plan-name-bs {
@@ -325,7 +340,7 @@ header {
 
 .plan-bs-card .plan-speed-bs {
   display: inline-block;
-  background: rgba(10, 31, 68, 0.08);
+  background: rgba(31, 16, 183, 0.08);
   color: var(--navy);
   font-size: 0.85rem;
   font-weight: 600;
@@ -410,7 +425,7 @@ header {
 /* Footer */
 footer {
   background: var(--mustard);
-  color: var(--navy);
+  color: var(--negro);                 /* texto negro para mejor contraste sobre amarillo */
   padding: 30px 0;
   padding-bottom: calc(30px + env(safe-area-inset-bottom));
   margin-top: auto;
@@ -439,7 +454,7 @@ footer {
 }
 
 .footer-copy {
-  color: var(--navy);
+  color: var(--negro);
   opacity: 0.9;
   font-size: 0.9rem;
   font-weight: 500;
