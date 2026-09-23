@@ -1,10 +1,21 @@
-// Web3Forms (recomendado, gratis 250/mes)
-
 /* ============================================================
    CONFIGURACIÓN
    ============================================================ */
 
-const WEB3FORMS_KEY = "7db59e3d-9a92-44c7-88b8-bd4c5854be3b";
+/* Números de WhatsApp por departamento (formato internacional sin +, ej: 584121234567) */
+const WHATSAPP = {
+  "Soporte Técnico": "584262954205",   // ← cambia por el número real de soporte
+  "Administración":  "584268731872"    // ← cambia por el número real de administración
+};
+
+/* Casos que requieren derivación inmediata a WhatsApp */
+const CASOS_DERIVACION = [
+  "instalacion", "instalar", "instalación",
+  "cambio de plan", "cambiar plan", "mejorar plan", "upgrade",
+  "falla", "fallo", "averia", "avería", "no funciona", "no sirve",
+  "reporte", "reportar", "queja", "reclamo",
+  "lentitud", "lento", "va lento", "demora", "tarda"
+];
 
 /* ============================================================
    ESTADOS DEL BOT
@@ -33,10 +44,6 @@ let historial = [];
 
 /* ============================================================
    PREGUNTAS PREDEFINIDAS POR DEPARTAMENTO
-   Cada entrada tiene:
-     - etiqueta: lo que ve el cliente (botón)
-     - claves:   palabras para detectar si el cliente lo escribe
-     - respuesta: lo que el bot contesta al elegirlo
    ============================================================ */
 const PROBLEMAS = {
   "Soporte Técnico": [
@@ -74,6 +81,21 @@ const PROBLEMAS = {
       etiqueta: "Virus o seguridad",
       claves: ["virus", "seguridad", "hackeo", "malware", "antivirus"],
       respuesta: "Es importante atender esto rápido. ¿Notaste algún comportamiento extraño o mensaje sospechoso?"
+    },
+    {
+      etiqueta: "Instalación / configuración",
+      claves: ["instalacion", "instalar", "configurar", "configuracion", "setup"],
+      respuesta: "Podemos ayudarte con la instalación. ¿Qué servicio o equipo necesitas instalar?"
+    },
+    {
+      etiqueta: "Lentitud del servicio",
+      claves: ["lentitud", "lento", "va lento", "demora", "tarda"],
+      respuesta: "Lamento la lentitud. ¿Ocurre todo el día o en horarios específicos?"
+    },
+    {
+      etiqueta: "Reportar una falla",
+      claves: ["falla", "fallo", "averia", "reporte", "reportar", "no funciona"],
+      respuesta: "Vamos a reportar la falla. ¿Desde cuándo ocurre y qué servicio afecta?"
     },
     {
       etiqueta: "Otro problema técnico",
@@ -117,6 +139,11 @@ const PROBLEMAS = {
       etiqueta: "Reembolso",
       claves: ["reembolso", "devolucion", "devolver", "dinero"],
       respuesta: "Los reembolsos se procesan en 5-7 días hábiles. ¿Tienes a mano el número de factura?"
+    },
+    {
+      etiqueta: "Instalación / cambio de plan",
+      claves: ["instalacion", "instalar", "cambio de plan", "cambiar plan", "nuevo plan"],
+      respuesta: "Podemos gestionar tu instalación o cambio de plan. ¿Qué servicio te interesa?"
     },
     {
       etiqueta: "Otra consulta",
@@ -168,6 +195,70 @@ function limpiarOpciones() {
 }
 
 /* ============================================================
+   DERIVACIÓN A WHATSAPP
+   ============================================================ */
+function esCasoDerivacion(texto) {
+  const t = normalizar(texto);
+  return CASOS_DERIVACION.some(c => t.includes(normalizar(c)));
+}
+
+function construirMensajeWhatsApp() {
+  const conversacion = historial
+    .map(m => `[${m.autor.toUpperCase()}] ${m.texto}`)
+    .join("\n");
+
+  const mensaje =
+    `Hola, vengo del asistente virtual ChambuBot del sitio web.\n\n` +
+    `👤 Nombre: ${datos.nombre}\n` +
+    `📞 Teléfono: ${datos.telefono}\n` +
+    `🏢 Departamento: ${datos.departamento}\n` +
+    `⚠️ Problema: ${datos.problema}\n` +
+    `📝 Consulta: ${datos.consulta}\n\n` +
+    `--- Conversación completa ---\n${conversacion}`;
+
+  return encodeURIComponent(mensaje);
+}
+
+function mostrarBotonWhatsApp(motivo = "") {
+  const numero = WHATSAPP[datos.departamento] || WHATSAPP["Soporte Técnico"];
+  const url = `https://wa.me/${numero}?text=${construirMensajeWhatsApp()}`;
+
+  const contenedor = document.createElement("div");
+  contenedor.className = "msg bot";
+  contenedor.style.padding = "8px 0";
+
+  if (motivo) {
+    const p = document.createElement("p");
+    p.textContent = motivo;
+    p.style.margin = "0 0 6px 0";
+    contenedor.appendChild(p);
+  }
+
+  const enlace = document.createElement("a");
+  enlace.href = url;
+  enlace.target = "_blank";
+  enlace.rel = "noopener noreferrer";
+  enlace.textContent = "📲 Continuar por WhatsApp";
+  enlace.style.display = "inline-block";
+  enlace.style.padding = "10px 16px";
+  enlace.style.background = "#25D366";
+  enlace.style.color = "#fff";
+  enlace.style.borderRadius = "8px";
+  enlace.style.textDecoration = "none";
+  enlace.style.fontWeight = "600";
+
+  contenedor.appendChild(enlace);
+  messages.appendChild(contenedor);
+  messages.scrollTop = messages.scrollHeight;
+
+  historial.push({
+    autor: "bot",
+    texto: `[Enlace WhatsApp generado] ${url}`,
+    hora: new Date().toISOString()
+  });
+}
+
+/* ============================================================
    FLUJO PRINCIPAL
    ============================================================ */
 function manejarEnvio(texto) {
@@ -185,7 +276,7 @@ function procesarEstado(texto) {
     case ESTADOS.INICIO:
       estado = ESTADOS.NOMBRE;
       agregarMensaje(
-        "¡Hola! 👋 Soy el asistente virtual. Para ayudarte necesito algunos datos.\n\n" +
+        "Para ayudarte necesito algunos datos.\n\n" +
         "¿Cuál es tu nombre?",
         "bot"
       );
@@ -252,15 +343,11 @@ function procesarEstado(texto) {
         "bot"
       );
 
-      // Mostrar preguntas predefinidas del departamento elegido
       const lista = PROBLEMAS[elegido];
       mostrarOpciones(lista.map(p => p.etiqueta));
-
-      // 📧 ENVIAR PRIMER REPORTE (ya tenemos nombre, teléfono y departamento)
-      enviarReporte(1);
       break;
 
-    /* ---------- PROBLEMA (elige de las predefinidas) ---------- */
+    /* ---------- PROBLEMA ---------- */
     case ESTADOS.PROBLEMA:
       const problema = detectarProblema(texto, datos.departamento);
 
@@ -279,7 +366,6 @@ function procesarEstado(texto) {
 
       agregarMensaje(problema.respuesta, "bot");
 
-      // Siguiente paso: el cliente puede detallar más
       setTimeout(() => {
         agregarMensaje(
           "¿Puedes darme más detalles sobre el problema?",
@@ -290,7 +376,7 @@ function procesarEstado(texto) {
       }, 700);
       break;
 
-    /* ---------- DETALLE (cliente amplía) ---------- */
+    /* ---------- DETALLE ---------- */
     case ESTADOS.DETALLE:
       const detalleNorm = normalizar(texto);
 
@@ -311,13 +397,24 @@ function procesarEstado(texto) {
       }
 
       estado = ESTADOS.SEGUIMIENTO;
+
+      if (esCasoDerivacion(datos.problema + " " + texto)) {
+        setTimeout(() => {
+          agregarMensaje(
+            "Por la naturaleza de tu caso, te recomiendo continuar la asistencia por WhatsApp con un agente. 📲",
+            "bot"
+          );
+          mostrarBotonWhatsApp();
+        }, 600);
+      }
+
       setTimeout(() => {
         agregarMensaje(
           "¿Hay algo más que quieras agregar? Si ya terminaste, escribe 'listo'.",
           "bot"
         );
         mostrarOpciones(["Listo, eso es todo", "Quiero agregar más"]);
-      }, 600);
+      }, 1200);
       break;
 
     /* ---------- SEGUIMIENTO ---------- */
@@ -333,20 +430,18 @@ function procesarEstado(texto) {
         estado = ESTADOS.FIN;
 
         agregarMensaje(
-          "¡Perfecto! 📋 He registrado toda tu consulta.\n\n" +
-          "Enviando reporte final...",
+          `✅ ¡Listo, ${datos.nombre}!\n\n` +
+          `Tu caso fue asignado a ${datos.departamento}.\n` +
+          `Problema: ${datos.problema}\n` +
+          `Te contactaremos al ${datos.telefono}.\n\n` +
+          `Puedes continuar la asistencia por WhatsApp ahora mismo. 👇`,
           "bot"
         );
 
-        // 📧 SEGUNDO REPORTE (conversación completa)
-        enviarReporte(2);
+        mostrarBotonWhatsApp();
 
         setTimeout(() => {
           agregarMensaje(
-            `✅ ¡Listo, ${datos.nombre}!\n\n` +
-            `Tu caso fue asignado a ${datos.departamento}.\n` +
-            `Problema: ${datos.problema}\n` +
-            `Te contactaremos al ${datos.telefono}.\n\n` +
             `Gracias por contactarnos. 👋\n\n` +
             `Escribe "reiniciar" para una nueva consulta.`,
             "bot"
@@ -360,38 +455,48 @@ function procesarEstado(texto) {
           "bot"
         );
         mostrarOpciones(["Listo, eso es todo", "Quiero agregar más"]);
+
+        if (esCasoDerivacion(texto)) {
+          setTimeout(() => {
+            mostrarBotonWhatsApp("Puedes continuar por WhatsApp si prefieres atención inmediata:");
+          }, 500);
+        }
       }
       break;
 
     /* ---------- FIN ---------- */
     case ESTADOS.FIN:
-      if (normalizar(texto).includes("reiniciar") ||
-          normalizar(texto).includes("nueva") ||
-          normalizar(texto).includes("otra")) {
+      const finNorm = normalizar(texto);
+      if (finNorm.includes("reiniciar") ||
+          finNorm.includes("nueva") ||
+          finNorm.includes("otra")) {
         reiniciar();
+      } else if (finNorm.includes("whatsapp") || finNorm.includes("agente") ||
+                 finNorm.includes("humano") || finNorm.includes("persona")) {
+        mostrarBotonWhatsApp("Aquí tienes el enlace directo a WhatsApp:");
       } else {
         agregarMensaje(
-          "Tu solicitud ya fue enviada. Escribe 'reiniciar' para una nueva consulta.",
+          "Escribe 'reiniciar' para una nueva consulta " +
+          "o pide 'WhatsApp' para continuar con un agente.",
           "bot"
         );
+        mostrarOpciones(["Reiniciar", "Continuar por WhatsApp"]);
       }
       break;
   }
 }
 
 /* ============================================================
-   DETECTAR PROBLEMA DENTRO DE LAS OPCIONES DEL DEPARTAMENTO
+   DETECTAR PROBLEMA
    ============================================================ */
 function detectarProblema(texto, departamento) {
   const t = normalizar(texto);
   const lista = PROBLEMAS[departamento] || [];
 
-  // 1. Coincidencia por etiqueta exacta (cuando el cliente pulsa el botón)
   for (const p of lista) {
     if (normalizar(p.etiqueta) === t) return p;
   }
 
-  // 2. Coincidencia por claves (cuando el cliente escribe)
   for (const p of lista) {
     for (const clave of p.claves) {
       if (t.includes(normalizar(clave))) return p;
@@ -399,53 +504,6 @@ function detectarProblema(texto, departamento) {
   }
 
   return null;
-}
-
-/* ============================================================
-   ENVÍO DE REPORTES
-   ============================================================ */
-async function enviarReporte(numero) {
-  try {
-    const esPrimero = numero === 1;
-
-    const conversacionTexto = historial
-      .map(m => `[${m.autor.toUpperCase()}] ${m.texto}`)
-      .join("\n\n");
-
-    const cuerpo = {
-      access_key: WEB3FORMS_KEY,
-      subject: esPrimero
-        ? `📋 Reporte #1 - ${datos.nombre} → ${datos.departamento}`
-        : `📋 Reporte #2 (final) - ${datos.nombre} → ${datos.departamento}`,
-      from_name: "Bot del sitio web",
-
-      Nombre: datos.nombre,
-      Telefono: datos.telefono,
-      Departamento: datos.departamento,
-      Problema: datos.problema,
-      Consulta: datos.consulta,
-      Fecha: new Date().toLocaleString("es-VE"),
-      Conversacion: conversacionTexto
-    };
-
-    const respuesta = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(cuerpo)
-    });
-
-    const json = await respuesta.json();
-    if (json.success) {
-      console.log(`✅ Reporte #${numero} enviado`);
-    } else {
-      throw new Error(json.message || "Error");
-    }
-  } catch (err) {
-    console.error(`❌ Error reporte #${numero}:`, err);
-  }
 }
 
 /* ============================================================
