@@ -12,12 +12,13 @@
 const PLANES_USD = {
   basico:   23.2,
   avanzado: 29,
+   plus:   35,
   antena:   23.2
 };
 
 // 🛟 RESPALDO MANUAL — Solo se usa si la API falla
 const TASA_FALLBACK = {
-  valor: 848.54,
+  valor: 0.0,
   fecha: "2026-09-17",   // YYYY-MM-DD
   hora:  "6:00 PM"
 };
@@ -77,6 +78,7 @@ function renderTasa({ valor, fecha, hora }, fuente) {
 
   document.getElementById('planBasicBs').textContent    = fmtBs(PLANES_USD.basico   * valor);
   document.getElementById('planAdvancedBs').textContent = fmtBs(PLANES_USD.avanzado * valor);
+  document.getElementById('planPlusBs').textContent = fmtBs(PLANES_USD.plus * valor);
   document.getElementById('planAntennaBs').textContent  = fmtBs(PLANES_USD.antena   * valor);
 }
 
