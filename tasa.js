@@ -3,7 +3,7 @@
    ============================================
    🌐 API: https://ve.dolarapi.com/v1/dolares/oficial
    💾 Caché: localStorage (1 consulta por día)
-   🛟 Respaldo: TASA_FALLBACK (manual)
+   🛟 Respaldo: TASA_FALLBACK (manual) 
    ============================================ */
 
 // ⚙️ CONFIGURACIÓN
