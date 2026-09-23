@@ -313,7 +313,31 @@
       </div>
     </div>
   </footer>
+  
+  <!-- ===== BOT (botón flotante + ventana) ===== -->
+  <button id="bot-toggle" aria-label="Abrir chat">💬</button>
 
+  <div id="bot-window" class="bot-hidden">
+    <div class="bot-header">
+      <span>🤖 Asistente</span>
+      <button id="bot-close" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div id="bot-messages" class="bot-messages">
+      <div class="msg bot">
+        ¡Hola! 👋 Soy tu asistente. Elige una pregunta o escríbela:
+      </div>
+    </div>
+
+    <div id="bot-suggestions" class="bot-suggestions"></div>
+
+    <form id="bot-form" class="bot-input">
+      <input id="bot-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
+      <button type="submit">➤</button>
+    </form>
+  </div>
+
+  <script src="bot.js"></script>
   <!-- Script menú hamburguesa -->
   <script>
     (function() {
