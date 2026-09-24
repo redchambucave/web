@@ -26,8 +26,8 @@ const ZONAS_FIBRA = [
   "el palmar", "5 y 7 casas", "los patios", "los tubos"
 ];
 
-/* Zonas con antena disponible */
-const ZONAS_ANTENA = [
+/* Zonas con radio enlace disponible */
+const ZONAS_RADIO_ENLACE = [
   "agua negra", "tapa la lucha", "maporita", "cdi",
   "valles de pena", "san jose", "las velas"
 ];
@@ -38,8 +38,8 @@ const PROMO = {
   excepcion: "el cardon"
 };
 
-/* Costo del servicio por antena */
-const COSTO_ANTENA = 23.2;
+/* Costo del servicio por radio enlace */
+const COSTO_RADIO_ENLACE = 23.2;
 
 /* Casos que requieren derivación a WhatsApp */
 const CASOS_DERIVACION = [
@@ -106,6 +106,11 @@ const PROBLEMAS = {
       respuesta: "Entiendo, la conexión se corta. ¿Los cortes son frecuentes o cada cierto tiempo?"
     },
     {
+      etiqueta: "Falla de radio enlace",
+      claves: ["radio enlace", "radioenlace", "antena", "antena caida", "antena no funciona", "señal antena"],
+      respuesta: "Vamos a revisar tu radio enlace. ¿La señal se perdió por completo o va intermitente?"
+    },
+    {
       etiqueta: "WhatsApp",
       claves: ["correo", "email", "mail", "no envia", "no recibe"],
       respuesta: "Cuéntame sobre tu WhatsApp. ¿No puedes enviar, no recibes mensajes, o no cargan los estados?"
@@ -113,11 +118,11 @@ const PROBLEMAS = {
     {
       etiqueta: "Cambiar contraseña",
       claves: ["contrasena", "contraseña", "clave", "password", "acceso", "no puedo entrar"],
-      respuesta: "Podemos cambiar tu contraseña. ¿Cual necesitas?"
+      respuesta: "Podemos cambiar tu contraseña. ¿Cuál necesitas?"
     },
     {
       etiqueta: "Falla de equipo",
-      claves: ["hardware", "computadora", "pc", "impresora", "equipo","telefono","tablet", "no enciende"],
+      claves: ["hardware", "computadora", "pc", "impresora", "equipo", "telefono", "tablet", "no enciende"],
       respuesta: "¿Qué equipo presenta la falla? ¿Computadora, impresora, u otro dispositivo?"
     },
     {
@@ -164,9 +169,19 @@ const PROBLEMAS = {
       respuesta: "¿Qué dato necesitas actualizar? (correo, dirección, teléfono, etc.)"
     },
     {
-      etiqueta: "Precios y planes",
-      claves: ["precio", "costo", "cuanto", "cuánto", "tarifa", "planes"],
-      respuesta: "Tenemos 3 planes de fibra: Básico 23.2, Avanzado 29 y Plus 35. El servicio por antena cuesta 23.2."
+      etiqueta: "Precios y planes de fibra",
+      claves: ["precio fibra", "plan fibra", "planes fibra", "costo fibra"],
+      respuesta: "Tenemos 3 planes de fibra: Básico 23.2, Avanzado 29 y Plus 35."
+    },
+    {
+      etiqueta: "Precios y planes de radio enlace",
+      claves: ["precio radio enlace", "plan radio enlace", "costo radio enlace", "precio antena", "costo antena", "plan antena"],
+      respuesta: "El servicio por radio enlace tiene un costo de 23.2. Próximamente tendremos migración a fibra para los clientes de radio enlace."
+    },
+    {
+      etiqueta: "Migración a fibra",
+      claves: ["migracion", "migración", "pasar a fibra", "cambiar a fibra", "cuando fibra", "cuándo fibra", "fibra proximamente"],
+      respuesta: "Próximamente tendremos migración a fibra para los clientes de radio enlace. ¿En qué zona estás para confirmarte la disponibilidad?"
     },
     {
       etiqueta: "Reembolso",
@@ -181,7 +196,7 @@ const PROBLEMAS = {
     {
       etiqueta: "Información de cobertura",
       claves: ["cobertura", "zona", "sector", "disponible", "llega"],
-      respuesta: "¿En qué zona estás? Así te confirmo si tenemos fibra o antena disponible."
+      respuesta: "¿En qué zona estás? Así te confirmo si tenemos fibra o radio enlace disponible."
     },
     {
       etiqueta: "Otra consulta",
@@ -199,12 +214,14 @@ const REDIRECCIONES = {
     { claves: ["cambio de plan", "cambiar plan", "mejorar plan", "upgrade", "subir plan", "otro plan"], destino: "Administración" },
     { claves: ["factura", "recibo", "comprobante", "pago", "cobro", "reembolso"], destino: "Administración" },
     { claves: ["cancelar", "baja", "retirar"], destino: "Administración" },
-    { claves: ["precio", "costo", "cuanto", "cuánto", "tarifa", "planes"], destino: "Administración" }
+    { claves: ["precio", "costo", "cuanto", "cuánto", "tarifa", "planes"], destino: "Administración" },
+    { claves: ["migracion", "migración", "pasar a fibra", "cambiar a fibra"], destino: "Administración" }
   ],
   "Administración": [
     { claves: ["falla", "fallo", "averia", "avería", "no funciona", "no sirve", "sin internet", "no conecta"], destino: "Soporte Técnico" },
     { claves: ["internet", "router", "wifi", "conexion", "señal", "modem", "módem"], destino: "Soporte Técnico" },
     { claves: ["lentitud", "lento", "va lento", "tarda", "demora"], destino: "Soporte Técnico" },
+    { claves: ["radio enlace", "radioenlace", "antena caida", "señal antena"], destino: "Soporte Técnico" },
     { claves: ["instalacion tecnica", "instalación tecnica", "instalar equipo"], destino: "Soporte Técnico" }
   ]
 };
@@ -344,9 +361,9 @@ function detectarZona(texto) {
     }
   }
 
-  for (const z of ZONAS_ANTENA) {
+  for (const z of ZONAS_RADIO_ENLACE) {
     if (t.includes(normalizar(z))) {
-      return { zona: z, servicio: "Antena" };
+      return { zona: z, servicio: "Radio Enlace" };
     }
   }
 
@@ -389,6 +406,7 @@ function procesarEstado(texto) {
     case ESTADOS.INICIO:
       estado = ESTADOS.NOMBRE;
       agregarMensaje(
+        "¡Hola! 👋 Soy el asistente virtual de la empresa.\n\n" +
         "Para ayudarte necesito algunos datos.\n\n" +
         "¿Cuál es tu nombre? (solo letras)",
         "bot"
@@ -460,10 +478,11 @@ function procesarEstado(texto) {
             `• Plus: 35\n\n` +
             `🎁 Promoción: instalación a solo ${PROMO.costo}$ en tu zona.`;
         }
-      } else if (resultado.servicio === "Antena") {
+      } else if (resultado.servicio === "Radio Enlace") {
         mensajeZona =
-          `En ${resultado.zona} tenemos servicio por antena. 📡\n\n` +
-          `Costo: ${COSTO_ANTENA}`;
+          `En ${resultado.zona} tenemos servicio por radio enlace. 📡\n\n` +
+          `Costo: ${COSTO_RADIO_ENLACE}\n\n` +
+          `🔜 Próximamente tendremos migración a fibra para los clientes de radio enlace.`;
       } else {
         mensajeZona =
           `Aún no tenemos cobertura confirmada en ${resultado.zona}. 😔\n\n` +
@@ -568,7 +587,7 @@ function procesarEstado(texto) {
     case ESTADOS.DETALLE: {
       const detalleNorm = normalizar(texto);
 
-      if (detalleNorm.includes("prefiero") && detalleNorm.includes("llamen") ||
+      if ((detalleNorm.includes("prefiero") && detalleNorm.includes("llamen")) ||
           detalleNorm.includes("llamada") ||
           detalleNorm.includes("me llamen")) {
         datos.consulta += " | Solicita llamada telefónica";
