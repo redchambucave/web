@@ -728,8 +728,8 @@ toggleBtn.addEventListener("click", () => {
   if (!botWindow.classList.contains("bot-hidden")) {
     input.focus();
 
-    // Si es la primera vez que se abre y no hay mensajes, inicia la conversación
-    if (estado === ESTADOS.INICIO && messages.children.length === 0) {
+    // Si nunca se ha iniciado la conversación, el bot saluda
+    if (estado === ESTADOS.INICIO && historial.length === 0) {
       procesarEstado("");
     }
   }
@@ -740,4 +740,19 @@ closeBtn.addEventListener("click", () => botWindow.classList.add("bot-hidden"));
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   manejarEnvio(input.value);
+});
+
+/* ============================================================
+   INICIO AUTOMÁTICO AL CARGAR LA PÁGINA
+   ============================================================ */
+window.addEventListener("DOMContentLoaded", () => {
+  // Abrir la ventana del bot automáticamente
+  botWindow.classList.remove("bot-hidden");
+
+  // Iniciar la conversación si aún no ha empezado
+  if (estado === ESTADOS.INICIO && historial.length === 0) {
+    procesarEstado("");
+  }
+
+  input.focus();
 });
