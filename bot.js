@@ -389,7 +389,6 @@ function procesarEstado(texto) {
     case ESTADOS.INICIO:
       estado = ESTADOS.NOMBRE;
       agregarMensaje(
-        "¡Hola! 👋 Soy el asistente virtual de la empresa.\n\n" +
         "Para ayudarte necesito algunos datos.\n\n" +
         "¿Cuál es tu nombre? (solo letras)",
         "bot"
