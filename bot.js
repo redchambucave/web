@@ -106,24 +106,24 @@ const PROBLEMAS = {
       respuesta: "Entiendo, la conexión se corta. ¿Los cortes son frecuentes o cada cierto tiempo?"
     },
     {
-      etiqueta: "Correo electrónico",
+      etiqueta: "WhatsApp",
       claves: ["correo", "email", "mail", "no envia", "no recibe"],
-      respuesta: "Cuéntame sobre tu correo. ¿No puedes enviar, no recibes mensajes, o no abre la sesión?"
+      respuesta: "Cuéntame sobre tu WhatsApp. ¿No puedes enviar, no recibes mensajes, o no cargan los estados?"
     },
     {
-      etiqueta: "Resetear contraseña",
+      etiqueta: "Cambiar contraseña",
       claves: ["contrasena", "contraseña", "clave", "password", "acceso", "no puedo entrar"],
-      respuesta: "Podemos resetear tu contraseña. ¿De qué servicio necesitas el cambio?"
+      respuesta: "Podemos cambiar tu contraseña. ¿Cual necesitas?"
     },
     {
-      etiqueta: "Falla de equipo / hardware",
-      claves: ["hardware", "computadora", "pc", "impresora", "equipo", "no enciende"],
+      etiqueta: "Falla de equipo",
+      claves: ["hardware", "computadora", "pc", "impresora", "equipo","telefono","tablet", "no enciende"],
       respuesta: "¿Qué equipo presenta la falla? ¿Computadora, impresora, u otro dispositivo?"
     },
     {
-      etiqueta: "Virus o seguridad",
+      etiqueta: "Seguridad",
       claves: ["virus", "seguridad", "hackeo", "malware", "antivirus"],
-      respuesta: "Es importante atender esto rápido. ¿Notaste algún comportamiento extraño o mensaje sospechoso?"
+      respuesta: "Es importante atender esto rápido. ¿Notaste algún comportamiento extraño?"
     },
     {
       etiqueta: "Reportar una falla",
@@ -400,7 +400,7 @@ function procesarEstado(texto) {
     case ESTADOS.NOMBRE:
       if (!soloLetras(texto) || texto.trim().length < 2) {
         agregarMensaje(
-          "Por favor escribe tu nombre usando solo letras (mínimo 2 caracteres).",
+          "Por favor escribe tu nombre usando solo letras.",
           "bot"
         );
         return;
