@@ -724,8 +724,11 @@ function reiniciar() {
    ============================================================ */
 toggleBtn.addEventListener("click", () => {
   botWindow.classList.toggle("bot-hidden");
+
   if (!botWindow.classList.contains("bot-hidden")) {
     input.focus();
+
+    // Si es la primera vez que se abre y no hay mensajes, inicia la conversación
     if (estado === ESTADOS.INICIO && messages.children.length === 0) {
       procesarEstado("");
     }
