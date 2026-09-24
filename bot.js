@@ -1,14 +1,47 @@
 /* ============================================================
+   ASISTENTE VIRTUAL ISP
+   ============================================================ */
+
+/* ============================================================
    CONFIGURACIÓN
    ============================================================ */
 
-/* Números de WhatsApp por departamento (formato internacional sin +, ej: 584121234567) */
+/* Números de WhatsApp por departamento (formato internacional sin +) */
 const WHATSAPP = {
-  "Soporte Técnico": "584262954205",   // ← cambia por el número real de soporte
-  "Administración":  "584268731872"    // ← cambia por el número real de administración
+  "Soporte Técnico": "584121234567",
+  "Administración":  "584121234568"
 };
 
-/* Casos que requieren derivación inmediata a WhatsApp */
+/* Planes de fibra */
+const PLANES = {
+  "Básico":   23.2,
+  "Avanzado": 29,
+  "Plus":     35
+};
+
+/* Zonas con fibra disponible */
+const ZONAS_FIBRA = [
+  "el cardon", "arenales", "yumarito", "las velas", "la plumita",
+  "barrio nuevo", "barrio ajuro", "san antonio", "la perdomera",
+  "el palmar", "5 y 7 casas", "los patios", "los tubos"
+];
+
+/* Zonas con antena disponible */
+const ZONAS_ANTENA = [
+  "agua negra", "tapa la lucha", "maporita", "cdi",
+  "valles de pena", "san jose", "las velas"
+];
+
+/* Promoción de instalación */
+const PROMO = {
+  costo: 5,
+  excepcion: "el cardon"
+};
+
+/* Costo del servicio por antena */
+const COSTO_ANTENA = 23.2;
+
+/* Casos que requieren derivación a WhatsApp */
 const CASOS_DERIVACION = [
   "instalacion", "instalar", "instalación",
   "cambio de plan", "cambiar plan", "mejorar plan", "upgrade",
@@ -24,6 +57,7 @@ const ESTADOS = {
   INICIO:       "inicio",
   NOMBRE:       "nombre",
   TELEFONO:     "telefono",
+  ZONA:         "zona",
   DEPARTAMENTO: "departamento",
   PROBLEMA:     "problema",
   DETALLE:      "detalle",
@@ -35,12 +69,16 @@ let estado = ESTADOS.INICIO;
 let datos = {
   nombre: "",
   telefono: "",
+  zona: "",
+  servicio: "",
   departamento: "",
   problema: "",
   consulta: ""
 };
 
 let historial = [];
+let whatsappMostrado = false;
+let redirigido = false;
 
 /* ============================================================
    PREGUNTAS PREDEFINIDAS POR DEPARTAMENTO
@@ -49,13 +87,23 @@ const PROBLEMAS = {
   "Soporte Técnico": [
     {
       etiqueta: "Problema de internet",
-      claves: ["internet", "conexion", "conectar", "señal", "red"],
+      claves: ["internet", "conexion", "conectar", "señal", "red", "sin internet", "no conecta"],
       respuesta: "Entiendo, es un problema de conexión. ¿El internet no conecta del todo, va lento o se corta a ratos?"
     },
     {
-      etiqueta: "Falla de WiFi",
-      claves: ["wifi", "inalambric", "router", "señal wifi"],
+      etiqueta: "Falla de WiFi / Router",
+      claves: ["wifi", "inalambric", "router", "modem", "módem", "señal wifi"],
       respuesta: "Vamos a revisar tu WiFi. ¿El problema es en toda la casa o solo en algunos dispositivos?"
+    },
+    {
+      etiqueta: "Lentitud del servicio",
+      claves: ["lentitud", "lento", "va lento", "demora", "tarda", "se pone lento"],
+      respuesta: "Lamento la lentitud. ¿Ocurre todo el día o en horarios específicos?"
+    },
+    {
+      etiqueta: "Cortes de conexión",
+      claves: ["se corta", "cortes", "se va", "intermitente", "inestable"],
+      respuesta: "Entiendo, la conexión se corta. ¿Los cortes son frecuentes o cada cierto tiempo?"
     },
     {
       etiqueta: "Correo electrónico",
@@ -64,18 +112,13 @@ const PROBLEMAS = {
     },
     {
       etiqueta: "Resetear contraseña",
-      claves: ["contrasena", "clave", "password", "acceso", "no puedo entrar"],
+      claves: ["contrasena", "contraseña", "clave", "password", "acceso", "no puedo entrar"],
       respuesta: "Podemos resetear tu contraseña. ¿De qué servicio necesitas el cambio?"
     },
     {
-      etiqueta: "Falla de equipo/hardware",
+      etiqueta: "Falla de equipo / hardware",
       claves: ["hardware", "computadora", "pc", "impresora", "equipo", "no enciende"],
       respuesta: "¿Qué equipo presenta la falla? ¿Computadora, impresora, u otro dispositivo?"
-    },
-    {
-      etiqueta: "Problema con software",
-      claves: ["software", "programa", "aplicacion", "app", "sistema"],
-      respuesta: "¿Qué programa falla y qué mensaje de error aparece en pantalla?"
     },
     {
       etiqueta: "Virus o seguridad",
@@ -83,23 +126,13 @@ const PROBLEMAS = {
       respuesta: "Es importante atender esto rápido. ¿Notaste algún comportamiento extraño o mensaje sospechoso?"
     },
     {
-      etiqueta: "Instalación / configuración",
-      claves: ["instalacion", "instalar", "configurar", "configuracion", "setup"],
-      respuesta: "Podemos ayudarte con la instalación. ¿Qué servicio o equipo necesitas instalar?"
-    },
-    {
-      etiqueta: "Lentitud del servicio",
-      claves: ["lentitud", "lento", "va lento", "demora", "tarda"],
-      respuesta: "Lamento la lentitud. ¿Ocurre todo el día o en horarios específicos?"
-    },
-    {
       etiqueta: "Reportar una falla",
-      claves: ["falla", "fallo", "averia", "reporte", "reportar", "no funciona"],
+      claves: ["falla", "fallo", "averia", "avería", "reporte", "reportar", "no funciona", "no sirve"],
       respuesta: "Vamos a reportar la falla. ¿Desde cuándo ocurre y qué servicio afecta?"
     },
     {
       etiqueta: "Otro problema técnico",
-      claves: ["otro", "otra", "diferente"],
+      claves: ["otro", "otra", "diferente", "no se", "no sé"],
       respuesta: "Cuéntame con tus palabras qué está pasando, y te oriento."
     }
   ],
@@ -116,9 +149,9 @@ const PROBLEMAS = {
       respuesta: "Cuéntame sobre tu pago. ¿Quieres confirmar si se recibió, o tienes dudas con un cobro?"
     },
     {
-      etiqueta: "Cambiar plan",
-      claves: ["plan", "cambiar", "mejorar", "upgrade", "servicio"],
-      respuesta: "¿Qué plan tienes actualmente y a cuál te gustaría cambiarte?"
+      etiqueta: "Cambio de plan",
+      claves: ["plan", "cambiar", "cambio de plan", "cambiar plan", "mejorar", "upgrade", "subir plan", "otro plan"],
+      respuesta: "¿Qué plan tienes actualmente y a cuál te gustaría cambiarte? Tenemos Básico 23.2, Avanzado 29 y Plus 35."
     },
     {
       etiqueta: "Cancelar servicio",
@@ -132,8 +165,8 @@ const PROBLEMAS = {
     },
     {
       etiqueta: "Precios y planes",
-      claves: ["precio", "costo", "cuanto", "tarifa"],
-      respuesta: "¿Qué servicio te interesa? Así te doy los precios disponibles."
+      claves: ["precio", "costo", "cuanto", "cuánto", "tarifa", "planes"],
+      respuesta: "Tenemos 3 planes de fibra: Básico 23.2, Avanzado 29 y Plus 35. El servicio por antena cuesta 23.2."
     },
     {
       etiqueta: "Reembolso",
@@ -142,14 +175,37 @@ const PROBLEMAS = {
     },
     {
       etiqueta: "Instalación / cambio de plan",
-      claves: ["instalacion", "instalar", "cambio de plan", "cambiar plan", "nuevo plan"],
+      claves: ["instalacion", "instalar", "nueva instalacion", "poner internet"],
       respuesta: "Podemos gestionar tu instalación o cambio de plan. ¿Qué servicio te interesa?"
     },
     {
+      etiqueta: "Información de cobertura",
+      claves: ["cobertura", "zona", "sector", "disponible", "llega"],
+      respuesta: "¿En qué zona estás? Así te confirmo si tenemos fibra o antena disponible."
+    },
+    {
       etiqueta: "Otra consulta",
-      claves: ["otro", "otra", "diferente"],
+      claves: ["otro", "otra", "diferente", "no se", "no sé"],
       respuesta: "Cuéntame con tus palabras tu consulta y te oriento."
     }
+  ]
+};
+
+/* ============================================================
+   REDIRECCIONES CRUZADAS ENTRE DEPARTAMENTOS
+   ============================================================ */
+const REDIRECCIONES = {
+  "Soporte Técnico": [
+    { claves: ["cambio de plan", "cambiar plan", "mejorar plan", "upgrade", "subir plan", "otro plan"], destino: "Administración" },
+    { claves: ["factura", "recibo", "comprobante", "pago", "cobro", "reembolso"], destino: "Administración" },
+    { claves: ["cancelar", "baja", "retirar"], destino: "Administración" },
+    { claves: ["precio", "costo", "cuanto", "cuánto", "tarifa", "planes"], destino: "Administración" }
+  ],
+  "Administración": [
+    { claves: ["falla", "fallo", "averia", "avería", "no funciona", "no sirve", "sin internet", "no conecta"], destino: "Soporte Técnico" },
+    { claves: ["internet", "router", "wifi", "conexion", "señal", "modem", "módem"], destino: "Soporte Técnico" },
+    { claves: ["lentitud", "lento", "va lento", "tarda", "demora"], destino: "Soporte Técnico" },
+    { claves: ["instalacion tecnica", "instalación tecnica", "instalar equipo"], destino: "Soporte Técnico" }
   ]
 };
 
@@ -168,6 +224,10 @@ function normalizar(t) {
   return t.toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[¿?¡!.,;:]/g, "").trim();
+}
+
+function soloLetras(t) {
+  return /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/.test(t.trim());
 }
 
 function agregarMensaje(texto, autor) {
@@ -208,9 +268,11 @@ function construirMensajeWhatsApp() {
     .join("\n");
 
   const mensaje =
-    `Hola, vengo del asistente virtual ChambuBot del sitio web.\n\n` +
+    `Hola, vengo del asistente virtual del sitio web.\n\n` +
     `👤 Nombre: ${datos.nombre}\n` +
     `📞 Teléfono: ${datos.telefono}\n` +
+    `📍 Zona: ${datos.zona}\n` +
+    `🛰️ Servicio: ${datos.servicio}\n` +
     `🏢 Departamento: ${datos.departamento}\n` +
     `⚠️ Problema: ${datos.problema}\n` +
     `📝 Consulta: ${datos.consulta}\n\n` +
@@ -219,9 +281,16 @@ function construirMensajeWhatsApp() {
   return encodeURIComponent(mensaje);
 }
 
-function mostrarBotonWhatsApp(motivo = "") {
+function obtenerUrlWhatsApp() {
   const numero = WHATSAPP[datos.departamento] || WHATSAPP["Soporte Técnico"];
-  const url = `https://wa.me/${numero}?text=${construirMensajeWhatsApp()}`;
+  return `https://wa.me/${numero}?text=${construirMensajeWhatsApp()}`;
+}
+
+function mostrarBotonWhatsApp(motivo = "") {
+  if (whatsappMostrado) return;
+  whatsappMostrado = true;
+
+  const url = obtenerUrlWhatsApp();
 
   const contenedor = document.createElement("div");
   contenedor.className = "msg bot";
@@ -258,11 +327,55 @@ function mostrarBotonWhatsApp(motivo = "") {
   });
 }
 
+function abrirWhatsAppAutomatico() {
+  const url = obtenerUrlWhatsApp();
+  window.open(url, "_blank");
+}
+
+/* ============================================================
+   DETECCIÓN DE ZONA
+   ============================================================ */
+function detectarZona(texto) {
+  const t = normalizar(texto);
+
+  for (const z of ZONAS_FIBRA) {
+    if (t.includes(normalizar(z))) {
+      return { zona: z, servicio: "Fibra" };
+    }
+  }
+
+  for (const z of ZONAS_ANTENA) {
+    if (t.includes(normalizar(z))) {
+      return { zona: z, servicio: "Antena" };
+    }
+  }
+
+  return { zona: texto, servicio: "Sin cobertura" };
+}
+
+function esElCardon(zona) {
+  return normalizar(zona).includes("cardon");
+}
+
+/* ============================================================
+   DETECCIÓN DE REDIRECCIÓN
+   ============================================================ */
+function detectarRedireccion(texto, departamentoActual) {
+  const t = normalizar(texto);
+  const reglas = REDIRECCIONES[departamentoActual] || [];
+  for (const r of reglas) {
+    if (r.claves.some(c => t.includes(normalizar(c)))) {
+      return r.destino;
+    }
+  }
+  return null;
+}
+
 /* ============================================================
    FLUJO PRINCIPAL
    ============================================================ */
 function manejarEnvio(texto) {
-  if (!texto.trim()) return;
+  if (!texto || !texto.trim()) return;
   agregarMensaje(texto, "user");
   input.value = "";
 
@@ -276,8 +389,9 @@ function procesarEstado(texto) {
     case ESTADOS.INICIO:
       estado = ESTADOS.NOMBRE;
       agregarMensaje(
+        "¡Hola! 👋 Soy el asistente virtual de la empresa.\n\n" +
         "Para ayudarte necesito algunos datos.\n\n" +
-        "¿Cuál es tu nombre?",
+        "¿Cuál es tu nombre? (solo letras)",
         "bot"
       );
       limpiarOpciones();
@@ -285,20 +399,24 @@ function procesarEstado(texto) {
 
     /* ---------- NOMBRE ---------- */
     case ESTADOS.NOMBRE:
-      if (texto.length < 2) {
-        agregarMensaje("Por favor escribe un nombre válido.", "bot");
+      if (!soloLetras(texto) || texto.trim().length < 2) {
+        agregarMensaje(
+          "Por favor escribe tu nombre usando solo letras (mínimo 2 caracteres).",
+          "bot"
+        );
         return;
       }
-      datos.nombre = texto;
+      datos.nombre = texto.trim();
       estado = ESTADOS.TELEFONO;
       agregarMensaje(
         `Gracias, ${datos.nombre} 😊\n\n¿Cuál es tu número de teléfono?`,
         "bot"
       );
+      limpiarOpciones();
       break;
 
     /* ---------- TELÉFONO ---------- */
-    case ESTADOS.TELEFONO:
+    case ESTADOS.TELEFONO: {
       const digitos = texto.replace(/\D/g, "");
       if (digitos.length < 7) {
         agregarMensaje(
@@ -308,16 +426,66 @@ function procesarEstado(texto) {
         return;
       }
       datos.telefono = texto;
-      estado = ESTADOS.DEPARTAMENTO;
+      estado = ESTADOS.ZONA;
       agregarMensaje(
-        "Perfecto ✅\n\n¿A qué departamento deseas dirigirte?",
+        "Perfecto ✅\n\n¿En qué zona o sector vives?",
         "bot"
       );
-      mostrarOpciones(["Soporte Técnico", "Administración"]);
+      limpiarOpciones();
       break;
+    }
+
+    /* ---------- ZONA ---------- */
+    case ESTADOS.ZONA: {
+      const resultado = detectarZona(texto);
+      datos.zona = resultado.zona;
+      datos.servicio = resultado.servicio;
+
+      let mensajeZona = "";
+
+      if (resultado.servicio === "Fibra") {
+        if (esElCardon(resultado.zona)) {
+          mensajeZona =
+            `¡Buenas noticias! Tenemos fibra disponible en ${resultado.zona}. 🎉\n\n` +
+            `Planes de fibra:\n` +
+            `• Básico: 23.2\n` +
+            `• Avanzado: 29\n` +
+            `• Plus: 35\n\n` +
+            `La instalación en El Cardón no aplica para la promoción.`;
+        } else {
+          mensajeZona =
+            `¡Buenas noticias! Tenemos fibra disponible en ${resultado.zona}. 🎉\n\n` +
+            `Planes de fibra:\n` +
+            `• Básico: 23.2\n` +
+            `• Avanzado: 29\n` +
+            `• Plus: 35\n\n` +
+            `🎁 Promoción: instalación a solo ${PROMO.costo}$ en tu zona.`;
+        }
+      } else if (resultado.servicio === "Antena") {
+        mensajeZona =
+          `En ${resultado.zona} tenemos servicio por antena. 📡\n\n` +
+          `Costo: ${COSTO_ANTENA}`;
+      } else {
+        mensajeZona =
+          `Aún no tenemos cobertura confirmada en ${resultado.zona}. 😔\n\n` +
+          `Estamos expandiéndonos, pronto tendremos novedades.`;
+      }
+
+      agregarMensaje(mensajeZona, "bot");
+
+      estado = ESTADOS.DEPARTAMENTO;
+      setTimeout(() => {
+        agregarMensaje(
+          "¿A qué departamento deseas dirigirte?",
+          "bot"
+        );
+        mostrarOpciones(["Soporte Técnico", "Administración"]);
+      }, 800);
+      break;
+    }
 
     /* ---------- DEPARTAMENTO ---------- */
-    case ESTADOS.DEPARTAMENTO:
+    case ESTADOS.DEPARTAMENTO: {
       const dep = normalizar(texto);
       let elegido = "";
 
@@ -327,7 +495,7 @@ function procesarEstado(texto) {
         elegido = "Administración";
       } else {
         agregarMensaje(
-          "Por favor elige una opción: Soporte Técnico o Administración.",
+          "Solo tengo dos departamentos disponibles: Soporte Técnico y Administración. ¿Cuál eliges?",
           "bot"
         );
         mostrarOpciones(["Soporte Técnico", "Administración"]);
@@ -338,22 +506,42 @@ function procesarEstado(texto) {
       estado = ESTADOS.PROBLEMA;
 
       agregarMensaje(
-        `Perfecto, te paso con ${elegido} 🛠️\n\n` +
-        `¿Cuál de estos problemas describe mejor tu situación?`,
+        `Perfecto, te atiendo desde ${elegido} 🛠️\n\n` +
+        `¿Cuál de estos casos describe mejor tu situación?`,
         "bot"
       );
 
       const lista = PROBLEMAS[elegido];
       mostrarOpciones(lista.map(p => p.etiqueta));
       break;
+    }
 
     /* ---------- PROBLEMA ---------- */
-    case ESTADOS.PROBLEMA:
+    case ESTADOS.PROBLEMA: {
+      const redir = detectarRedireccion(texto, datos.departamento);
+      if (redir) {
+        datos.departamento = redir;
+        redirigido = true;
+        agregarMensaje(
+          `Ese caso lo gestiona ${redir}. Te paso con ellos para continuar. 👇`,
+          "bot"
+        );
+        estado = ESTADOS.PROBLEMA;
+        setTimeout(() => {
+          agregarMensaje(
+            `¿Cuál de estos casos describe mejor tu situación?`,
+            "bot"
+          );
+          mostrarOpciones(PROBLEMAS[redir].map(p => p.etiqueta));
+        }, 700);
+        return;
+      }
+
       const problema = detectarProblema(texto, datos.departamento);
 
       if (!problema) {
         agregarMensaje(
-          "No identifiqué ese problema. Elige una de las opciones o descríbelo de otra forma.",
+          "No identifiqué ese caso. Elige una de las opciones o descríbelo con otras palabras.",
           "bot"
         );
         mostrarOpciones(PROBLEMAS[datos.departamento].map(p => p.etiqueta));
@@ -368,20 +556,22 @@ function procesarEstado(texto) {
 
       setTimeout(() => {
         agregarMensaje(
-          "¿Puedes darme más detalles sobre el problema?",
+          "¿Puedes darme más detalles?",
           "bot"
         );
         limpiarOpciones();
         mostrarOpciones(["Ya te lo detallo", "Prefiero que me llamen"]);
       }, 700);
       break;
+    }
 
     /* ---------- DETALLE ---------- */
-    case ESTADOS.DETALLE:
+    case ESTADOS.DETALLE: {
       const detalleNorm = normalizar(texto);
 
-      if (detalleNorm.includes("prefiero") || detalleNorm.includes("llamen") ||
-          detalleNorm.includes("llamada")) {
+      if (detalleNorm.includes("prefiero") && detalleNorm.includes("llamen") ||
+          detalleNorm.includes("llamada") ||
+          detalleNorm.includes("me llamen")) {
         datos.consulta += " | Solicita llamada telefónica";
         agregarMensaje(
           "Entendido, agendaremos una llamada al número que nos diste. 📞",
@@ -398,27 +588,18 @@ function procesarEstado(texto) {
 
       estado = ESTADOS.SEGUIMIENTO;
 
-      if (esCasoDerivacion(datos.problema + " " + texto)) {
-        setTimeout(() => {
-          agregarMensaje(
-            "Por la naturaleza de tu caso, te recomiendo continuar la asistencia por WhatsApp con un agente. 📲",
-            "bot"
-          );
-          mostrarBotonWhatsApp();
-        }, 600);
-      }
-
       setTimeout(() => {
         agregarMensaje(
           "¿Hay algo más que quieras agregar? Si ya terminaste, escribe 'listo'.",
           "bot"
         );
         mostrarOpciones(["Listo, eso es todo", "Quiero agregar más"]);
-      }, 1200);
+      }, 900);
       break;
+    }
 
     /* ---------- SEGUIMIENTO ---------- */
-    case ESTADOS.SEGUIMIENTO:
+    case ESTADOS.SEGUIMIENTO: {
       const norm = normalizar(texto);
 
       if (norm.includes("listo") || norm.includes("eso es todo") ||
@@ -431,14 +612,17 @@ function procesarEstado(texto) {
 
         agregarMensaje(
           `✅ ¡Listo, ${datos.nombre}!\n\n` +
-          `Tu caso fue asignado a ${datos.departamento}.\n` +
-          `Problema: ${datos.problema}\n` +
+          `Zona: ${datos.zona} (${datos.servicio})\n` +
+          `Departamento: ${datos.departamento}\n` +
+          `Caso: ${datos.problema}\n` +
           `Te contactaremos al ${datos.telefono}.\n\n` +
-          `Puedes continuar la asistencia por WhatsApp ahora mismo. 👇`,
+          `Abriendo WhatsApp para continuar la asistencia… 📲`,
           "bot"
         );
 
-        mostrarBotonWhatsApp();
+        setTimeout(() => {
+          abrirWhatsAppAutomatico();
+        }, 600);
 
         setTimeout(() => {
           agregarMensaje(
@@ -446,26 +630,31 @@ function procesarEstado(texto) {
             `Escribe "reiniciar" para una nueva consulta.`,
             "bot"
           );
-        }, 800);
+        }, 1000);
 
       } else {
+        const redir = detectarRedireccion(texto, datos.departamento);
+        if (redir && !redirigido) {
+          datos.departamento = redir;
+          redirigido = true;
+          agregarMensaje(
+            `Ese caso lo gestiona ${redir}. Te paso con ellos. 👇`,
+            "bot"
+          );
+        }
+
         datos.consulta += ` | Más detalles: ${texto}`;
         agregarMensaje(
           "Anotado. ¿Algo más? Cuando termines escribe 'listo'.",
           "bot"
         );
         mostrarOpciones(["Listo, eso es todo", "Quiero agregar más"]);
-
-        if (esCasoDerivacion(texto)) {
-          setTimeout(() => {
-            mostrarBotonWhatsApp("Puedes continuar por WhatsApp si prefieres atención inmediata:");
-          }, 500);
-        }
       }
       break;
+    }
 
     /* ---------- FIN ---------- */
-    case ESTADOS.FIN:
+    case ESTADOS.FIN: {
       const finNorm = normalizar(texto);
       if (finNorm.includes("reiniciar") ||
           finNorm.includes("nueva") ||
@@ -473,7 +662,7 @@ function procesarEstado(texto) {
         reiniciar();
       } else if (finNorm.includes("whatsapp") || finNorm.includes("agente") ||
                  finNorm.includes("humano") || finNorm.includes("persona")) {
-        mostrarBotonWhatsApp("Aquí tienes el enlace directo a WhatsApp:");
+        abrirWhatsAppAutomatico();
       } else {
         agregarMensaje(
           "Escribe 'reiniciar' para una nueva consulta " +
@@ -483,6 +672,7 @@ function procesarEstado(texto) {
         mostrarOpciones(["Reiniciar", "Continuar por WhatsApp"]);
       }
       break;
+    }
   }
 }
 
@@ -511,8 +701,20 @@ function detectarProblema(texto, departamento) {
    ============================================================ */
 function reiniciar() {
   estado = ESTADOS.INICIO;
-  datos = { nombre: "", telefono: "", departamento: "", problema: "", consulta: "" };
+  datos = {
+    nombre: "",
+    telefono: "",
+    zona: "",
+    servicio: "",
+    departamento: "",
+    problema: "",
+    consulta: ""
+  };
   historial = [];
+  whatsappMostrado = false;
+  redirigido = false;
+  messages.innerHTML = "";
+  suggestions.innerHTML = "";
   agregarMensaje("Perfecto, empecemos de nuevo 👇", "bot");
   procesarEstado("");
 }
@@ -524,7 +726,7 @@ toggleBtn.addEventListener("click", () => {
   botWindow.classList.toggle("bot-hidden");
   if (!botWindow.classList.contains("bot-hidden")) {
     input.focus();
-    if (estado === ESTADOS.INICIO && messages.children.length === 1) {
+    if (estado === ESTADOS.INICIO && messages.children.length === 0) {
       procesarEstado("");
     }
   }
