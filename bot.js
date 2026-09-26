@@ -8,8 +8,8 @@
 
 /* Números de WhatsApp por departamento (formato internacional sin +) */
 const WHATSAPP = {
-  "Soporte Técnico": "584121234567",
-  "Administración":  "584121234568"
+  "Soporte Técnico": "584262954205",
+  "Administración":  "584268731872"
 };
 
 /* Planes de fibra */
