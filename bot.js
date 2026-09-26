@@ -761,7 +761,7 @@ form.addEventListener("submit", (e) => {
 
 /* ============================================================
    INICIO AUTOMÁTICO AL CARGAR LA PÁGINA
-   ============================================================ */
+   ============================================================ 
 window.addEventListener("DOMContentLoaded", () => {
   // Abrir la ventana del bot automáticamente
   botWindow.classList.remove("bot-hidden");
@@ -772,4 +772,4 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   input.focus();
-});
+});*/
