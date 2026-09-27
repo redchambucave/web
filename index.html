@@ -330,7 +330,7 @@
     </div>
   </footer>
   
-  <!-- ===== BOT (botón flotante + ventana) ===== -->
+   <!-- ===== BOT (botón flotante + ventana) ===== -->
   <button id="bot-toggle" aria-label="Abrir chat">💬</button>
 
   <div id="bot-window" class="bot-hidden">
@@ -345,6 +345,13 @@
       </div>
     </div>
 
+    <!-- ✅ BARRA DE HERRAMIENTAS SIEMPRE VISIBLE -->
+    <div id="bot-toolbar">
+      <button type="button" id="bot-atras"     title="Volver al paso anterior">↩️ Atrás</button>
+      <button type="button" id="bot-editar"    title="Corregir un dato">✏️ Editar</button>
+      <button type="button" id="bot-reiniciar" title="Empezar de nuevo">🔄 Reiniciar</button>
+    </div>
+
     <div id="bot-suggestions" class="bot-suggestions"></div>
 
     <form id="bot-form" class="bot-input">
@@ -352,8 +359,8 @@
       <button type="submit">➤</button>
     </form>
   </div>
-
-  <script src="bot.js"></script>
+    <script src="bot.js"></script>
+  
   <!-- Script menú hamburguesa-->
   <script>
     (function() {
