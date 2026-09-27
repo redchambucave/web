@@ -669,7 +669,7 @@ function procesarEstado(texto) {
       estado = ESTADOS.SEGUIMIENTO;
       setTimeout(() => {
         agregarMensaje("¿Hay algo más que quieras agregar? Si ya terminaste, escribe 'listo'.", "bot");
-        mostrarOpciones(["Listo, eso es todo", "Corregir un dato", "Volver atrás"]);
+        mostrarOpciones(["Listo, eso es todo"]);
       }, 900);
       break;
     }
@@ -704,7 +704,7 @@ function procesarEstado(texto) {
         }
         datos.consulta += ` | Más detalles: ${texto}`;
         agregarMensaje("Anotado. ¿Algo más? Cuando termines escribe 'listo'.", "bot");
-        mostrarOpciones(["Listo, eso es todo", "Corregir un dato", "Volver atrás"]);
+        mostrarOpciones(["Listo, eso es todo"]);
       }
       break;
     }
