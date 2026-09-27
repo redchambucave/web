@@ -1226,3 +1226,36 @@ footer {
   cursor: pointer;
 }
 .bot-input button:hover { background: #0019FF; }
+
+/* ===== Barra de herramientas del bot ===== */
+#bot-toolbar {
+  display: flex;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#bot-toolbar button {
+  flex: 1;
+  padding: 7px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+#bot-toolbar button:hover {
+  background: #e8f5e9;
+  border-color: #25D366;
+  color: #0a1f44;
+}
+
+#bot-toolbar button:active {
+  transform: scale(0.97);
+}
