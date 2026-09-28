@@ -1170,12 +1170,39 @@ footer {
   font-size: 0.92rem;
   animation: fade 0.25s ease;
 }
-.msg.bot {
+/* .msg.bot {
   background: #f3f4f6;
   color: #1f2937;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
+}*/
+
+/* Avatar junto al mensaje del bot */
+.msg.bot {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 }
+
+/* Avatar del header */
+.bot-avatar-header {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.bot-avatar-msg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #fff;
+}
+
 .msg.user {
   background: #0019FF;
   color: white;
