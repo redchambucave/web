@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1F10B7">
+  <meta name="description" content="Página no encontrada - REDCHAMBU CA. La URL que buscas no existe o fue movida.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Página no encontrada | REDCHAMBU CA</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/webp" href="RedChambuCA.webp">
+  <link rel="apple-touch-icon" href="RedChambuCA.webp">
+
+  <!-- Fuente Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="404.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-flex">
+      <a href="index.html" class="logo">
+        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <i class="fas fa-bars" id="menuIcon"></i>
+      </button>
+
+      <nav id="mainNav">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#planes">Planes</a></li>
+          <li><a href="index.html#cobertura">Cobertura</a></li>
+          <li><a href="tasa.html">Tasa</a></li>
+          <li><a href="reporte.html" class="btn" style="padding: 10px 22px;">Reportar falla</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero del 404 -->
+    <section class="error-hero">
+      <div class="container">
+        <span class="badge"><i class="fas fa-compass" style="margin-right: 6px;"></i> Error 404</span>
+        <h1>Esta página se <span class="highlight">perdió en la red</span></h1>
+        <p>La URL que buscas no existe, fue movida o ya no está disponible. Pero no te preocupes, te ayudamos a volver al camino.</p>
+      </div>
+    </section>
+
+    <!-- Tarjeta del 404 -->
+    <section class="error-section">
+      <div class="container">
+        <div class="error-card">
+
+          <div class="error-icon">
+            <i class="fas fa-satellite-dish"></i>
+            <span class="signal-badge"><i class="fas fa-times"></i></span>
+          </div>
+
+          <div class="error-code">404</div>
+
+          <h2>Sin señal en esta ruta</h2>
+          <p class="error-subtitle">
+            Mientras nuestro equipo revisa el enlace, puedes intentar una de estas opciones:
+          </p>
+
+          <!-- Enlaces sugeridos -->
+          <div class="error-links">
+            <a href="index.html" class="error-link">
+              <i class="fas fa-home"></i>
+              <div>
+                <strong>Inicio</strong>
+                <span>Volver a la página principal</span>
+              </div>
+            </a>
+
+            <a href="index.html#planes" class="error-link">
+              <i class="fas fa-wifi"></i>
+              <div>
+                <strong>Planes de internet</strong>
+                <span>Fibra óptica y radio enlace</span>
+              </div>
+            </a>
+
+            <a href="index.html#cobertura" class="error-link">
+              <i class="fas fa-map-marked-alt"></i>
+              <div>
+                <strong>Cobertura</strong>
+                <span>Consulta si llegamos a tu zona</span>
+              </div>
+            </a>
+
+            <a href="tasa.html" class="error-link">
+              <i class="fas fa-dollar-sign"></i>
+              <div>
+                <strong>Tasa del día</strong>
+                <span>Precios actualizados en Bs</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Acciones -->
+          <div class="error-actions">
+            <a href="index.html" class="btn">
+              <i class="fas fa-home" style="margin-right: 8px;"></i> Volver al inicio
+            </a>
+            <a href="reporte.html" class="btn btn-outline">
+              <i class="fas fa-tools" style="margin-right: 8px;"></i> Reportar falla
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <a href="index.html" class="footer-logo">
+        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
+      </a>
+      <div class="footer-copy">
+        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script menú hamburguesa -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('menuToggle');
+      const nav = document.getElementById('mainNav');
+      const icon = document.getElementById('menuIcon');
+
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function() {
+        const isOpen = nav.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', isOpen);
+        icon.classList.toggle('fa-bars', !isOpen);
+        icon.classList.toggle('fa-times', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      });
+
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+          toggle.setAttribute('aria-label', 'Abrir menú');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
