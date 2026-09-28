@@ -1195,8 +1195,8 @@ footer {
 }
 
 .bot-avatar-msg {
-  width: 52px;
-  height: 52px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
