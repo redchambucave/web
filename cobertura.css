@@ -668,3 +668,49 @@ footer {
   }
   html { scroll-behavior: auto; }
 }
+
+/* ============================================
+   GEOLOCALIZACIÓN — Marcador del usuario
+   ============================================ */
+
+.user-location-marker {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.user-location-marker .user-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background: var(--azul-electrico);
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(0, 25, 255, 0.3);
+  z-index: 2;
+}
+
+.user-location-marker .user-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  background: rgba(0, 25, 255, 0.35);
+  border-radius: 50%;
+  animation: userPulse 1.8s ease-out infinite;
+  z-index: 1;
+}
+
+@keyframes userPulse {
+  0%   { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-location-marker .user-pulse { animation: none; opacity: 0.4; }
+}
