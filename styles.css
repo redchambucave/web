@@ -1192,12 +1192,12 @@ footer {
   font-size: 0.92rem;
   animation: fade 0.25s ease;
 }
-/* .msg.bot {
+ .msg.bot {
   background: #f3f4f6;
   color: #1f2937;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
-}*/
+}
 
 /* Avatar junto al mensaje del bot */
 .msg.bot {
