@@ -803,3 +803,17 @@ window.addEventListener("DOMContentLoaded", () => {
   input.focus();
 });
 */
+
+function mostrarEscribiendo() {
+  const div = document.createElement("div");
+  div.className = "msg bot typing";
+  div.id = "typing-indicator";
+  div.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function ocultarEscribiendo() {
+  const el = document.getElementById("typing-indicator");
+  if (el) el.remove();
+}
