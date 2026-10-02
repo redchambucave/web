@@ -714,3 +714,40 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .user-location-marker .user-pulse { animation: none; opacity: 0.4; }
 }
+
+/* Botón "Volver al inicio" (mismo estilo que tasa.html) */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 40px;
+  background: var(--navy);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  min-height: 44px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: auto;
+}
+
+@media (hover: hover) {
+  .back-btn:hover {
+    background: var(--navy-light);
+    transform: translateX(-2px);
+  }
+}
+
+/* En móvil, ocultamos el texto y dejamos solo el icono */
+@media (max-width: 768px) {
+  .back-btn span {
+    display: none;
+  }
+  .back-btn {
+    padding: 10px 14px;
+  }
+}
