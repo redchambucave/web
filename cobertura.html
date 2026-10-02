@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1F10B7">
+  <meta name="description" content="Mapa de cobertura de REDCHAMBU CA - Consulta las zonas con Fibra Óptica y Radio Enlace en tu sector.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Cobertura | REDCHAMBU CA">
+  <meta property="og:description" content="Consulta el mapa interactivo de zonas con Fibra Óptica y Radio Enlace.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="RedChambuCA.webp">
+
+  <title>Cobertura | REDCHAMBU CA</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/webp" href="RedChambuCA.webp">
+  <link rel="apple-touch-icon" href="RedChambuCA.webp">
+
+  <!-- Fuente Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="cobertura.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-flex">
+      <a href="index.html" class="logo">
+        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <i class="fas fa-bars" id="menuIcon"></i>
+      </button>
+
+      <nav id="mainNav">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#planes">Planes</a></li>
+          <li><a href="cobertura.html" class="active">Cobertura</a></li>
+          <li><a href="tasa.html">Tasa</a></li>
+          <li><a href="reporte.html" class="btn" style="padding: 10px 22px;">Reportar falla</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="coverage-hero">
+      <div class="container">
+        <span class="badge"><i class="fas fa-map-marked-alt" style="margin-right: 6px;"></i> Estado Yaracuy</span>
+        <h1>Mapa de <span class="highlight">Cobertura</span></h1>
+        <p>Explora el mapa interactivo y consulta las zonas disponibles con Fibra Óptica y Radio Enlace.</p>
+      </div>
+    </section>
+
+    <!-- Controles + Layout -->
+    <section class="coverage-main">
+      <div class="container">
+
+        <!-- Buscador + Filtros -->
+        <div class="controls">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Buscar zona o sector...">
+          </div>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">
+              <span class="dot"></span> Todas
+            </button>
+            <button class="filter-btn" data-filter="ftth">
+              <span class="dot"></span> Fibra
+            </button>
+            <button class="filter-btn" data-filter="radio">
+              <span class="dot radio"></span> Radio
+            </button>
+          </div>
+        </div>
+
+        <!-- Layout: mapa + sidebar -->
+        <div class="layout">
+          <div id="map"></div>
+          <aside class="sidebar">
+            <div class="sidebar-header">
+              <span>Zonas disponibles</span>
+              <span class="badge-count" id="visibleCount">20</span>
+            </div>
+            <ul class="zone-list" id="zoneList"></ul>
+            <div class="no-results" id="noResults" style="display:none;">
+              <i class="fas fa-search"></i>
+              <p>Sin resultados</p>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Nota informativa -->
+        <div class="info-note">
+          <i class="fas fa-info-circle"></i>
+          <p>
+            <strong>¿No encuentras tu zona?</strong> Estamos en constante expansión.
+            Escríbenos por <a href="https://wa.me/584268731872?text=Hola%20REDCHAMBU%20CA,%20quiero%20consultar%20cobertura%20en%20mi%20zona" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            o revisa la sección de <a href="index.html#cobertura">cobertura</a> en la página principal.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <a href="index.html" class="footer-logo">
+        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
+      </a>
+      <div class="footer-copy">
+        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Datos y lógica del mapa -->
+  <script>
+    /* ============================================================
+       DATOS DE COBERTURA — REDCHAMBU CA
+       ============================================================ */
+    var ZONAS = [
+      /* ----- FIBRA ÓPTICA (FTTH) ----- */
+      { name: "El Cardón",       type: "ftth",  coords: [10.154724, -69.169248], radius: 800 },
+      { name: "Arenales",        type: "ftth",  coords: [10.009611, -69.137157], radius: 700 },
+      { name: "Yumarito",        type: "ftth",  coords: [9.987850, -69.136921], radius: 700 },
+      { name: "Las Velas",       type: "ftth",  coords: [9.974557, -69.136068], radius: 700 },
+      { name: "La Plumita",      type: "ftth",  coords: [9.966519, -69.134443], radius: 600 },
+      { name: "Barrio Nuevo",    type: "ftth",  coords: [9.95381, -69.13243], radius: 600 },
+      { name: "Barrio Ajuro",    type: "ftth",  coords: [10.154724, -69.169248], radius: 600 },
+      { name: "San Antonio",     type: "ftth",  coords: [9.94293, -69.13265], radius: 700 },
+      { name: "La Perdomera",    type: "ftth",  coords: [9.921465, -69.130160], radius: 600 },
+      { name: "El Palmar",       type: "ftth",  coords: [9.902574, -69.121942], radius: 700 },
+      { name: "5 y 7 Casas",     type: "ftth",  coords: [9.894283, -69.123181], radius: 500 },
+      { name: "Los Patios",      type: "ftth",  coords: [9.892633, -69.119593], radius: 500 },
+      { name: "Los Tubos",       type: "ftth",  coords: [9.888188, -69.103477], radius: 600 },
+      /* ----- RADIO ENLACE ----- */
+      { name: "Agua Negra",      type: "radio", coords: [10.062715, -69.157018], radius: 1200 },
+      { name: "Tapa La Lucha",   type: "radio", coords: [10.048610, -69.110794], radius: 1000 },
+      { name: "Maporita",        type: "radio", coords: [10.11705, -69.16246], radius: 1000 },
+      { name: "CDI",             type: "radio", coords: [10.080789, -69.129513], radius: 700 },
+      { name: "Valles de Peña",  type: "radio", coords: [10.066453, -69.146533], radius: 1000 },
+      { name: "San José",        type: "radio", coords: [10.088709, -69.119292], radius: 900 },
+      { name: "El Cardón (R)",   type: "radio", coords: [10.154724, -69.169248], radius: 1000 }
+    ];
+
+    /* Paleta de marca REDCHAMBU */
+    var COLORS = {
+      ftth:  { fill: "#1F10B7", stroke: "#0019FF", label: "Fibra Óptica (FTTH)" },
+      radio: { fill: "#e6b422", stroke: "#c99f1a", label: "Radio Enlace" }
+    };
+
+    /* ============================================================
+       SEPARADOR AUTOMÁTICO DE ZONAS QUE COMPARTEN COORDENADAS
+       ============================================================ */
+    function spreadOverlappingZones(zonas) {
+      var groups = {};
+      zonas.forEach(function (z) {
+        var key = z.coords[0].toFixed(6) + "," + z.coords[1].toFixed(6);
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(z);
+      });
+
+      var result = zonas.map(function (z) { return z; });
+      var R = 0.0025;
+
+      Object.keys(groups).forEach(function (key) {
+        var group = groups[key];
+        if (group.length <= 1) return;
+
+        var center = group[0].coords;
+        var angleStep = (2 * Math.PI) / group.length;
+
+        group.forEach(function (z, i) {
+          var angle = i * angleStep;
+          z.coords = [
+            center[0] + R * Math.cos(angle),
+            center[1] + R * Math.sin(angle)
+          ];
+        });
+      });
+
+      return result;
+    }
+
+    ZONAS = spreadOverlappingZones(ZONAS);
+
+    /* ============================================================
+       MAPA
+       ============================================================ */
+    var map = L.map('map', { scrollWheelZoom: true }).setView([10.05, -69.14], 11);
+
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics',
+      maxZoom: 19
+    }).addTo(map);
+
+    /* Leyenda */
+    var legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function () {
+      var div = L.DomUtil.create('div', 'legend');
+      div.innerHTML =
+        '<div class="legend-item"><span class="legend-swatch ftth"></span> Fibra Óptica</div>' +
+        '<div class="legend-item"><span class="legend-swatch radio"></span> Radio Enlace</div>';
+      return div;
+    };
+    legend.addTo(map);
+
+    /* ============================================================
+       DIBUJAR ZONAS
+       ============================================================ */
+    var layers = [];
+
+    ZONAS.forEach(function (z) {
+      var color = COLORS[z.type];
+
+      var circle = L.circle(z.coords, {
+        radius: z.radius,
+        color: color.stroke,
+        fillColor: color.fill,
+        fillOpacity: 0.35,
+        weight: 2,
+        opacity: 0.85
+      }).addTo(map);
+
+      circle.bindPopup(
+        '<div class="popup-title">' + z.name + '</div>' +
+        '<span class="popup-type ' + z.type + '">' +
+          (z.type === 'ftth' ? '<i class="fas fa-network-wired"></i> ' : '<i class="fas fa-satellite-dish"></i> ') +
+          color.label +
+        '</span>' +
+        '<div class="popup-desc">Servicio disponible en esta zona.</div>'
+      );
+
+      circle.on('mouseover', function () { circle.setStyle({ fillOpacity: 0.55 }); });
+      circle.on('mouseout',  function () { circle.setStyle({ fillOpacity: 0.35 }); });
+
+      layers.push({ zone: z, layer: circle });
+    });
+
+    var group = L.featureGroup(layers.map(function (l) { return l.layer; }));
+    map.fitBounds(group.getBounds().pad(0.1));
+
+    /* ============================================================
+       LISTA LATERAL
+       ============================================================ */
+    var zoneList = document.getElementById('zoneList');
+
+    layers.forEach(function (item) {
+      var zone = item.zone;
+      var layer = item.layer;
+
+      var li = document.createElement('li');
+      li.className = 'zone-item';
+      li.dataset.name = zone.name.toLowerCase();
+      li.dataset.type = zone.type;
+      li.innerHTML =
+        '<span class="zone-dot ' + zone.type + '"></span>' +
+        '<div class="zone-info">' +
+          '<div class="zone-name">' + zone.name + '</div>' +
+          '<div class="zone-type">' + (zone.type === 'ftth' ? 'Fibra Óptica' : 'Radio Enlace') + '</div>' +
+        '</div>' +
+        '<i class="fas fa-chevron-right zone-arrow"></i>';
+
+      li.addEventListener('click', function () {
+        map.setView(zone.coords, 15);
+        layer.openPopup();
+        /* En móvil, sube al mapa al hacer click */
+        if (window.innerWidth < 850) {
+          document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      zoneList.appendChild(li);
+    });
+
+    /* ============================================================
+       FILTROS + BÚSQUEDA
+       ============================================================ */
+    var searchInput = document.getElementById('searchInput');
+    var filterBtns = document.querySelectorAll('.filter-btn');
+    var visibleCountEl = document.getElementById('visibleCount');
+    var noResultsEl = document.getElementById('noResults');
+
+    var currentFilter = 'all';
+    var currentSearch = '';
+
+    function applyFilters() {
+      var visible = 0;
+
+      layers.forEach(function (item) {
+        var zone = item.zone;
+        var layer = item.layer;
+        var matchType = (currentFilter === 'all') || (zone.type === currentFilter);
+        var matchSearch = zone.name.toLowerCase().indexOf(currentSearch) !== -1;
+        var show = matchType && matchSearch;
+
+        if (show) {
+          if (!map.hasLayer(layer)) map.addLayer(layer);
+          visible++;
+        } else {
+          if (map.hasLayer(layer)) map.removeLayer(layer);
+        }
+      });
+
+      document.querySelectorAll('.zone-item').forEach(function (li) {
+        var matchType = (currentFilter === 'all') || (li.dataset.type === currentFilter);
+        var matchSearch = li.dataset.name.indexOf(currentSearch) !== -1;
+        li.classList.toggle('hidden', !(matchType && matchSearch));
+      });
+
+      visibleCountEl.textContent = visible;
+      noResultsEl.style.display = (visible === 0) ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', function (e) {
+      currentSearch = e.target.value.toLowerCase().trim();
+      applyFilters();
+    });
+
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        filterBtns.forEach(function (b) { b.classList.remove('active', 'radio'); });
+        btn.classList.add('active');
+        if (btn.dataset.filter === 'radio') btn.classList.add('radio');
+        currentFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+  </script>
+
+  <!-- Script menú hamburguesa -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('menuToggle');
+      const nav = document.getElementById('mainNav');
+      const icon = document.getElementById('menuIcon');
+
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function() {
+        const isOpen = nav.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', isOpen);
+        icon.classList.toggle('fa-bars', !isOpen);
+        icon.classList.toggle('fa-times', isOpen);
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      });
+
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+          toggle.setAttribute('aria-label', 'Abrir menú');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
