@@ -367,5 +367,76 @@
     })();
   </script>
 
+  <!-- Geolocalización automática -->
+<script>
+(function () {
+  if (!navigator.geolocation) return; // Navegador sin soporte
+
+  var userMarker = null;
+  var userAccuracy = null;
+
+  function onLocationFound(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    var accuracy = position.coords.accuracy;
+
+    // Eliminar marcadores previos si existen
+    if (userMarker) map.removeLayer(userMarker);
+    if (userAccuracy) map.removeLayer(userAccuracy);
+
+    // Círculo de precisión
+    userAccuracy = L.circle([lat, lng], {
+      radius: accuracy,
+      color: '#0019FF',
+      fillColor: '#0019FF',
+      fillOpacity: 0.1,
+      weight: 1,
+      opacity: 0.4
+    }).addTo(map);
+
+    // Marcador personalizado con pulso
+    var userIcon = L.divIcon({
+      className: 'user-location-marker',
+      html: '<div class="user-pulse"></div><div class="user-dot"></div>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
+    });
+
+    userMarker = L.marker([lat, lng], { icon: userIcon })
+      .addTo(map)
+      .bindPopup(
+        '<div class="popup-title"><i class="fas fa-location-dot"></i> Tu ubicación</div>' +
+        '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
+      );
+
+    // Centrar el mapa en la ubicación del usuario
+    map.setView([lat, lng], 14);
+    userMarker.openPopup();
+  }
+
+  function onLocationError(error) {
+    // Silencioso: solo mostramos aviso si el usuario deniega el permiso
+    if (error.code === 1) {
+      console.info('El usuario denegó el acceso a la ubicación.');
+    } else {
+      console.info('No se pudo obtener la ubicación:', error.message);
+    }
+  }
+
+  // Solicitar ubicación automáticamente al cargar la página
+  window.addEventListener('load', function () {
+    navigator.geolocation.getCurrentPosition(
+      onLocationFound,
+      onLocationError,
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+      }
+    );
+  });
+})();
+</script>
+  
 </body>
 </html>
