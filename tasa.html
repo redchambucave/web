@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <link rel="stylesheet" href="tasa.css">
+  <link rel="stylesheet" href="bot.css">
 </head>
 <body>
 
@@ -161,6 +162,42 @@
   </footer>
 
   <script src="tasa.js"></script>
+  
+    <!-- ===== BOT FLOTANTE ===== -->
+  <button id="bot-toggle" aria-label="Abrir chat">💬</button>
+
+  <div id="bot-window" class="bot-hidden">
+    <div class="bot-header">
+      <span class="bot-title">
+        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-header">
+        <span>ChambuBot</span>
+      </span>
+      <button id="bot-close" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="bot-messages" id="bot-messages">
+      <div class="msg bot">
+        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-msg">
+      </div>
+      <div class="msg bot">
+        <span>¡Hola! 👋 Soy tu asistente ChambuBot.</span>
+      </div>
+    </div>
+
+    <div id="bot-toolbar">
+      <button type="button" id="bot-atras" title="Volver al paso anterior">✏️ Corregir anterior</button>
+      <button type="button" id="bot-reiniciar" title="Empezar de nuevo">🔄</button>
+    </div>
+
+    <div id="bot-suggestions" class="bot-suggestions"></div>
+
+    <form id="bot-form" class="bot-input">
+      <input id="bot-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
+      <button type="submit">➤</button>
+    </form>
+  </div>
+
+  <script src="bot.js" defer></script>
 
 </body>
 </html>
