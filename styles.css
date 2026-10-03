@@ -1192,22 +1192,11 @@ footer {
   font-size: 0.92rem;
   animation: fade 0.25s ease;
 }
-.msg.bot {
-  background: transparent;
+ .msg.bot {
+  background: #f3f4f6;
   color: #1f2937;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.msg.bot span {
-  background: #f3f4f6;
-  padding: 0.6rem 0.9rem;
-  border-radius: 12px;
-  border-bottom-left-radius: 4px;
-  display: inline-block;
 }
 
 /* Avatar junto al mensaje del bot */
