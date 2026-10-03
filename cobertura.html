@@ -6,7 +6,6 @@
   <meta name="theme-color" content="#1F10B7">
   <meta name="description" content="Mapa de cobertura de REDCHAMBU CA - Consulta las zonas con Fibra Óptica y Radio Enlace en tu sector.">
 
-  <!-- Open Graph -->
   <meta property="og:title" content="Cobertura | REDCHAMBU CA">
   <meta property="og:description" content="Consulta el mapa interactivo de zonas con Fibra Óptica y Radio Enlace.">
   <meta property="og:type" content="website">
@@ -14,39 +13,33 @@
 
   <title>Cobertura | REDCHAMBU CA</title>
 
-  <!-- Favicons -->
   <link rel="icon" type="image/webp" href="RedChambuCA.webp">
   <link rel="apple-touch-icon" href="RedChambuCA.webp">
 
-  <!-- Fuente Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-  <!-- Hoja de estilos -->
   <link rel="stylesheet" href="cobertura.css">
+  <link rel="stylesheet" href="bot.css">
 </head>
 <body>
 
-  <!-- Header -->
-   <!-- Header -->
   <header>
-  <div class="container header-flex">
-    <a href="index.html" class="logo">
-      <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
-    </a>
-    <a href="index.html" class="back-btn">
-      <i class="fas fa-arrow-left"></i> <span>Volver al inicio</span>
-    </a>
-  </div>
-</header>
+    <div class="container header-flex">
+      <a href="index.html" class="logo">
+        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
+      </a>
+      <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> <span>Volver al inicio</span>
+      </a>
+    </div>
+  </header>
 
   <main>
     <!-- Hero -->
@@ -62,7 +55,6 @@
     <section class="coverage-main">
       <div class="container">
 
-        <!-- Buscador + Filtros -->
         <div class="controls">
           <div class="search-box">
             <i class="fas fa-search"></i>
@@ -81,7 +73,6 @@
           </div>
         </div>
 
-        <!-- Layout: mapa + sidebar -->
         <div class="layout">
           <div id="map"></div>
           <aside class="sidebar">
@@ -97,7 +88,6 @@
           </aside>
         </div>
 
-        <!-- Nota informativa -->
         <div class="info-note">
           <i class="fas fa-info-circle"></i>
           <p>
@@ -109,9 +99,77 @@
 
       </div>
     </section>
+
+    <!-- Cobertura por tipo de servicio -->
+    <section class="coverage-types">
+      <div class="container">
+        <div class="section-header">
+          <h2>Zonas de Cobertura</h2>
+          <p>Consulta si llegamos a tu sector. Estamos en constante expansión.</p>
+        </div>
+
+        <div class="coverage-grid">
+          <div class="coverage-card">
+            <h3><i class="fas fa-network-wired"></i> Fibra Óptica (FTTH)</h3>
+            <div class="coverage-tags">
+              <span class="coverage-tag">El Cardón</span>
+              <span class="coverage-tag">Arenales</span>
+              <span class="coverage-tag">Yumarito</span>
+              <span class="coverage-tag">Las Velas</span>
+              <span class="coverage-tag">La Plumita</span>
+              <span class="coverage-tag">Barrio Nuevo</span>
+              <span class="coverage-tag">Barrio Ajuro</span>
+              <span class="coverage-tag">San Antonio</span>
+              <span class="coverage-tag">La Perdomera</span>
+              <span class="coverage-tag">El Palmar</span>
+              <span class="coverage-tag">5 y 7 Casas</span>
+              <span class="coverage-tag">Los Patios</span>
+              <span class="coverage-tag">Los Tubos</span>
+            </div>
+          </div>
+
+          <div class="coverage-card">
+            <h3><i class="fas fa-satellite-dish"></i> Radio Enlace</h3>
+            <div class="coverage-tags">
+              <span class="coverage-tag">Agua Negra</span>
+              <span class="coverage-tag">Tapa La Lucha</span>
+              <span class="coverage-tag">Maporita</span>
+              <span class="coverage-tag">CDI</span>
+              <span class="coverage-tag">Valles de Peña</span>
+              <span class="coverage-tag">San José</span>
+              <span class="coverage-tag">El Cardón</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proyecto Zonas WiFi -->
+    <section class="wifi-project-section">
+      <div class="container">
+        <div class="wifi-project">
+          <span class="status-badge"><i class="fas fa-hard-hat" style="margin-right: 6px;"></i> Proyecto en desarrollo</span>
+          <h2><i class="fas fa-wifi" style="margin-right: 10px;"></i> Proyecto de Zonas WiFi</h2>
+          <p>Nuestro proyecto de zonas WiFi ofrece conexión para un dispositivo por cliente sin costo adicional, como alternativa temporal a la telefonía móvil. Actualmente contamos con 7 zonas WiFi en funcionamiento, y el proyecto está en desarrollo con planes de seguir agregando más zonas en el futuro. Próximamente habilitaremos zonas WiFi en:</p>
+          <div class="coverage-tags" style="margin-top: 24px;">
+            <span class="coverage-tag">Arenales</span>
+            <span class="coverage-tag">Yumarito</span>
+            <span class="coverage-tag">Las Velas</span>
+            <span class="coverage-tag">La Plumita</span>
+            <span class="coverage-tag">Barrio Nuevo</span>
+            <span class="coverage-tag">Barrio Ajuro</span>
+            <span class="coverage-tag">San Antonio</span>
+            <span class="coverage-tag">Perdomera</span>
+            <span class="coverage-tag">El Palmar</span>
+            <span class="coverage-tag">5 y 7 Casas</span>
+            <span class="coverage-tag">Patios</span>
+            <span class="coverage-tag">Los Tubos</span>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- Footer -->
   <footer>
     <div class="container footer-content">
       <a href="index.html" class="footer-logo">
@@ -123,10 +181,8 @@
     </div>
   </footer>
 
-  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Datos y lógica del mapa -->
   <script>
     /* ============================================================
        DATOS DE COBERTURA — REDCHAMBU CA
@@ -156,15 +212,11 @@
       { name: "El Cardón (R)",   type: "radio", coords: [10.154724, -69.169248], radius: 1000 }
     ];
 
-    /* Paleta de marca REDCHAMBU */
     var COLORS = {
       ftth:  { fill: "#1F10B7", stroke: "#0019FF", label: "Fibra Óptica (FTTH)" },
       radio: { fill: "#e6b422", stroke: "#c99f1a", label: "Radio Enlace" }
     };
 
-    /* ============================================================
-       SEPARADOR AUTOMÁTICO DE ZONAS QUE COMPARTEN COORDENADAS
-       ============================================================ */
     function spreadOverlappingZones(zonas) {
       var groups = {};
       zonas.forEach(function (z) {
@@ -197,9 +249,6 @@
 
     ZONAS = spreadOverlappingZones(ZONAS);
 
-    /* ============================================================
-       MAPA
-       ============================================================ */
     var map = L.map('map', { scrollWheelZoom: true }).setView([10.05, -69.14], 11);
 
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -207,7 +256,6 @@
       maxZoom: 19
     }).addTo(map);
 
-    /* Leyenda */
     var legend = L.control({ position: 'bottomright' });
     legend.onAdd = function () {
       var div = L.DomUtil.create('div', 'legend');
@@ -218,9 +266,6 @@
     };
     legend.addTo(map);
 
-    /* ============================================================
-       DIBUJAR ZONAS
-       ============================================================ */
     var layers = [];
 
     ZONAS.forEach(function (z) {
@@ -253,9 +298,6 @@
     var group = L.featureGroup(layers.map(function (l) { return l.layer; }));
     map.fitBounds(group.getBounds().pad(0.1));
 
-    /* ============================================================
-       LISTA LATERAL
-       ============================================================ */
     var zoneList = document.getElementById('zoneList');
 
     layers.forEach(function (item) {
@@ -277,7 +319,6 @@
       li.addEventListener('click', function () {
         map.setView(zone.coords, 15);
         layer.openPopup();
-        /* En móvil, sube al mapa al hacer click */
         if (window.innerWidth < 850) {
           document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -286,9 +327,6 @@
       zoneList.appendChild(li);
     });
 
-    /* ============================================================
-       FILTROS + BÚSQUEDA
-       ============================================================ */
     var searchInput = document.getElementById('searchInput');
     var filterBtns = document.querySelectorAll('.filter-btn');
     var visibleCountEl = document.getElementById('visibleCount');
@@ -341,105 +379,101 @@
     });
   </script>
 
-  <!-- Script menú hamburguesa -->
   <script>
-    (function() {
-      const toggle = document.getElementById('menuToggle');
-      const nav = document.getElementById('mainNav');
-      const icon = document.getElementById('menuIcon');
+    (function () {
+      if (!navigator.geolocation) return;
 
-      if (!toggle || !nav) return;
+      var userMarker = null;
+      var userAccuracy = null;
 
-      toggle.addEventListener('click', function() {
-        const isOpen = nav.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', isOpen);
-        icon.classList.toggle('fa-bars', !isOpen);
-        icon.classList.toggle('fa-times', isOpen);
-        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
-      });
+      function onLocationFound(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var accuracy = position.coords.accuracy;
 
-      nav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          nav.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-          icon.classList.add('fa-bars');
-          icon.classList.remove('fa-times');
-          toggle.setAttribute('aria-label', 'Abrir menú');
+        if (userMarker) map.removeLayer(userMarker);
+        if (userAccuracy) map.removeLayer(userAccuracy);
+
+        userAccuracy = L.circle([lat, lng], {
+          radius: accuracy,
+          color: '#0019FF',
+          fillColor: '#0019FF',
+          fillOpacity: 0.1,
+          weight: 1,
+          opacity: 0.4
+        }).addTo(map);
+
+        var userIcon = L.divIcon({
+          className: 'user-location-marker',
+          html: '<div class="user-pulse"></div><div class="user-dot"></div>',
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
         });
+
+        userMarker = L.marker([lat, lng], { icon: userIcon })
+          .addTo(map)
+          .bindPopup(
+            '<div class="popup-title"><i class="fas fa-location-dot"></i> Tu ubicación</div>' +
+            '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
+          );
+
+        map.setView([lat, lng], 14);
+        userMarker.openPopup();
+      }
+
+      function onLocationError(error) {
+        if (error.code === 1) {
+          console.info('El usuario denegó el acceso a la ubicación.');
+        } else {
+          console.info('No se pudo obtener la ubicación:', error.message);
+        }
+      }
+
+      window.addEventListener('load', function () {
+        navigator.geolocation.getCurrentPosition(
+          onLocationFound,
+          onLocationError,
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        );
       });
     })();
   </script>
 
-  <!-- Geolocalización automática -->
-<script>
-(function () {
-  if (!navigator.geolocation) return; // Navegador sin soporte
+    <!-- ===== BOT FLOTANTE ===== -->
+  <button id="bot-toggle" aria-label="Abrir chat">💬</button>
 
-  var userMarker = null;
-  var userAccuracy = null;
+  <div id="bot-window" class="bot-hidden">
+    <div class="bot-header">
+      <span class="bot-title">
+        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-header">
+        <span>ChambuBot</span>
+      </span>
+      <button id="bot-close" aria-label="Cerrar">✕</button>
+    </div>
 
-  function onLocationFound(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
-    var accuracy = position.coords.accuracy;
+    <div class="bot-messages" id="bot-messages">
+      <div class="msg bot">
+        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-msg">
+      </div>
+      <div class="msg bot">
+        <span>¡Hola! 👋 Soy tu asistente ChambuBot.</span>
+      </div>
+    </div>
 
-    // Eliminar marcadores previos si existen
-    if (userMarker) map.removeLayer(userMarker);
-    if (userAccuracy) map.removeLayer(userAccuracy);
+    <div id="bot-toolbar">
+      <button type="button" id="bot-atras" title="Volver al paso anterior">✏️ Corregir anterior</button>
+      <button type="button" id="bot-reiniciar" title="Empezar de nuevo">🔄</button>
+    </div>
 
-    // Círculo de precisión
-    userAccuracy = L.circle([lat, lng], {
-      radius: accuracy,
-      color: '#0019FF',
-      fillColor: '#0019FF',
-      fillOpacity: 0.1,
-      weight: 1,
-      opacity: 0.4
-    }).addTo(map);
+    <div id="bot-suggestions" class="bot-suggestions"></div>
 
-    // Marcador personalizado con pulso
-    var userIcon = L.divIcon({
-      className: 'user-location-marker',
-      html: '<div class="user-pulse"></div><div class="user-dot"></div>',
-      iconSize: [24, 24],
-      iconAnchor: [12, 12]
-    });
+    <form id="bot-form" class="bot-input">
+      <input id="bot-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
+      <button type="submit">➤</button>
+    </form>
+  </div>
 
-    userMarker = L.marker([lat, lng], { icon: userIcon })
-      .addTo(map)
-      .bindPopup(
-        '<div class="popup-title"><i class="fas fa-location-dot"></i> Tu ubicación</div>' +
-        '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
-      );
+  <script src="bot.js" defer></script>
 
-    // Centrar el mapa en la ubicación del usuario
-    map.setView([lat, lng], 14);
-    userMarker.openPopup();
-  }
-
-  function onLocationError(error) {
-    // Silencioso: solo mostramos aviso si el usuario deniega el permiso
-    if (error.code === 1) {
-      console.info('El usuario denegó el acceso a la ubicación.');
-    } else {
-      console.info('No se pudo obtener la ubicación:', error.message);
-    }
-  }
-
-  // Solicitar ubicación automáticamente al cargar la página
-  window.addEventListener('load', function () {
-    navigator.geolocation.getCurrentPosition(
-      onLocationFound,
-      onLocationError,
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 60000
-      }
-    );
-  });
-})();
-</script>
-  
 </body>
 </html>
