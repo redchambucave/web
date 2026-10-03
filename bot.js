@@ -817,3 +817,45 @@ function ocultarEscribiendo() {
   const el = document.getElementById("typing-indicator");
   if (el) el.remove();
 }
+
+
+/* ============================================================
+   EVENTOS (con protección contra elementos nulos)
+   ============================================================ */
+if (toggleBtn && botWindow) {
+  toggleBtn.addEventListener("click", () => {
+    botWindow.classList.remove("bot-hidden");
+    toggleBtn.style.opacity = "0";
+    toggleBtn.style.pointerEvents = "none";
+    if (input) input.focus();
+    if (estado === ESTADOS.INICIO && historial.length === 0) {
+      procesarEstado("");
+    }
+  });
+}
+
+if (closeBtn && botWindow) {
+  closeBtn.addEventListener("click", () => {
+    botWindow.classList.add("bot-hidden");
+    if (toggleBtn) {
+      toggleBtn.style.opacity = "1";
+      toggleBtn.style.pointerEvents = "auto";
+    }
+  });
+}
+
+if (form && input) {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    manejarEnvio(input.value);
+  });
+}
+
+/* Botones de la barra de herramientas */
+const botAtras   = document.getElementById("bot-atras");
+const botEditar  = document.getElementById("bot-editar");
+const botReset   = document.getElementById("bot-reiniciar");
+
+if (botAtras)  botAtras.addEventListener("click", () => volverAtras());
+if (botEditar) botEditar.addEventListener("click", () => pedirCampoAEditar());
+if (botReset)  botReset.addEventListener("click", () => reiniciar());
