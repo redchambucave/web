@@ -764,7 +764,7 @@ function reiniciar() {
 
 /* ============================================================
    EVENTOS
-   ============================================================ */
+   ============================================================ 
 toggleBtn.addEventListener("click", () => {
   botWindow.classList.toggle("bot-hidden");
   if (!botWindow.classList.contains("bot-hidden")) {
@@ -780,16 +780,16 @@ closeBtn.addEventListener("click", () => botWindow.classList.add("bot-hidden"));
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   manejarEnvio(input.value);
-});
+});*/
 
-/* Botones de la barra de herramientas */
-const botAtras   = document.getElementById("bot-atras");
+/* Botones de la barra de herramientas 
+ const botAtras   = document.getElementById("bot-atras");
 const botEditar  = document.getElementById("bot-editar");
 const botReset   = document.getElementById("bot-reiniciar");
 
 if (botAtras)  botAtras.addEventListener("click", () => volverAtras());
 if (botEditar) botEditar.addEventListener("click", () => pedirCampoAEditar());
-if (botReset)  botReset.addEventListener("click", () => reiniciar());
+if (botReset)  botReset.addEventListener("click", () => reiniciar());  
 
 /* ============================================================
    INICIO AUTOMÁTICO (opcional)
