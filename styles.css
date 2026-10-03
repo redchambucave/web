@@ -1358,3 +1358,11 @@ footer {
   0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
   30%           { transform: translateY(-4px); opacity: 1; }
 }
+
+
+/* Ocultar el botón flotante cuando la ventana del bot está abierta */
+#bot-window:not(.bot-hidden) ~ #bot-toggle,
+#bot-toggle.hidden-when-open {
+  opacity: 0;
+  pointer-events: none;
+}
