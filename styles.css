@@ -373,10 +373,10 @@ nav ul li a {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   margin-bottom: 60px;
-  justify-content: center; /* ← añade esto */
+    justify-content: center;
 }
 
-.plan-card {
+/*.plan-card {
   background: var(--white);
   border-radius: var(--border-radius);
   padding: 36px 28px;
@@ -386,7 +386,7 @@ nav ul li a {
   position: relative;
   display: flex;
   flex-direction: column;
-}
+}*/
 
 .plan-card.featured {
   border: 2px solid var(--mustard);
@@ -415,7 +415,7 @@ nav ul li a {
   padding: 4px 14px;
   border-radius: 40px;
   margin-bottom: 16px;
-  align-self: center; /* en lugar de flex-start */
+  align-self: flex-start;
 }
 
 .plan-type.fiber {
@@ -456,8 +456,12 @@ nav ul li a {
 }
 
 .plan-features li {
-  justify-content: center;
-  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--gray-text);
+  font-size: 0.95rem;
 }
 
 .plan-features li i {
@@ -1048,8 +1052,8 @@ footer {
   }
 
   .plan-card {
-  text-align: center;
-}
+    padding: 28px 20px;
+  }
 
   .coverage-card {
     padding: 24px 20px;
@@ -1096,8 +1100,8 @@ footer {
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  width: 85px;
-  height: 85px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: none;
   background: #0019FF;
