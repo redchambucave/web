@@ -376,7 +376,7 @@ nav ul li a {
     justify-content: center;
 }
 
-/*.plan-card {
+.plan-card {
   background: var(--white);
   border-radius: var(--border-radius);
   padding: 36px 28px;
@@ -386,7 +386,7 @@ nav ul li a {
   position: relative;
   display: flex;
   flex-direction: column;
-}*/
+}
 
 .plan-card.featured {
   border: 2px solid var(--mustard);
