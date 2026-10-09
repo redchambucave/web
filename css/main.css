@@ -61,7 +61,7 @@
   --sh-blue: 0 12px 32px -12px rgba(31, 16, 183, 0.4);
   --sh-gold: 0 12px 32px -12px rgba(230, 180, 34, 0.4);
 
-  --header-h: 72px;
+  --header-h: 82px;
 }
 
 /* ============================================================
@@ -221,11 +221,11 @@ p { color: var(--text-soft); }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px; height: 36px;
+  width: 42px; height: 42px;
   border-radius: 10px;
   background: linear-gradient(135deg, var(--blue-electric) 0%, var(--blue) 100%);
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   box-shadow: 0 6px 20px -6px rgba(31, 16, 183, 0.6);
   position: relative;
 }
@@ -234,12 +234,12 @@ p { color: var(--text-soft); }
   content: '';
   position: absolute;
   inset: -3px;
-  border-radius: 13px;
+  border-radius: 15px;
   border: 1px solid rgba(230, 180, 34, 0.5);
   opacity: 0.7;
 }
 
-.hdr-logo img { height: 32px; width: auto; object-fit: contain; }
+.hdr-logo img { height: 44px; width: auto; object-fit: contain; }
 
 .hdr-nav {
   display: none;
@@ -671,7 +671,7 @@ p { color: var(--text-soft); }
   border-bottom: 1px solid var(--border);
 }
 
-.ft-brand img { height: 38px; width: auto; margin-bottom: 18px; }
+.ft-brand img { height: 52px; width: auto; margin-bottom: 20px; }
 
 .ft-brand p {
   color: var(--text-soft);
