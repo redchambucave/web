@@ -1,75 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#1F10B7">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#eef2fa">
   <meta name="description" content="Mapa de cobertura de REDCHAMBU CA - Consulta las zonas con Fibra Óptica y Radio Enlace en tu sector.">
-
-  <meta property="og:title" content="Cobertura | REDCHAMBU CA">
-  <meta property="og:description" content="Consulta el mapa interactivo de zonas con Fibra Óptica y Radio Enlace.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="RedChambuCA.webp">
 
   <title>Cobertura | REDCHAMBU CA</title>
 
-  <link rel="icon" type="image/webp" href="RedChambuCA.webp">
-  <link rel="apple-touch-icon" href="RedChambuCA.webp">
+  <link rel="icon" type="image/webp" href="img/RedChambuCA.webp">
+  <link rel="apple-touch-icon" href="img/RedChambuCA.webp">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-  <link rel="stylesheet" href="cobertura.css">
-  <link rel="stylesheet" href="bot.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cobertura.css">
+  <link rel="stylesheet" href="css/bot.css">
 </head>
 <body>
 
-  <header>
-    <div class="container header-flex">
-      <a href="index.html" class="logo">
-        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
-      </a>
-      <a href="index.html" class="back-btn">
-        <i class="fas fa-arrow-left"></i> <span>Volver al inicio</span>
-      </a>
+  <div class="atmo" aria-hidden="true">
+    <div class="atmo-grid"></div>
+    <div class="atmo-glow a"></div>
+    <div class="atmo-glow b"></div>
+    <div class="atmo-glow c"></div>
+  </div>
+
+  <header class="hdr" id="hdr">
+    <div class="wrap hdr-inner">
+      <a href="index.html" class="hdr-logo"><span class="logo-mark"><i class="fas fa-bolt"></i></span><img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="36" decoding="async"></a>
+      <nav class="hdr-nav">
+        <a href="index.html#planes"><span>01</span> Planes</a>
+        <a href="servicios.html"><span>02</span> Servicios</a>
+        <a href="cobertura.html" class="active"><span>03</span> Cobertura</a>
+        <a href="tasa.html"><span>04</span> Tasa del día</a>
+        <a href="index.html#contacto"><span>05</span> Contacto</a>
+      </nav>
+      <div class="hdr-actions">
+        <a href="tasa.html" class="hdr-utility" aria-label="Tasa del día"><i class="fas fa-dollar-sign"></i></a>
+        <a href="reporte.html" class="hdr-utility" aria-label="Reportar falla"><i class="fas fa-tools"></i></a>
+        <a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm"><i class="fab fa-whatsapp"></i> Contratar</a>
+        <button class="hdr-menu" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><i class="fas fa-bars"></i></button>
+      </div>
     </div>
   </header>
 
+  <div class="mnav" id="mnav" aria-hidden="true">
+    <div class="mnav-top">
+      <img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="36">
+      <button class="mnav-close" id="menuClose" aria-label="Cerrar menú"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="mnav-list">
+      <li><a href="index.html#planes" data-close><span>01</span><i class="fas fa-wifi"></i> Planes</a></li>
+      <li><a href="servicios.html" data-close><span>02</span><i class="fas fa-th-large"></i> Servicios</a></li>
+      <li><a href="cobertura.html" data-close><span>03</span><i class="fas fa-map-marked-alt"></i> Cobertura</a></li>
+      <li><a href="tasa.html" data-close><span>04</span><i class="fas fa-dollar-sign"></i> Tasa del día</a></li>
+      <li><a href="reporte.html" data-close><span>05</span><i class="fas fa-tools"></i> Reportar falla</a></li>
+      <li><a href="index.html#contacto" data-close><span>06</span><i class="fas fa-headset"></i> Contacto</a></li>
+    </ul>
+    <div class="mnav-foot">
+      <a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer" class="btn btn-wa"><i class="fab fa-whatsapp"></i> Escribir por WhatsApp</a>
+      <small>REDCHAMBU CA · Internet de confianza</small>
+    </div>
+  </div>
+
   <main>
-    <!-- Hero -->
-    <section class="coverage-hero">
-      <div class="container">
-        <span class="badge"><i class="fas fa-map-marked-alt" style="margin-right: 6px;"></i> Estado Yaracuy</span>
-        <h1>Mapa de <span class="highlight">Cobertura</span></h1>
-        <p>Explora el mapa interactivo y consulta las zonas disponibles con Fibra Óptica y Radio Enlace.</p>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero-tag">
+          <span class="pulse-dot"></span>
+          <span>Estado Yaracuy</span>
+          <span class="hero-tag-sep"></span>
+          <span class="mono">COBERTURA · 2025</span>
+        </div>
+        <h1>Mapa de <em>Cobertura</em></h1>
+        <p class="page-hero-lede">Explora el mapa interactivo y consulta las zonas disponibles con Fibra Óptica y Radio Enlace.</p>
       </div>
     </section>
 
-    <!-- Controles + Layout -->
     <section class="coverage-main">
-      <div class="container">
-
+      <div class="wrap">
         <div class="controls">
           <div class="search-box">
             <i class="fas fa-search"></i>
             <input type="text" id="searchInput" placeholder="Buscar zona o sector...">
           </div>
           <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">
-              <span class="dot"></span> Todas
-            </button>
-            <button class="filter-btn" data-filter="ftth">
-              <span class="dot"></span> Fibra
-            </button>
-            <button class="filter-btn" data-filter="radio">
-              <span class="dot radio"></span> Radio
-            </button>
+            <button class="filter-btn active" data-filter="all"><span class="dot"></span> Todas</button>
+            <button class="filter-btn" data-filter="ftth"><span class="dot"></span> Fibra</button>
+            <button class="filter-btn" data-filter="radio"><span class="dot radio"></span> Radio</button>
           </div>
         </div>
 
@@ -78,7 +103,7 @@
           <aside class="sidebar">
             <div class="sidebar-header">
               <span>Zonas disponibles</span>
-              <span class="badge-count" id="visibleCount">20</span>
+              <span class="badge-count" id="visibleCount">0</span>
             </div>
             <ul class="zone-list" id="zoneList"></ul>
             <div class="no-results" id="noResults" style="display:none;">
@@ -93,16 +118,14 @@
           <p>
             <strong>¿No encuentras tu zona?</strong> Estamos en constante expansión.
             Escríbenos por <a href="https://wa.me/584268731872?text=Hola%20REDCHAMBU%20CA,%20quiero%20consultar%20cobertura%20en%20mi%20zona" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            o revisa la sección de <a href="index.html#cobertura">cobertura</a> en la página principal.
+            para confirmar disponibilidad.
           </p>
         </div>
-
       </div>
     </section>
 
-    <!-- Cobertura por tipo de servicio -->
     <section class="coverage-types">
-      <div class="container">
+      <div class="wrap">
         <div class="section-header">
           <h2>Zonas de Cobertura</h2>
           <p>Consulta si llegamos a tu sector. Estamos en constante expansión.</p>
@@ -111,112 +134,78 @@
         <div class="coverage-grid">
           <div class="coverage-card">
             <h3><i class="fas fa-network-wired"></i> Fibra Óptica (FTTH)</h3>
-            <div class="coverage-tags">
-              <span class="coverage-tag">El Cardón</span>
-              <span class="coverage-tag">Arenales</span>
-              <span class="coverage-tag">Yumarito</span>
-              <span class="coverage-tag">Las Velas</span>
-              <span class="coverage-tag">La Plumita</span>
-              <span class="coverage-tag">Barrio Nuevo</span>
-              <span class="coverage-tag">Barrio Ajuro</span>
-              <span class="coverage-tag">San Antonio</span>
-              <span class="coverage-tag">La Perdomera</span>
-              <span class="coverage-tag">El Palmar</span>
-              <span class="coverage-tag">5 y 7 Casas</span>
-              <span class="coverage-tag">Los Patios</span>
-              <span class="coverage-tag">Los Tubos</span>
-            </div>
+            <div class="coverage-tags" data-zonas-fibra></div>
           </div>
-
           <div class="coverage-card">
             <h3><i class="fas fa-satellite-dish"></i> Radio Enlace</h3>
-            <div class="coverage-tags">
-              <span class="coverage-tag">Agua Negra</span>
-              <span class="coverage-tag">Tapa La Lucha</span>
-              <span class="coverage-tag">Maporita</span>
-              <span class="coverage-tag">CDI</span>
-              <span class="coverage-tag">Valles de Peña</span>
-              <span class="coverage-tag">San José</span>
-              <span class="coverage-tag">El Cardón</span>
-            </div>
+            <div class="coverage-tags" data-zonas-radio></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Proyecto Zonas WiFi -->
     <section class="wifi-project-section">
-      <div class="container">
+      <div class="wrap">
         <div class="wifi-project">
-          <span class="status-badge"><i class="fas fa-hard-hat" style="margin-right: 6px;"></i> Proyecto en desarrollo</span>
-          <h2><i class="fas fa-wifi" style="margin-right: 10px;"></i> Proyecto de Zonas WiFi</h2>
+          <span class="status-badge"><i class="fas fa-hard-hat"></i> Proyecto en desarrollo</span>
+          <h2><i class="fas fa-wifi"></i> Proyecto de Zonas WiFi</h2>
           <p>Nuestro proyecto de zonas WiFi ofrece conexión para un dispositivo por cliente sin costo adicional, como alternativa temporal a la telefonía móvil. Actualmente contamos con 7 zonas WiFi en funcionamiento, y el proyecto está en desarrollo con planes de seguir agregando más zonas en el futuro. Próximamente habilitaremos zonas WiFi en:</p>
-          <div class="coverage-tags" style="margin-top: 24px;">
-            <span class="coverage-tag">Arenales</span>
-            <span class="coverage-tag">Yumarito</span>
-            <span class="coverage-tag">Las Velas</span>
-            <span class="coverage-tag">La Plumita</span>
-            <span class="coverage-tag">Barrio Nuevo</span>
-            <span class="coverage-tag">Barrio Ajuro</span>
-            <span class="coverage-tag">San Antonio</span>
-            <span class="coverage-tag">Perdomera</span>
-            <span class="coverage-tag">El Palmar</span>
-            <span class="coverage-tag">5 y 7 Casas</span>
-            <span class="coverage-tag">Patios</span>
-            <span class="coverage-tag">Los Tubos</span>
-          </div>
+          <div class="coverage-tags" style="margin-top: 24px;" data-zonas-fibra></div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container footer-content">
-      <a href="index.html" class="footer-logo">
-        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
-      </a>
-      <div class="footer-copy">
-        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+  <footer class="ft">
+    <div class="wrap">
+      <div class="ft-top">
+        <div class="ft-brand">
+          <img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="42" loading="lazy" decoding="async">
+          <p>Proveedor local de internet por fibra óptica y radio enlace. Comprometidos con nuestros clientes.</p>
+          <div class="ft-status mono"><span class="pulse-dot"></span> Todos los sistemas operativos</div>
+        </div>
+        <div class="ft-cols">
+          <div class="ft-col">
+            <h4 class="mono">/ Servicios</h4>
+            <a href="index.html#planes">Planes</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="cobertura.html">Cobertura</a>
+          </div>
+          <div class="ft-col">
+            <h4 class="mono">/ Utilidades</h4>
+            <a href="tasa.html">Tasa del día</a>
+            <a href="reporte.html">Reportar falla</a>
+            <a href="index.html#contacto">Contacto</a>
+          </div>
+          <div class="ft-col">
+            <h4 class="mono">/ Contacto</h4>
+            <a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="mailto:redchambuca@gmail.com">Correo</a>
+            <a href="index.html#contacto">Formulario</a>
+          </div>
+        </div>
+      </div>
+      <div class="ft-bottom">
+        <p>&copy; 2025 REDCHAMBU CA · Proveedor de internet · Comprometidos con nuestros clientes.</p>
+        <span class="ft-code mono">BUILD 2025.10 · ISP EDITION</span>
       </div>
     </div>
   </footer>
 
+  <script src="js/data.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <script>
-    /* ============================================================
-       DATOS DE COBERTURA — REDCHAMBU CA
-       ============================================================ */
-    var ZONAS = [
-      /* ----- FIBRA ÓPTICA (FTTH) ----- */
-      { name: "El Cardón",       type: "ftth",  coords: [10.154724, -69.169248], radius: 800 },
-      { name: "Arenales",        type: "ftth",  coords: [10.009611, -69.137157], radius: 700 },
-      { name: "Yumarito",        type: "ftth",  coords: [9.987850, -69.136921], radius: 700 },
-      { name: "Las Velas",       type: "ftth",  coords: [9.974557, -69.136068], radius: 700 },
-      { name: "La Plumita",      type: "ftth",  coords: [9.966519, -69.134443], radius: 600 },
-      { name: "Barrio Nuevo",    type: "ftth",  coords: [9.95381, -69.13243], radius: 600 },
-      { name: "Barrio Ajuro",    type: "ftth",  coords: [9.94764, -69.13298], radius: 600 },
-      { name: "San Antonio",     type: "ftth",  coords: [9.94293, -69.13265], radius: 700 },
-      { name: "La Perdomera",    type: "ftth",  coords: [9.921465, -69.130160], radius: 600 },
-      { name: "El Palmar",       type: "ftth",  coords: [9.902574, -69.121942], radius: 700 },
-      { name: "5 y 7 Casas",     type: "ftth",  coords: [9.894283, -69.123181], radius: 500 },
-      { name: "Los Patios",      type: "ftth",  coords: [9.892633, -69.119593], radius: 500 },
-      { name: "Los Tubos",       type: "ftth",  coords: [9.888188, -69.103477], radius: 600 },
-      /* ----- RADIO ENLACE ----- */
-      { name: "Agua Negra",      type: "radio", coords: [10.062715, -69.157018], radius: 1200 },
-      { name: "Tapa La Lucha",   type: "radio", coords: [10.048610, -69.110794], radius: 1000 },
-      { name: "Maporita",        type: "radio", coords: [10.11705, -69.16246], radius: 1000 },
-      { name: "CDI",             type: "radio", coords: [10.080789, -69.129513], radius: 700 },
-      { name: "Valles de Peña",  type: "radio", coords: [10.066453, -69.146533], radius: 1000 },
-      { name: "San José",        type: "radio", coords: [10.088709, -69.119292], radius: 900 },
-      { name: "El Cardón (R)",   type: "radio", coords: [10.154724, -69.169248], radius: 1000 }
-    ];
+  (function () {
+    if (!window.REDCHAMBU) return;
+
+    var ZONAS = JSON.parse(JSON.stringify(window.REDCHAMBU.zonasMapa));
 
     var COLORS = {
-      ftth:  { fill: "#1F10B7", stroke: "#0019FF", label: "Fibra Óptica (FTTH)" },
+      ftth:  { fill: "#0019FF", stroke: "#1F10B7", label: "Fibra Óptica (FTTH)" },
       radio: { fill: "#e6b422", stroke: "#c99f1a", label: "Radio Enlace" }
     };
 
+    /* ---------- Separar zonas con coordenadas idénticas ---------- */
     function spreadOverlappingZones(zonas) {
       var groups = {};
       zonas.forEach(function (z) {
@@ -225,16 +214,13 @@
         groups[key].push(z);
       });
 
-      var result = zonas.map(function (z) { return z; });
       var R = 0.0025;
 
       Object.keys(groups).forEach(function (key) {
         var group = groups[key];
         if (group.length <= 1) return;
-
         var center = group[0].coords;
         var angleStep = (2 * Math.PI) / group.length;
-
         group.forEach(function (z, i) {
           var angle = i * angleStep;
           z.coords = [
@@ -243,19 +229,24 @@
           ];
         });
       });
-
-      return result;
+      return zonas;
     }
 
     ZONAS = spreadOverlappingZones(ZONAS);
 
-    var map = L.map('map', { scrollWheelZoom: true }).setView([10.05, -69.14], 11);
+    /* ---------- Init mapa ---------- */
+    var map = L.map('map', {
+      scrollWheelZoom: true,
+      zoomControl: true,
+      preferCanvas: true
+    }).setView([10.05, -69.14], 11);
 
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics',
       maxZoom: 19
     }).addTo(map);
 
+    /* ---------- Leyenda ---------- */
     var legend = L.control({ position: 'bottomright' });
     legend.onAdd = function () {
       var div = L.DomUtil.create('div', 'legend');
@@ -266,8 +257,8 @@
     };
     legend.addTo(map);
 
+    /* ---------- Dibujar zonas ---------- */
     var layers = [];
-
     ZONAS.forEach(function (z) {
       var color = COLORS[z.type];
 
@@ -295,11 +286,28 @@
       layers.push({ zone: z, layer: circle });
     });
 
-    var group = L.featureGroup(layers.map(function (l) { return l.layer; }));
-    map.fitBounds(group.getBounds().pad(0.1));
+    /* ---------- Ajustar vista a TODAS las zonas ---------- */
+    function fitAllZones() {
+      var featureGroup = L.featureGroup(layers.map(function (l) { return l.layer; }));
+      var bounds = featureGroup.getBounds();
 
+      map.invalidateSize(); // recalcula tamaño del contenedor
+      map.fitBounds(bounds, {
+        padding: [40, 40],
+        maxZoom: 13,
+        animate: false
+      });
+    }
+
+    // Ejecutar cuando el layout esté listo
+    setTimeout(fitAllZones, 100);
+    // Ejecutar también al cargar imágenes / fuentes
+    window.addEventListener('load', function () {
+      setTimeout(fitAllZones, 200);
+    });
+
+    /* ---------- Sidebar de zonas ---------- */
     var zoneList = document.getElementById('zoneList');
-
     layers.forEach(function (item) {
       var zone = item.zone;
       var layer = item.layer;
@@ -317,7 +325,7 @@
         '<i class="fas fa-chevron-right zone-arrow"></i>';
 
       li.addEventListener('click', function () {
-        map.setView(zone.coords, 15);
+        map.setView(zone.coords, 15, { animate: true });
         layer.openPopup();
         if (window.innerWidth < 850) {
           document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -327,8 +335,9 @@
       zoneList.appendChild(li);
     });
 
+    /* ---------- Filtros + búsqueda ---------- */
     var searchInput = document.getElementById('searchInput');
-    var filterBtns = document.querySelectorAll('.filter-btn');
+    var filterBtns  = document.querySelectorAll('.filter-btn');
     var visibleCountEl = document.getElementById('visibleCount');
     var noResultsEl = document.getElementById('noResults');
 
@@ -361,6 +370,25 @@
 
       visibleCountEl.textContent = visible;
       noResultsEl.style.display = (visible === 0) ? 'block' : 'none';
+
+      /* Auto-enfocar según filtro */
+      var visibleLayers = layers
+        .filter(function (item) {
+          var zone = item.zone;
+          var matchType = (currentFilter === 'all') || (zone.type === currentFilter);
+          var matchSearch = zone.name.toLowerCase().indexOf(currentSearch) !== -1;
+          return matchType && matchSearch;
+        })
+        .map(function (item) { return item.layer; });
+
+      if (visibleLayers.length > 0) {
+        var fg = L.featureGroup(visibleLayers);
+        map.fitBounds(fg.getBounds(), {
+          padding: [40, 40],
+          maxZoom: 14,
+          animate: true
+        });
+      }
     }
 
     searchInput.addEventListener('input', function (e) {
@@ -377,103 +405,79 @@
         applyFilters();
       });
     });
-  </script>
 
-  <script>
-    (function () {
-      if (!navigator.geolocation) return;
+    /* ---------- Aplicar filtros iniciales ---------- */
+    applyFilters();
 
-      var userMarker = null;
-      var userAccuracy = null;
+    /* ---------- Reajustar al redimensionar ventana ---------- */
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        map.invalidateSize();
+        fitAllZones();
+      }, 250);
+    });
 
-      function onLocationFound(position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        var accuracy = position.coords.accuracy;
+    /* ---------- Reajustar cuando cambia orientación ---------- */
+    window.addEventListener('orientationchange', function () {
+      setTimeout(function () {
+        map.invalidateSize();
+        fitAllZones();
+      }, 300);
+    });
 
-        if (userMarker) map.removeLayer(userMarker);
-        if (userAccuracy) map.removeLayer(userAccuracy);
+    /* ---------- Geolocalización ---------- */
+    if (!navigator.geolocation) return;
+    var userMarker = null;
+    var userAccuracy = null;
 
-        userAccuracy = L.circle([lat, lng], {
-          radius: accuracy,
-          color: '#0019FF',
-          fillColor: '#0019FF',
-          fillOpacity: 0.1,
-          weight: 1,
-          opacity: 0.4
-        }).addTo(map);
+    function onLocationFound(position) {
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      var accuracy = position.coords.accuracy;
 
-        var userIcon = L.divIcon({
-          className: 'user-location-marker',
-          html: '<div class="user-pulse"></div><div class="user-dot"></div>',
-          iconSize: [24, 24],
-          iconAnchor: [12, 12]
-        });
+      if (userMarker) map.removeLayer(userMarker);
+      if (userAccuracy) map.removeLayer(userAccuracy);
 
-        userMarker = L.marker([lat, lng], { icon: userIcon })
-          .addTo(map)
-          .bindPopup(
-            '<div class="popup-title"><i class="fas fa-location-dot"></i> Tu ubicación</div>' +
-            '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
-          );
+      userAccuracy = L.circle([lat, lng], {
+        radius: accuracy,
+        color: '#0019FF',
+        fillColor: '#0019FF',
+        fillOpacity: 0.1,
+        weight: 1,
+        opacity: 0.4
+      }).addTo(map);
 
-        map.setView([lat, lng], 14);
-        userMarker.openPopup();
-      }
-
-      function onLocationError(error) {
-        if (error.code === 1) {
-          console.info('El usuario denegó el acceso a la ubicación.');
-        } else {
-          console.info('No se pudo obtener la ubicación:', error.message);
-        }
-      }
-
-      window.addEventListener('load', function () {
-        navigator.geolocation.getCurrentPosition(
-          onLocationFound,
-          onLocationError,
-          { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-        );
+      var userIcon = L.divIcon({
+        className: 'user-location-marker',
+        html: '<div class="user-pulse"></div><div class="user-dot"></div>',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
       });
-    })();
-  </script>
 
-    <!-- ===== BOT FLOTANTE ===== -->
-  <button id="bot-toggle" aria-label="Abrir chat">💬</button>
+      userMarker = L.marker([lat, lng], { icon: userIcon })
+        .addTo(map)
+        .bindPopup(
+          '<div class="popup-title"><i class="fas fa-location-dot"></i> Tu ubicación</div>' +
+          '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
+        );
+    }
 
-  <div id="bot-window" class="bot-hidden">
-    <div class="bot-header">
-      <span class="bot-title">
-        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-header">
-        <span>ChambuBot</span>
-      </span>
-      <button id="bot-close" aria-label="Cerrar">✕</button>
-    </div>
+    function onLocationError(error) {
+      console.info('Ubicación no disponible:', error.message);
+    }
 
-    <div class="bot-messages" id="bot-messages">
-      <div class="msg bot">
-        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-msg">
-      </div>
-      <div class="msg bot">
-        <span>¡Hola! 👋 Soy tu asistente ChambuBot.</span>
-      </div>
-    </div>
+    window.addEventListener('load', function () {
+      navigator.geolocation.getCurrentPosition(
+        onLocationFound,
+        onLocationError,
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      );
+    });
 
-    <div id="bot-toolbar">
-      <button type="button" id="bot-atras" title="Volver al paso anterior">✏️ Corregir anterior</button>
-      <button type="button" id="bot-reiniciar" title="Empezar de nuevo">🔄</button>
-    </div>
-
-    <div id="bot-suggestions" class="bot-suggestions"></div>
-
-    <form id="bot-form" class="bot-input">
-      <input id="bot-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
-      <button type="submit">➤</button>
-    </form>
-  </div>
-
-  <script src="bot.js" defer></script>
-
+  })();
+</script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>
