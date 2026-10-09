@@ -1,0 +1,254 @@
+/* ============================================================
+   TASA.CSS — Solo tasa.html (Fiber Light)
+   ============================================================ */
+
+.rate-section { padding: 50px 0; flex: 1; }
+
+.rate-card {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--r-2xl);
+  padding: 50px 40px;
+  box-shadow: var(--sh-lg);
+  border: 1px solid var(--border);
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  overflow: hidden;
+}
+
+.rate-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--gold), var(--blue-electric));
+}
+
+.rate-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-soft);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 20px;
+  border-radius: var(--r-full);
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid var(--border-gold);
+}
+
+.rate-label i { color: var(--gold-dark); }
+
+.rate-value {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(2.6rem, 8vw, 4.5rem);
+  font-weight: 700;
+  color: var(--blue-deep);
+  line-height: 1;
+  margin-bottom: 12px;
+  letter-spacing: -0.03em;
+  word-break: break-word;
+}
+
+.rate-value .currency {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.rate-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-soft);
+  margin-bottom: 30px;
+}
+
+.rate-meta {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 30px;
+}
+
+.rate-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.rate-meta-item .label {
+  font-size: 0.85rem;
+  color: var(--text-mute);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rate-meta-item .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.rate-meta-item .value.green { color: #16a34a; }
+.rate-meta-item .value.red   { color: #dc2626; }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #16a34a;
+  padding: 8px 18px;
+  background: rgba(22, 163, 74, 0.1);
+  border-radius: var(--r-full);
+}
+
+.status-badge .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+  animation: pulse 1.5s infinite;
+}
+
+.status-badge.red { color: #dc2626; background: rgba(220, 38, 38, 0.1); }
+.status-badge.red .dot { background: #dc2626; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* Planes en Bs */
+.plans-bs-section { padding: 40px 0 80px; }
+
+.section-title {
+  text-align: center;
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+  color: var(--text);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.plans-bs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.plan-bs-card {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  padding: 32px 24px;
+  box-shadow: var(--sh-sm);
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-bs-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue-electric), transparent);
+}
+
+.plan-bs-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-md);
+  border-color: var(--border-blue);
+}
+
+.plan-bs-card .plan-name-bs {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.plan-bs-card .plan-speed-bs {
+  display: inline-block;
+  background: var(--blue-soft);
+  color: var(--blue-electric);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: var(--r-full);
+  margin-bottom: 20px;
+  letter-spacing: 0.02em;
+}
+
+.plan-bs-card .plan-bs-price {
+  font-family: 'Sora', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  line-height: 1.1;
+  margin-bottom: 4px;
+  word-break: break-word;
+  letter-spacing: -0.02em;
+}
+
+.plan-bs-card .plan-bs-price .currency {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  color: var(--gold-dark);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.plan-bs-card .plan-usd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-mute);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.plan-bs-card .btn {
+  display: inline-flex;
+  margin-top: auto;
+  align-self: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rate-card { padding: 36px 24px; }
+  .rate-meta { gap: 20px; }
+  .plan-bs-card .plan-bs-price { font-size: 1.8rem; }
+}
+
+@media (max-width: 480px) {
+  .rate-card { padding: 28px 18px; border-radius: 24px; }
+  .rate-meta { flex-direction: column; gap: 16px; }
+}
