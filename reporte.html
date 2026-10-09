@@ -1,65 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0a1f44">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#eef2fa">
   <meta name="description" content="Reporte de fallas - REDCHAMBU CA. Informa cualquier problema con tu servicio de internet de forma rápida por WhatsApp.">
 
   <title>Reporte de Fallas | REDCHAMBU CA</title>
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/webp" href="RedChambuCA.webp">
-  <link rel="apple-touch-icon" href="RedChambuCA.webp">
+  <link rel="icon" type="image/webp" href="img/RedChambuCA.webp">
+  <link rel="apple-touch-icon" href="img/RedChambuCA.webp">
 
-  <!-- Fuente Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Hoja de estilos -->
-  <link rel="stylesheet" href="reporte.css">
-  <link rel="stylesheet" href="bot.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/reporte.css">
+  <link rel="stylesheet" href="css/bot.css">
 </head>
 <body>
 
-  <!-- Header -->
-<header>
-  <div class="container header-flex">
-    <a href="index.html" class="logo">
-      <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
-    </a>
-    <a href="index.html" class="back-btn">
-      <i class="fas fa-arrow-left"></i> <span>Volver al inicio</span>
-    </a>
+  <div class="atmo" aria-hidden="true">
+    <div class="atmo-grid"></div>
+    <div class="atmo-glow a"></div>
+    <div class="atmo-glow b"></div>
+    <div class="atmo-glow c"></div>
   </div>
-</header>
+
+  <header class="hdr" id="hdr">
+    <div class="wrap hdr-inner">
+      <a href="index.html" class="hdr-logo"><span class="logo-mark"><i class="fas fa-bolt"></i></span><img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="36" decoding="async"></a>
+      <nav class="hdr-nav">
+        <a href="index.html#planes"><span>01</span> Planes</a>
+        <a href="servicios.html"><span>02</span> Servicios</a>
+        <a href="cobertura.html"><span>03</span> Cobertura</a>
+        <a href="tasa.html"><span>04</span> Tasa del día</a>
+        <a href="index.html#contacto"><span>05</span> Contacto</a>
+      </nav>
+      <div class="hdr-actions">
+        <a href="tasa.html" class="hdr-utility" aria-label="Tasa del día"><i class="fas fa-dollar-sign"></i></a>
+        <a href="reporte.html" class="hdr-utility" aria-label="Reportar falla"><i class="fas fa-tools"></i></a>
+        <a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm"><i class="fab fa-whatsapp"></i> Contratar</a>
+        <button class="hdr-menu" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mnav" id="mnav" aria-hidden="true">
+    <div class="mnav-top">
+      <img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="36">
+      <button class="mnav-close" id="menuClose" aria-label="Cerrar menú"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="mnav-list">
+      <li><a href="index.html#planes" data-close><span>01</span><i class="fas fa-wifi"></i> Planes</a></li>
+      <li><a href="servicios.html" data-close><span>02</span><i class="fas fa-th-large"></i> Servicios</a></li>
+      <li><a href="cobertura.html" data-close><span>03</span><i class="fas fa-map-marked-alt"></i> Cobertura</a></li>
+      <li><a href="tasa.html" data-close><span>04</span><i class="fas fa-dollar-sign"></i> Tasa del día</a></li>
+      <li><a href="reporte.html" data-close><span>05</span><i class="fas fa-tools"></i> Reportar falla</a></li>
+      <li><a href="index.html#contacto" data-close><span>06</span><i class="fas fa-headset"></i> Contacto</a></li>
+    </ul>
+    <div class="mnav-foot">
+      <a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer" class="btn btn-wa"><i class="fab fa-whatsapp"></i> Escribir por WhatsApp</a>
+      <small>REDCHAMBU CA · Internet de confianza</small>
+    </div>
+  </div>
 
   <main>
-    <!-- Hero del reporte -->
-    <section class="report-hero">
-      <div class="container">
-        <span class="badge"><i class="fas fa-tools" style="margin-right: 6px;"></i> Soporte técnico</span>
-        <h1>Reporte de <span class="highlight">Fallas</span></h1>
-        <p>Cuéntanos qué está pasando con tu servicio. Tu reporte se enviará directo a nuestro WhatsApp de soporte.</p>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero-tag">
+          <span class="pulse-dot"></span>
+          <span>Soporte técnico</span>
+          <span class="hero-tag-sep"></span>
+          <span class="mono">REPORTE · 24H</span>
+        </div>
+        <h1>Reporte de <em>Fallas</em></h1>
+        <p class="page-hero-lede">Cuéntanos qué está pasando con tu servicio. Tu reporte se enviará directo a nuestro WhatsApp de soporte.</p>
       </div>
     </section>
 
-    <!-- Formulario de reporte -->
     <section class="report-section">
-      <div class="container">
+      <div class="wrap">
         <div class="report-card">
-
-          <div class="report-icon">
-            <i class="fas fa-exclamation-triangle"></i>
-          </div>
+          <div class="report-icon"><i class="fas fa-exclamation-triangle"></i></div>
 
           <h2>Información del reporte</h2>
-          <p class="report-subtitle">Todos los campos marcados con <span style="color: var(--mustard); font-weight: 700;">*</span> son obligatorios.</p>
+          <p class="report-subtitle">Todos los campos marcados con <span>*</span> son obligatorios.</p>
 
           <form class="report-form" id="reportForm">
             <div class="form-row">
@@ -67,7 +97,6 @@
                 <label for="name">Nombre completo <span>*</span></label>
                 <input type="text" id="name" name="name" class="form-control" placeholder="Ej: Juan Pérez" required>
               </div>
-
               <div class="form-group">
                 <label for="phone">Teléfono / WhatsApp <span>*</span></label>
                 <input type="tel" id="phone" name="phone" class="form-control" placeholder="Ej: +58 426 8731 872" required>
@@ -79,7 +108,6 @@
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" name="email" class="form-control" placeholder="tucorreo@ejemplo.com">
               </div>
-
               <div class="form-group">
                 <label for="zone">Zona / Sector <span>*</span></label>
                 <input type="text" id="zone" name="zone" class="form-control" placeholder="Ej: Barrio Nuevo" required>
@@ -97,7 +125,6 @@
                   <option value="No estoy seguro">No estoy seguro</option>
                 </select>
               </div>
-
               <div class="form-group">
                 <label for="failure_type">Tipo de falla <span>*</span></label>
                 <select id="failure_type" name="failure_type" class="form-control" required>
@@ -115,18 +142,9 @@
             <div class="form-group">
               <label for="urgency">Nivel de urgencia <span>*</span></label>
               <div class="radio-group">
-                <label class="radio-option">
-                  <input type="radio" name="urgency" value="Baja" required>
-                  <span><i class="fas fa-circle" style="color: #4caf50;"></i> Baja</span>
-                </label>
-                <label class="radio-option">
-                  <input type="radio" name="urgency" value="Media" required>
-                  <span><i class="fas fa-circle" style="color: #e6b422;"></i> Media</span>
-                </label>
-                <label class="radio-option">
-                  <input type="radio" name="urgency" value="Alta" required>
-                  <span><i class="fas fa-circle" style="color: #e53935;"></i> Alta</span>
-                </label>
+                <label class="radio-option"><input type="radio" name="urgency" value="Baja" required><span><i class="fas fa-circle" style="color:#4caf50;"></i> Baja</span></label>
+                <label class="radio-option"><input type="radio" name="urgency" value="Media" required><span><i class="fas fa-circle" style="color:#e6b422;"></i> Media</span></label>
+                <label class="radio-option"><input type="radio" name="urgency" value="Alta" required><span><i class="fas fa-circle" style="color:#e53935;"></i> Alta</span></label>
               </div>
             </div>
 
@@ -135,8 +153,8 @@
               <textarea id="message" name="message" class="form-control" rows="5" placeholder="Describe con detalle qué está pasando, desde cuándo y si afecta a toda la zona o solo a tu hogar..." required></textarea>
             </div>
 
-            <button type="submit" class="btn">
-              <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Enviar reporte por WhatsApp
+            <button type="submit" class="btn btn-wa">
+              <i class="fab fa-whatsapp"></i> Enviar reporte por WhatsApp
             </button>
           </form>
         </div>
@@ -144,120 +162,49 @@
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container footer-content">
-      <a href="index.html" class="footer-logo">
-        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
-      </a>
-      <div class="footer-copy">
-        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+  <footer class="ft">
+    <div class="wrap">
+      <div class="ft-top">
+        <div class="ft-brand">
+          <img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="42" loading="lazy" decoding="async">
+          <p>Proveedor local de internet por fibra óptica y radio enlace. Comprometidos con nuestros clientes.</p>
+          <div class="ft-status mono"><span class="pulse-dot"></span> Todos los sistemas operativos</div>
+        </div>
+        <div class="ft-cols">
+          <div class="ft-col"><h4 class="mono">/ Servicios</h4><a href="index.html#planes">Planes</a><a href="servicios.html">Servicios</a><a href="cobertura.html">Cobertura</a></div>
+          <div class="ft-col"><h4 class="mono">/ Utilidades</h4><a href="tasa.html">Tasa del día</a><a href="reporte.html">Reportar falla</a><a href="index.html#contacto">Contacto</a></div>
+          <div class="ft-col"><h4 class="mono">/ Contacto</h4><a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="mailto:redchambuca@gmail.com">Correo</a><a href="index.html#contacto">Formulario</a></div>
+        </div>
+      </div>
+      <div class="ft-bottom">
+        <p>&copy; 2025 REDCHAMBU CA · Proveedor de internet · Comprometidos con nuestros clientes.</p>
+        <span class="ft-code mono">BUILD 2025.10 · ISP EDITION</span>
       </div>
     </div>
   </footer>
 
-  <!-- Script menú hamburguesa -->
+  <script src="js/data.js"></script>
   <script>
-    (function() {
-      const toggle = document.getElementById('menuToggle');
-      const nav = document.getElementById('mainNav');
-      const icon = document.getElementById('menuIcon');
-
-      if (!toggle || !nav) return;
-
-      toggle.addEventListener('click', function() {
-        const isOpen = nav.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', isOpen);
-        icon.classList.toggle('fa-bars', !isOpen);
-        icon.classList.toggle('fa-times', isOpen);
-        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
-      });
-
-      nav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          nav.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-          icon.classList.add('fa-bars');
-          icon.classList.remove('fa-times');
-          toggle.setAttribute('aria-label', 'Abrir menú');
-        });
-      });
-    })();
-  </script>
-
-  <!-- Script: enviar reporte por WhatsApp -->
-  <script>
-    // ⚠️ CAMBIA ESTE NÚMERO por el de soporte (código país + número, sin + ni espacios)
-    const WHATSAPP_SOPORTE = '584262954205';
-
-    document.getElementById('reportForm').addEventListener('submit', function(e) {
+    const WHATSAPP_SOPORTE = window.REDCHAMBU?.empresa.whatsappSoporte || '584262954205';
+    document.getElementById('reportForm').addEventListener('submit', function (e) {
       e.preventDefault();
-
-      const name         = document.getElementById('name').value.trim();
-      const phone        = document.getElementById('phone').value.trim();
-      const email        = document.getElementById('email').value.trim();
-      const zone         = document.getElementById('zone').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const zone = document.getElementById('zone').value.trim();
       const service_type = document.getElementById('service_type').value;
       const failure_type = document.getElementById('failure_type').value;
-      const urgency      = (document.querySelector('input[name="urgency"]:checked') || {}).value || '';
-      const message      = document.getElementById('message').value.trim();
+      const urgency = (document.querySelector('input[name="urgency"]:checked') || {}).value || '';
+      const message = document.getElementById('message').value.trim();
 
-      let texto =
-        `*NUEVO REPORTE DE FALLA - REDCHAMBU CA*\n\n` +
-        `👤 *Nombre:* ${name}\n` +
-        `📞 *Teléfono:* ${phone}\n`;
+      let texto = `*NUEVO REPORTE DE FALLA - REDCHAMBU CA*\n\n`;
+      texto += `👤 *Nombre:* ${name}\n📞 *Teléfono:* ${phone}\n`;
+      if (email) texto += `✉️ *Correo:* ${email}\n`;
+      texto += `📍 *Zona:* ${zone}\n📡 *Servicio:* ${service_type}\n⚠️ *Tipo de falla:* ${failure_type}\n🔥 *Urgencia:* ${urgency}\n\n📝 *Descripción:*\n${message}`;
 
-      if (email) {
-        texto += `✉️ *Correo:* ${email}\n`;
-      }
-
-      texto +=
-        `📍 *Zona:* ${zone}\n` +
-        `📡 *Servicio:* ${service_type}\n` +
-        `⚠️ *Tipo de falla:* ${failure_type}\n` +
-        `🔥 *Urgencia:* ${urgency}\n\n` +
-        `📝 *Descripción:*\n${message}`;
-
-      const url = `https://wa.me/${WHATSAPP_SOPORTE}?text=${encodeURIComponent(texto)}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/${WHATSAPP_SOPORTE}?text=${encodeURIComponent(texto)}`, '_blank');
     });
   </script>
-
-    <!-- ===== BOT FLOTANTE ===== -->
-  <button id="bot-toggle" aria-label="Abrir chat">💬</button>
-
-  <div id="bot-window" class="bot-hidden">
-    <div class="bot-header">
-      <span class="bot-title">
-        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-header">
-        <span>ChambuBot</span>
-      </span>
-      <button id="bot-close" aria-label="Cerrar">✕</button>
-    </div>
-
-    <div class="bot-messages" id="bot-messages">
-      <div class="msg bot">
-        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-msg">
-      </div>
-      <div class="msg bot">
-        <span>¡Hola! 👋 Soy tu asistente ChambuBot.</span>
-      </div>
-    </div>
-
-    <div id="bot-toolbar">
-      <button type="button" id="bot-atras" title="Volver al paso anterior">✏️ Corregir anterior</button>
-      <button type="button" id="bot-reiniciar" title="Empezar de nuevo">🔄</button>
-    </div>
-
-    <div id="bot-suggestions" class="bot-suggestions"></div>
-
-    <form id="bot-form" class="bot-input">
-      <input id="bot-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
-      <button type="submit">➤</button>
-    </form>
-  </div>
-
-  <script src="bot.js" defer></script>
-
+  <script src="js/main.js" defer></script>
 </body>
 </html>
