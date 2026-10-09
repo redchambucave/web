@@ -39,9 +39,7 @@ horario: {
       usd:      23.2,
       features: [
         "Ideal para streaming HD y teletrabajo",
-        "Instalación promoción de $5",
         "Soporte técnico 7am a 10pm",
-        "Sin contrato de permanencia",
         "1 mes gratis del servicio"
       ]
     },
@@ -55,9 +53,7 @@ horario: {
       features: [
         "Perfecto para gaming y 4K",
         "Múltiples dispositivos sin lag",
-        "Instalación promoción de $5",
         "Soporte técnico 7am a 10pm",
-        "Sin contrato de permanencia",
         "1 mes gratis del servicio"
       ]
     },
@@ -72,7 +68,6 @@ horario: {
         "Para negocios y oficinas",
         "+20 dispositivos conectados",
         "Soporte prioritario 7am–10pm",
-        "Instalación $5",
         "1 mes gratis del servicio"
       ]
     },
