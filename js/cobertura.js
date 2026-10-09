@@ -6,7 +6,21 @@
 (function () {
   'use strict';
 
-  if (!window.REDCHAMBU) return;
+  if (!window.REDCHAMBU) {
+    console.warn('[Cobertura] data.js no está cargado.');
+    return;
+  }
+
+  if (typeof L === 'undefined') {
+    console.warn('[Cobertura] Leaflet no está cargado.');
+    return;
+  }
+
+  var mapEl = document.getElementById('map');
+  if (!mapEl) {
+    console.warn('[Cobertura] No se encontró #map en el HTML.');
+    return;
+  }
 
   var ZONAS = JSON.parse(JSON.stringify(window.REDCHAMBU.zonasMapa));
 
@@ -96,12 +110,20 @@
     layers.push({ zone: z, layer: circle });
   });
 
+  /* ---------- Estado de la geolocalización ---------- */
+  var userCoords = null;
+  var userMarker = null;
+  var userAccuracy = null;
+  var geoApplied = false;
+
   /* ---------- Ajustar vista a TODAS las zonas ---------- */
   function fitAllZones() {
+    if (geoApplied && userCoords) return;
+
     var featureGroup = L.featureGroup(layers.map(function (l) { return l.layer; }));
     var bounds = featureGroup.getBounds();
 
-    map.invalidateSize(); // recalcula tamaño del contenedor
+    map.invalidateSize();
     map.fitBounds(bounds, {
       padding: [40, 40],
       maxZoom: 13,
@@ -109,47 +131,47 @@
     });
   }
 
-  // Ejecutar cuando el layout esté listo
   setTimeout(fitAllZones, 100);
-  // Ejecutar también al cargar imágenes / fuentes
   window.addEventListener('load', function () {
     setTimeout(fitAllZones, 200);
   });
 
   /* ---------- Sidebar de zonas ---------- */
   var zoneList = document.getElementById('zoneList');
-  layers.forEach(function (item) {
-    var zone = item.zone;
-    var layer = item.layer;
+  if (zoneList) {
+    layers.forEach(function (item) {
+      var zone = item.zone;
+      var layer = item.layer;
 
-    var li = document.createElement('li');
-    li.className = 'zone-item';
-    li.dataset.name = zone.name.toLowerCase();
-    li.dataset.type = zone.type;
-    li.innerHTML =
-      '<span class="zone-dot ' + zone.type + '"></span>' +
-      '<div class="zone-info">' +
-        '<div class="zone-name">' + zone.name + '</div>' +
-        '<div class="zone-type">' + (zone.type === 'ftth' ? 'Fibra Óptica' : 'Radio Enlace') + '</div>' +
-      '</div>' +
-      '<i class="fas fa-chevron-right zone-arrow"></i>';
+      var li = document.createElement('li');
+      li.className = 'zone-item';
+      li.dataset.name = zone.name.toLowerCase();
+      li.dataset.type = zone.type;
+      li.innerHTML =
+        '<span class="zone-dot ' + zone.type + '"></span>' +
+        '<div class="zone-info">' +
+          '<div class="zone-name">' + zone.name + '</div>' +
+          '<div class="zone-type">' + (zone.type === 'ftth' ? 'Fibra Óptica' : 'Radio Enlace') + '</div>' +
+        '</div>' +
+        '<i class="fas fa-chevron-right zone-arrow"></i>';
 
-    li.addEventListener('click', function () {
-      map.setView(zone.coords, 15, { animate: true });
-      layer.openPopup();
-      if (window.innerWidth < 850) {
-        document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      li.addEventListener('click', function () {
+        map.setView(zone.coords, 15, { animate: true });
+        layer.openPopup();
+        if (window.innerWidth < 850) {
+          mapEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      zoneList.appendChild(li);
     });
-
-    zoneList.appendChild(li);
-  });
+  }
 
   /* ---------- Filtros + búsqueda ---------- */
-  var searchInput = document.getElementById('searchInput');
-  var filterBtns  = document.querySelectorAll('.filter-btn');
+  var searchInput    = document.getElementById('searchInput');
+  var filterBtns     = document.querySelectorAll('.filter-btn');
   var visibleCountEl = document.getElementById('visibleCount');
-  var noResultsEl = document.getElementById('noResults');
+  var noResultsEl    = document.getElementById('noResults');
 
   var currentFilter = 'all';
   var currentSearch = '';
@@ -178,10 +200,9 @@
       li.classList.toggle('hidden', !(matchType && matchSearch));
     });
 
-    visibleCountEl.textContent = visible;
-    noResultsEl.style.display = (visible === 0) ? 'block' : 'none';
+    if (visibleCountEl) visibleCountEl.textContent = visible;
+    if (noResultsEl)    noResultsEl.style.display = (visible === 0) ? 'block' : 'none';
 
-    /* Auto-enfocar según filtro */
     var visibleLayers = layers
       .filter(function (item) {
         var zone = item.zone;
@@ -191,7 +212,7 @@
       })
       .map(function (item) { return item.layer; });
 
-    if (visibleLayers.length > 0) {
+    if (visibleLayers.length > 0 && !geoApplied) {
       var fg = L.featureGroup(visibleLayers);
       map.fitBounds(fg.getBounds(), {
         padding: [40, 40],
@@ -201,10 +222,12 @@
     }
   }
 
-  searchInput.addEventListener('input', function (e) {
-    currentSearch = e.target.value.toLowerCase().trim();
-    applyFilters();
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', function (e) {
+      currentSearch = e.target.value.toLowerCase().trim();
+      applyFilters();
+    });
+  }
 
   filterBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -216,7 +239,6 @@
     });
   });
 
-  /* ---------- Aplicar filtros iniciales ---------- */
   applyFilters();
 
   /* ---------- Reajustar al redimensionar ventana ---------- */
@@ -225,27 +247,26 @@
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
       map.invalidateSize();
-      fitAllZones();
+      if (!geoApplied) fitAllZones();
     }, 250);
   });
 
-  /* ---------- Reajustar cuando cambia orientación ---------- */
   window.addEventListener('orientationchange', function () {
     setTimeout(function () {
       map.invalidateSize();
-      fitAllZones();
+      if (!geoApplied) fitAllZones();
     }, 300);
   });
 
   /* ---------- Geolocalización ---------- */
   if (!navigator.geolocation) return;
-  var userMarker = null;
-  var userAccuracy = null;
 
   function onLocationFound(position) {
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
     var accuracy = position.coords.accuracy;
+
+    userCoords = [lat, lng];
 
     if (userMarker) map.removeLayer(userMarker);
     if (userAccuracy) map.removeLayer(userAccuracy);
@@ -273,39 +294,28 @@
         '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
       );
 
-    /* ---------- Enfocar el mapa en la ubicación del usuario ---------- */
     var zoom = 15;
     if (accuracy > 500)       zoom = 13;
     else if (accuracy > 200)  zoom = 14;
 
-    map.flyTo([lat, lng], zoom, {
-      animate: true,
-      duration: 1.2
-    });
+    function focusOnUser() {
+      map.invalidateSize();
+      map.setView(userCoords, zoom, { animate: false });
+    }
 
-    /* Abrir el popup después de que termine la animación */
+    setTimeout(focusOnUser, 100);
+    setTimeout(focusOnUser, 600);
+    setTimeout(focusOnUser, 1400);
+
     setTimeout(function () {
-      userMarker.openPopup();
-    }, 1300);
+      focusOnUser();
+      geoApplied = true;
+      if (userMarker) userMarker.openPopup();
+    }, 2200);
   }
-   
+
   function onLocationError(error) {
     console.info('Ubicación no disponible:', error.message);
-
-    /* Aviso visual sutil (opcional) */
-    var note = document.createElement('div');
-    note.className = 'geo-toast';
-    note.innerHTML = '<i class="fas fa-location-dot"></i> No pudimos obtener tu ubicación';
-    document.body.appendChild(note);
-
-    setTimeout(function () {
-      note.classList.add('show');
-    }, 50);
-
-    setTimeout(function () {
-      note.classList.remove('show');
-      setTimeout(function () { note.remove(); }, 300);
-    }, 4000);
   }
 
   window.addEventListener('load', function () {
