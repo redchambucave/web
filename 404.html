@@ -1,72 +1,92 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#1F10B7">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#eef2fa">
   <meta name="description" content="Página no encontrada - REDCHAMBU CA. La URL que buscas no existe o fue movida.">
   <meta name="robots" content="noindex, nofollow">
 
   <title>Página no encontrada | REDCHAMBU CA</title>
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/webp" href="RedChambuCA.webp">
-  <link rel="apple-touch-icon" href="RedChambuCA.webp">
+  <link rel="icon" type="image/webp" href="img/RedChambuCA.webp">
+  <link rel="apple-touch-icon" href="img/RedChambuCA.webp">
 
-  <!-- Fuente Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Hoja de estilos -->
-  <link rel="stylesheet" href="404.css">
-  <link rel="stylesheet" href="bot.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/404.css">
+  <link rel="stylesheet" href="css/bot.css">
 </head>
 <body>
 
-  <!-- Header -->
- <header>
-    <div class="container header-flex">
-      <a href="#" class="logo">
-        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" decoding="async">
-      </a>
+  <div class="atmo" aria-hidden="true">
+    <div class="atmo-grid"></div>
+    <div class="atmo-glow a"></div>
+    <div class="atmo-glow b"></div>
+    <div class="atmo-glow c"></div>
+  </div>
 
-      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
-        <i class="fas fa-bars" id="menuIcon"></i>
-      </button>
-
-      <nav id="mainNav">
-        <ul>
-          <li><a href="#planes">Planes</a></li>
-          <li><a href="servicios.html">Servicios</a></li>
-          <li><a href="cobertura.html">Cobertura</a></li>
-          <li><a href="tasa.html">Tasa del día</a></li>
-          <li><a href="#contacto">Contacto</a></li>
-          <li><a href="reporte.html" class="btn" style="padding: 10px 22px;">Reportar falla</a></li>
-        </ul>
+  <header class="hdr" id="hdr">
+    <div class="wrap hdr-inner">
+      <a href="index.html" class="hdr-logo"><span class="logo-mark"><i class="fas fa-bolt"></i></span><img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="36" decoding="async"></a>
+      <nav class="hdr-nav">
+        <a href="index.html#planes"><span>01</span> Planes</a>
+        <a href="servicios.html"><span>02</span> Servicios</a>
+        <a href="cobertura.html"><span>03</span> Cobertura</a>
+        <a href="tasa.html"><span>04</span> Tasa del día</a>
+        <a href="index.html#contacto"><span>05</span> Contacto</a>
       </nav>
+      <div class="hdr-actions">
+        <a href="tasa.html" class="hdr-utility"><i class="fas fa-dollar-sign"></i></a>
+        <a href="reporte.html" class="hdr-utility"><i class="fas fa-tools"></i></a>
+        <a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm"><i class="fab fa-whatsapp"></i> Contratar</a>
+        <button class="hdr-menu" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><i class="fas fa-bars"></i></button>
+      </div>
     </div>
   </header>
 
+  <div class="mnav" id="mnav" aria-hidden="true">
+    <div class="mnav-top">
+      <img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="36">
+      <button class="mnav-close" id="menuClose" aria-label="Cerrar menú"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="mnav-list">
+      <li><a href="index.html#planes" data-close><span>01</span><i class="fas fa-wifi"></i> Planes</a></li>
+      <li><a href="servicios.html" data-close><span>02</span><i class="fas fa-th-large"></i> Servicios</a></li>
+      <li><a href="cobertura.html" data-close><span>03</span><i class="fas fa-map-marked-alt"></i> Cobertura</a></li>
+      <li><a href="tasa.html" data-close><span>04</span><i class="fas fa-dollar-sign"></i> Tasa del día</a></li>
+      <li><a href="reporte.html" data-close><span>05</span><i class="fas fa-tools"></i> Reportar falla</a></li>
+      <li><a href="index.html#contacto" data-close><span>06</span><i class="fas fa-headset"></i> Contacto</a></li>
+    </ul>
+    <div class="mnav-foot">
+      <a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer" class="btn btn-wa"><i class="fab fa-whatsapp"></i> Escribir por WhatsApp</a>
+      <small>REDCHAMBU CA · Internet de confianza</small>
+    </div>
+  </div>
+
   <main>
-    <!-- Hero del 404 -->
-    <section class="error-hero">
-      <div class="container">
-        <span class="badge"><i class="fas fa-compass" style="margin-right: 6px;"></i> Error 404</span>
-        <h1>Esta página se <span class="highlight">perdió en la red</span></h1>
-        <p>La URL que buscas no existe, fue movida o ya no está disponible. Pero no te preocupes, te ayudamos a volver al camino.</p>
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="page-hero-tag">
+          <span class="pulse-dot" style="background:#dc2626; box-shadow:0 0 0 0 rgba(220,38,38,0.7);"></span>
+          <span>Error 404</span>
+          <span class="hero-tag-sep"></span>
+          <span class="mono">SIN SEÑAL</span>
+        </div>
+        <h1>Esta página se <em>perdió en la red</em></h1>
+        <p class="page-hero-lede">La URL que buscas no existe, fue movida o ya no está disponible. Pero no te preocupes, te ayudamos a volver al camino.</p>
       </div>
     </section>
 
-    <!-- Tarjeta del 404 -->
     <section class="error-section">
-      <div class="container">
+      <div class="wrap">
         <div class="error-card">
-
           <div class="error-icon">
             <i class="fas fa-satellite-dish"></i>
             <span class="signal-badge"><i class="fas fa-times"></i></span>
@@ -75,136 +95,58 @@
           <div class="error-code">404</div>
 
           <h2>Sin señal en esta ruta</h2>
-          <p class="error-subtitle">
-            Mientras nuestro equipo revisa el enlace, puedes intentar una de estas opciones:
-          </p>
+          <p class="error-subtitle">Mientras nuestro equipo revisa el enlace, puedes intentar una de estas opciones:</p>
 
-          <!-- Enlaces sugeridos -->
           <div class="error-links">
             <a href="index.html" class="error-link">
               <i class="fas fa-home"></i>
-              <div>
-                <strong>Inicio</strong>
-                <span>Volver a la página principal</span>
-              </div>
+              <div><strong>Inicio</strong><span>Volver a la página principal</span></div>
             </a>
-
             <a href="index.html#planes" class="error-link">
               <i class="fas fa-wifi"></i>
-              <div>
-                <strong>Planes de internet</strong>
-                <span>Fibra óptica y radio enlace</span>
-              </div>
+              <div><strong>Planes de internet</strong><span>Fibra óptica y radio enlace</span></div>
             </a>
-
             <a href="cobertura.html" class="error-link">
               <i class="fas fa-map-marked-alt"></i>
-              <div>
-                <strong>Cobertura</strong>
-                <span>Consulta si llegamos a tu zona</span>
-              </div>
+              <div><strong>Cobertura</strong><span>Consulta si llegamos a tu zona</span></div>
             </a>
-
             <a href="tasa.html" class="error-link">
               <i class="fas fa-dollar-sign"></i>
-              <div>
-                <strong>Tasa del día</strong>
-                <span>Precios actualizados en Bs</span>
-              </div>
+              <div><strong>Tasa del día</strong><span>Precios actualizados en Bs</span></div>
             </a>
           </div>
 
-          <!-- Acciones -->
           <div class="error-actions">
-            <a href="index.html" class="btn">
-              <i class="fas fa-home" style="margin-right: 8px;"></i> Volver al inicio
-            </a>
-            <a href="reporte.html" class="btn btn-outline">
-              <i class="fas fa-tools" style="margin-right: 8px;"></i> Reportar falla
-            </a>
+            <a href="index.html" class="btn btn-primary"><i class="fas fa-home"></i> Volver al inicio</a>
+            <a href="reporte.html" class="btn btn-outline"><i class="fas fa-tools"></i> Reportar falla</a>
           </div>
-
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container footer-content">
-      <a href="index.html" class="footer-logo">
-        <img src="RedChambuCA.webp" alt="REDCHAMBU CA" width="220" height="70" loading="lazy" decoding="async">
-      </a>
-      <div class="footer-copy">
-        &copy; 2025 REDCHAMBU CA. Proveedor de internet. Comprometidos con nuestra comunidad.
+  <footer class="ft">
+    <div class="wrap">
+      <div class="ft-top">
+        <div class="ft-brand">
+          <img src="img/RedChambuCA.webp" alt="REDCHAMBU CA" width="160" height="42" loading="lazy" decoding="async">
+          <p>Proveedor local de internet por fibra óptica y radio enlace. Comprometidos con nuestros clientes.</p>
+          <div class="ft-status mono"><span class="pulse-dot"></span> Todos los sistemas operativos</div>
+        </div>
+        <div class="ft-cols">
+          <div class="ft-col"><h4 class="mono">/ Servicios</h4><a href="index.html#planes">Planes</a><a href="servicios.html">Servicios</a><a href="cobertura.html">Cobertura</a></div>
+          <div class="ft-col"><h4 class="mono">/ Utilidades</h4><a href="tasa.html">Tasa del día</a><a href="reporte.html">Reportar falla</a><a href="index.html#contacto">Contacto</a></div>
+          <div class="ft-col"><h4 class="mono">/ Contacto</h4><a href="https://wa.me/584268731872" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="mailto:redchambuca@gmail.com">Correo</a><a href="index.html#contacto">Formulario</a></div>
+        </div>
+      </div>
+      <div class="ft-bottom">
+        <p>&copy; 2025 REDCHAMBU CA · Proveedor de internet · Comprometidos con nuestros clientes.</p>
+        <span class="ft-code mono">BUILD 2025.10 · ISP EDITION</span>
       </div>
     </div>
   </footer>
 
-  <!-- Script menú hamburguesa -->
-  <script>
-    (function() {
-      const toggle = document.getElementById('menuToggle');
-      const nav = document.getElementById('mainNav');
-      const icon = document.getElementById('menuIcon');
-
-      if (!toggle || !nav) return;
-
-      toggle.addEventListener('click', function() {
-        const isOpen = nav.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', isOpen);
-        icon.classList.toggle('fa-bars', !isOpen);
-        icon.classList.toggle('fa-times', isOpen);
-        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
-      });
-
-      nav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          nav.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-          icon.classList.add('fa-bars');
-          icon.classList.remove('fa-times');
-          toggle.setAttribute('aria-label', 'Abrir menú');
-        });
-      });
-    })();
-  </script>
-
-    <!-- ===== BOT FLOTANTE ===== -->
-  <button id="bot-toggle" aria-label="Abrir chat">💬</button>
-
-  <div id="bot-window" class="bot-hidden">
-    <div class="bot-header">
-      <span class="bot-title">
-        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-header">
-        <span>ChambuBot</span>
-      </span>
-      <button id="bot-close" aria-label="Cerrar">✕</button>
-    </div>
-
-    <div class="bot-messages" id="bot-messages">
-      <div class="msg bot">
-        <img src="robot.webp" alt="ChambuBot" class="bot-avatar-msg">
-      </div>
-      <div class="msg bot">
-        <span>¡Hola! 👋 Soy tu asistente ChambuBot.</span>
-      </div>
-    </div>
-
-    <div id="bot-toolbar">
-      <button type="button" id="bot-atras" title="Volver al paso anterior">✏️ Corregir anterior</button>
-      <button type="button" id="bot-reiniciar" title="Empezar de nuevo">🔄</button>
-    </div>
-
-    <div id="bot-suggestions" class="bot-suggestions"></div>
-
-    <form id="bot-form" class="bot-input">
-      <input id="bot-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
-      <button type="submit">➤</button>
-    </form>
-  </div>
-
-  <script src="bot.js" defer></script>
-
+  <script src="js/data.js"></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>
