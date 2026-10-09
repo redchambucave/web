@@ -2,34 +2,21 @@
 # robots.txt - REDCHAMBU CA
 # ============================================================
 
-# Permitir a todos los bots rastrear el sitio
 User-agent: *
 Allow: /
 
-# Bloquear páginas privadas / sin valor SEO
-Disallow: /gracias.html
 Disallow: /reporte.html
-Disallow: /bot.js
-Disallow: /tasa.js
+Disallow: /js/bot.js
+Disallow: /js/tasa.js
 
-# Bloquear parámetros de tracking en URLs (evita duplicados)
 Disallow: /*?utm_
 Disallow: /*?fbclid=
 Disallow: /*?gclid=
 
-# ------------------------------------------------------------
-# Bots específicos
-# ------------------------------------------------------------
-
-# Google
 User-agent: Googlebot
 Allow: /
 
-# Google Imágenes (para que indexe el logo)
 User-agent: Googlebot-Image
 Allow: /
 
-# ------------------------------------------------------------
-# Sitemap
-# ------------------------------------------------------------
 Sitemap: https://redchambucave.github.io/web/sitemap.xml
