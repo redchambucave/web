@@ -393,45 +393,37 @@
   border-color: var(--gold);
 }
 
-/* Proyecto Zonas WiFi */
+/* Proyecto Zonas WiFi — estilo claro */
 .wifi-project-section { padding: 40px 0 80px; }
 
 .wifi-project {
   position: relative;
-  background:
-    radial-gradient(ellipse at 100% 0%, rgba(230, 180, 34, 0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 0% 100%, rgba(59, 130, 246, 0.15) 0%, transparent 55%),
-    linear-gradient(145deg, #0f1a4d 0%, #16246b 50%, #1a2b7a 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--r-2xl);
   padding: 60px 48px;
-  color: white;
+  color: var(--text);
   overflow: hidden;
-  box-shadow: var(--sh-blue);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--sh-md);
 }
 
 .wifi-project::before {
   content: '';
   position: absolute;
-  top: -30%;
-  right: -5%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(230, 180, 34, 0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--blue-electric));
 }
 
 .wifi-project::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+  top: -30%;
+  right: -10%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(230, 180, 34, 0.10) 0%, transparent 70%);
+  border-radius: 50%;
   pointer-events: none;
 }
 
@@ -441,39 +433,47 @@
 }
 
 .wifi-project h2 {
-  color: var(--gold-bright);
+  color: var(--text);
   font-size: clamp(1.4rem, 3.5vw, 2rem);
   margin-bottom: 16px;
-  position: relative;
-  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wifi-project h2 i {
+  color: var(--gold-dark);
 }
 
 .wifi-project p {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1.15rem;
+  color: var(--text-soft);
+  font-size: 1.1rem;
   max-width: 800px;
   margin-bottom: 12px;
-  position: relative;
-  z-index: 1;
+  line-height: 1.7;
 }
 
 .wifi-project .status-badge {
-  display: inline-block;
-  background: var(--gold);
-  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-soft);
+  color: var(--gold-dark);
   font-weight: 700;
-  font-size: 0.85rem;
-  padding: 6px 18px;
+  font-size: 0.8rem;
+  padding: 8px 18px;
   border-radius: var(--r-full);
   margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
+  border: 1px solid var(--border-gold);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
+/* Tags dentro del bloque claro */
 .wifi-project .coverage-tag {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--surface-3);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 .wifi-project .coverage-tag:hover {
