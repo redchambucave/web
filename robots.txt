@@ -8,6 +8,7 @@ Allow: /
 Disallow: /reporte.html
 Disallow: /js/bot.js
 Disallow: /js/tasa.js
+Disallow: /js/reporte.js
 
 Disallow: /*?utm_
 Disallow: /*?fbclid=
