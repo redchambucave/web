@@ -184,27 +184,7 @@
   </footer>
 
   <script src="js/data.js"></script>
-  <script>
-    const WHATSAPP_SOPORTE = window.REDCHAMBU?.empresa.whatsappSoporte || '584262954205';
-    document.getElementById('reportForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const zone = document.getElementById('zone').value.trim();
-      const service_type = document.getElementById('service_type').value;
-      const failure_type = document.getElementById('failure_type').value;
-      const urgency = (document.querySelector('input[name="urgency"]:checked') || {}).value || '';
-      const message = document.getElementById('message').value.trim();
-
-      let texto = `*NUEVO REPORTE DE FALLA - REDCHAMBU CA*\n\n`;
-      texto += `👤 *Nombre:* ${name}\n📞 *Teléfono:* ${phone}\n`;
-      if (email) texto += `✉️ *Correo:* ${email}\n`;
-      texto += `📍 *Zona:* ${zone}\n📡 *Servicio:* ${service_type}\n⚠️ *Tipo de falla:* ${failure_type}\n🔥 *Urgencia:* ${urgency}\n\n📝 *Descripción:*\n${message}`;
-
-      window.open(`https://wa.me/${WHATSAPP_SOPORTE}?text=${encodeURIComponent(texto)}`, '_blank');
-    });
-  </script>
+  <script src="js/reporte.js"></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>
