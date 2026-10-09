@@ -510,3 +510,35 @@
   .filter-btn { font-size: 0.75rem; }
   .zone-item { padding: 0.75rem 0.9rem; font-size: 0.88rem; }
 }
+
+/* Aviso de geolocalización denegada */
+.geo-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface);
+  color: var(--text);
+  padding: 12px 20px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 500;
+}
+
+.geo-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.geo-toast i {
+  color: var(--gold-dark);
+}
