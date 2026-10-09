@@ -1,329 +1,544 @@
 /* ============================================================
-   COBERTURA.JS — Mapa interactivo, filtros y geolocalización
-   Requiere: js/data.js y Leaflet cargados antes.
+   COBERTURA.CSS — Solo cobertura.html (Fiber Light)
    ============================================================ */
 
-(function () {
-  'use strict';
+/* Controles */
+.coverage-main { padding: 40px 0 80px; }
 
-  if (!window.REDCHAMBU) {
-    console.warn('[Cobertura] data.js no está cargado.');
-    return;
+.controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  background: var(--surface);
+  padding: 0.9rem;
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-sm);
+  align-items: center;
+  border: 1px solid var(--border);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--surface-3);
+  border-radius: var(--r-sm);
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(230, 180, 34, 0.15);
+  background: var(--surface);
+}
+
+.search-box i { color: var(--text-mute); font-size: 0.95rem; flex-shrink: 0; }
+
+.search-box input {
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  width: 100%;
+  background: transparent;
+  font-family: inherit;
+  color: var(--text);
+}
+
+.search-box input::placeholder { color: var(--text-mute); }
+
+.filter-buttons { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.filter-btn {
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  padding: 0.6rem 1rem;
+  border-radius: var(--r-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.filter-btn:hover { border-color: var(--gold); }
+
+.filter-btn.active {
+  background: var(--blue-electric);
+  color: white;
+  border-color: var(--blue-electric);
+}
+
+.filter-btn.active.radio {
+  background: var(--gold);
+  color: var(--text);
+  border-color: var(--gold);
+}
+
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-electric); }
+.filter-btn.active .dot { background: white; }
+.dot.radio { background: var(--gold); }
+.filter-btn.active.radio .dot { background: var(--text); }
+
+/* Layout mapa + sidebar */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1rem;
+  height: calc(100vh - 380px);
+  min-height: 520px;
+}
+
+#map {
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-md);
+  z-index: 1;
+  background: #d4d4d4;
+  border: 1px solid var(--border);
+}
+
+.sidebar {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-md);
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+.sidebar-header {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 0.95rem;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
+  border-radius: 12px 12px 0 0;
+}
+
+.sidebar-header .badge-count {
+  background: var(--blue-soft);
+  color: var(--blue-electric);
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--r-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.zone-list { list-style: none; }
+
+.zone-item {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.92rem;
+}
+
+.zone-item:hover { background: var(--surface-3); }
+.zone-item:last-child { border-bottom: none; }
+
+.zone-item .zone-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.zone-item .zone-dot.ftth {
+  background: var(--blue-electric);
+  box-shadow: 0 0 0 3px rgba(0, 25, 255, 0.15);
+}
+
+.zone-item .zone-dot.radio {
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(230, 180, 34, 0.2);
+}
+
+.zone-item .zone-info { flex: 1; min-width: 0; }
+.zone-item .zone-name {
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zone-item .zone-type {
+  font-size: 0.72rem;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.zone-item .zone-arrow {
+  color: var(--text-mute);
+  font-size: 0.75rem;
+  opacity: 0.5;
+  transition: transform 0.2s, opacity 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.zone-item:hover .zone-arrow {
+  transform: translateX(3px);
+  opacity: 1;
+  color: var(--gold-dark);
+}
+
+.zone-item.hidden { display: none; }
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(31, 16, 183, 0.2);
+  font-family: 'Inter', sans-serif;
+}
+
+.leaflet-popup-content { margin: 14px 16px; }
+
+.popup-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  color: var(--text);
+}
+
+.popup-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--r-full);
+  font-weight: 700;
+}
+
+.popup-type.ftth { background: var(--blue-soft); color: var(--blue-electric); }
+.popup-type.radio { background: var(--gold-soft); color: var(--gold-dark); }
+
+.popup-desc {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+/* Leyenda */
+.legend {
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(31, 16, 183, 0.15);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  font-family: 'Inter', sans-serif;
+  border: 1px solid var(--border);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.legend-swatch {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgba(31, 16, 183, 0.2);
+}
+
+.legend-swatch.ftth  { background: rgba(0, 25, 255, 0.9); }
+.legend-swatch.radio { background: rgba(230, 180, 34, 0.95); }
+
+/* Sin resultados */
+.no-results {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 0.9rem;
+}
+
+.no-results i {
+  font-size: 1.8rem;
+  color: var(--gold);
+  opacity: 0.5;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Geolocalización */
+.user-location-marker { position: relative; width: 24px; height: 24px; }
+
+.user-location-marker .user-dot {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  background: var(--blue-electric);
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(0, 25, 255, 0.3);
+  z-index: 2;
+}
+
+.user-location-marker .user-pulse {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 24px; height: 24px;
+  margin: -12px 0 0 -12px;
+  background: rgba(0, 25, 255, 0.35);
+  border-radius: 50%;
+  animation: userPulse 1.8s ease-out infinite;
+  z-index: 1;
+}
+
+@keyframes userPulse {
+  0%   { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-location-marker .user-pulse { animation: none; opacity: 0.4; }
+}
+
+/* Cobertura por tipo */
+.coverage-types { padding: 40px 0 20px; }
+
+.coverage-types .section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.coverage-types .section-header h2 {
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
+  color: var(--text);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.coverage-types .section-header p {
+  color: var(--text-soft);
+  font-size: 1.05rem;
+}
+
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.coverage-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  padding: 32px 28px;
+  box-shadow: var(--sh-sm);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--gold);
+  transition: all 0.3s;
+}
+
+.coverage-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-md);
+}
+
+.coverage-card h3 {
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.coverage-card h3 i { color: var(--blue-electric); }
+
+.coverage-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.coverage-tag {
+  background: var(--surface-3);
+  padding: 6px 14px;
+  border-radius: var(--r-full);
+  font-weight: 500;
+  color: var(--text);
+  font-size: 0.9rem;
+  transition: all 0.15s;
+  border: 1px solid var(--border);
+  display: inline-block;
+}
+
+.coverage-tag:hover {
+  background: var(--gold);
+  color: var(--text);
+  border-color: var(--gold);
+}
+
+/* Proyecto Zonas WiFi — estilo claro */
+.wifi-project-section { padding: 40px 0 80px; }
+
+.wifi-project {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: 60px 48px;
+  color: var(--text);
+  overflow: hidden;
+  box-shadow: var(--sh-md);
+}
+
+.wifi-project::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--blue-electric));
+}
+
+.wifi-project::after {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(230, 180, 34, 0.10) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.wifi-project > * {
+  position: relative;
+  z-index: 1;
+}
+
+.wifi-project h2 {
+  color: var(--text);
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wifi-project h2 i {
+  color: var(--gold-dark);
+}
+
+.wifi-project p {
+  color: var(--text-soft);
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+.wifi-project .status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-soft);
+  color: var(--gold-dark);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 8px 18px;
+  border-radius: var(--r-full);
+  margin-bottom: 20px;
+  border: 1px solid var(--border-gold);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Tags dentro del bloque claro */
+.wifi-project .coverage-tag {
+  background: var(--surface-3);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.wifi-project .coverage-tag:hover {
+  background: var(--gold);
+  color: var(--text);
+  border-color: var(--gold);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; height: auto; }
+  #map { height: 420px; }
+  .sidebar { max-height: 400px; }
+  .controls { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  #map { height: 360px; }
+  .sidebar { max-height: 360px; }
+  .filter-buttons { width: 100%; }
+  .filter-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.8rem;
   }
+  .wifi-project { padding: 32px 20px; border-radius: 24px; }
+  .coverage-card { padding: 24px 20px; }
+}
 
-  if (typeof L === 'undefined') {
-    console.warn('[Cobertura] Leaflet no está cargado.');
-    return;
-  }
+@media (max-width: 480px) {
+  #map { height: 320px; }
+  .sidebar { max-height: 340px; }
+  .filter-btn { font-size: 0.75rem; }
+  .zone-item { padding: 0.75rem 0.9rem; font-size: 0.88rem; }
+}
 
-  var mapEl = document.getElementById('map');
-  if (!mapEl) {
-    console.warn('[Cobertura] No se encontró #map en el HTML.');
-    return;
-  }
+/* Aviso de geolocalización denegada */
+.geo-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface);
+  color: var(--text);
+  padding: 12px 20px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 500;
+}
 
-  var ZONAS = JSON.parse(JSON.stringify(window.REDCHAMBU.zonasMapa));
+.geo-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 
-  var COLORS = {
-    ftth:  { fill: "#0019FF", stroke: "#1F10B7", label: "Fibra Óptica (FTTH)" },
-    radio: { fill: "#e6b422", stroke: "#c99f1a", label: "Radio Enlace" }
-  };
-
-  /* ---------- Separar zonas con coordenadas idénticas ---------- */
-  function spreadOverlappingZones(zonas) {
-    var groups = {};
-    zonas.forEach(function (z) {
-      var key = z.coords[0].toFixed(6) + "," + z.coords[1].toFixed(6);
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(z);
-    });
-
-    var R = 0.0025;
-
-    Object.keys(groups).forEach(function (key) {
-      var group = groups[key];
-      if (group.length <= 1) return;
-      var center = group[0].coords;
-      var angleStep = (2 * Math.PI) / group.length;
-      group.forEach(function (z, i) {
-        var angle = i * angleStep;
-        z.coords = [
-          center[0] + R * Math.cos(angle),
-          center[1] + R * Math.sin(angle)
-        ];
-      });
-    });
-    return zonas;
-  }
-
-  ZONAS = spreadOverlappingZones(ZONAS);
-
-  /* ---------- Init mapa ---------- */
-  var map = L.map('map', {
-    scrollWheelZoom: true,
-    zoomControl: true,
-    preferCanvas: true
-  }).setView([10.05, -69.14], 11);
-
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics',
-    maxZoom: 19
-  }).addTo(map);
-
-  /* ---------- Leyenda ---------- */
-  var legend = L.control({ position: 'bottomright' });
-  legend.onAdd = function () {
-    var div = L.DomUtil.create('div', 'legend');
-    div.innerHTML =
-      '<div class="legend-item"><span class="legend-swatch ftth"></span> Fibra Óptica</div>' +
-      '<div class="legend-item"><span class="legend-swatch radio"></span> Radio Enlace</div>';
-    return div;
-  };
-  legend.addTo(map);
-
-  /* ---------- Dibujar zonas ---------- */
-  var layers = [];
-  ZONAS.forEach(function (z) {
-    var color = COLORS[z.type];
-
-    var circle = L.circle(z.coords, {
-      radius: z.radius,
-      color: color.stroke,
-      fillColor: color.fill,
-      fillOpacity: 0.35,
-      weight: 2,
-      opacity: 0.85
-    }).addTo(map);
-
-    circle.bindPopup(
-      '<div class="popup-title">' + z.name + '</div>' +
-      '<span class="popup-type ' + z.type + '">' +
-        (z.type === 'ftth' ? '<i class="fas fa-network-wired"></i> ' : '<i class="fas fa-satellite-dish"></i> ') +
-        color.label +
-      '</span>' +
-      '<div class="popup-desc">Servicio disponible en esta zona.</div>'
-    );
-
-    circle.on('mouseover', function () { circle.setStyle({ fillOpacity: 0.55 }); });
-    circle.on('mouseout',  function () { circle.setStyle({ fillOpacity: 0.35 }); });
-
-    layers.push({ zone: z, layer: circle });
-  });
-
-  /* ---------- Estado de la geolocalización ---------- */
-  var userCoords = null;
-  var userMarker = null;
-  var userAccuracy = null;
-  var geoApplied = false;
-
-  /* ---------- Ajustar vista a TODAS las zonas ---------- */
-  function fitAllZones() {
-    if (geoApplied && userCoords) return;
-
-    var featureGroup = L.featureGroup(layers.map(function (l) { return l.layer; }));
-    var bounds = featureGroup.getBounds();
-
-    map.invalidateSize();
-    map.fitBounds(bounds, {
-      padding: [40, 40],
-      maxZoom: 13,
-      animate: false
-    });
-  }
-
-  setTimeout(fitAllZones, 100);
-  window.addEventListener('load', function () {
-    setTimeout(fitAllZones, 200);
-  });
-
-  /* ---------- Sidebar de zonas ---------- */
-  var zoneList = document.getElementById('zoneList');
-  if (zoneList) {
-    layers.forEach(function (item) {
-      var zone = item.zone;
-      var layer = item.layer;
-
-      var li = document.createElement('li');
-      li.className = 'zone-item';
-      li.dataset.name = zone.name.toLowerCase();
-      li.dataset.type = zone.type;
-      li.innerHTML =
-        '<span class="zone-dot ' + zone.type + '"></span>' +
-        '<div class="zone-info">' +
-          '<div class="zone-name">' + zone.name + '</div>' +
-          '<div class="zone-type">' + (zone.type === 'ftth' ? 'Fibra Óptica' : 'Radio Enlace') + '</div>' +
-        '</div>' +
-        '<i class="fas fa-chevron-right zone-arrow"></i>';
-
-      li.addEventListener('click', function () {
-        map.setView(zone.coords, 15, { animate: true });
-        layer.openPopup();
-        if (window.innerWidth < 850) {
-          mapEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-
-      zoneList.appendChild(li);
-    });
-  }
-
-  /* ---------- Filtros + búsqueda ---------- */
-  var searchInput    = document.getElementById('searchInput');
-  var filterBtns     = document.querySelectorAll('.filter-btn');
-  var visibleCountEl = document.getElementById('visibleCount');
-  var noResultsEl    = document.getElementById('noResults');
-
-  var currentFilter = 'all';
-  var currentSearch = '';
-
-  function applyFilters() {
-    var visible = 0;
-
-    layers.forEach(function (item) {
-      var zone = item.zone;
-      var layer = item.layer;
-      var matchType = (currentFilter === 'all') || (zone.type === currentFilter);
-      var matchSearch = zone.name.toLowerCase().indexOf(currentSearch) !== -1;
-      var show = matchType && matchSearch;
-
-      if (show) {
-        if (!map.hasLayer(layer)) map.addLayer(layer);
-        visible++;
-      } else {
-        if (map.hasLayer(layer)) map.removeLayer(layer);
-      }
-    });
-
-    document.querySelectorAll('.zone-item').forEach(function (li) {
-      var matchType = (currentFilter === 'all') || (li.dataset.type === currentFilter);
-      var matchSearch = li.dataset.name.indexOf(currentSearch) !== -1;
-      li.classList.toggle('hidden', !(matchType && matchSearch));
-    });
-
-    if (visibleCountEl) visibleCountEl.textContent = visible;
-    if (noResultsEl)    noResultsEl.style.display = (visible === 0) ? 'block' : 'none';
-
-    var visibleLayers = layers
-      .filter(function (item) {
-        var zone = item.zone;
-        var matchType = (currentFilter === 'all') || (zone.type === currentFilter);
-        var matchSearch = zone.name.toLowerCase().indexOf(currentSearch) !== -1;
-        return matchType && matchSearch;
-      })
-      .map(function (item) { return item.layer; });
-
-    if (visibleLayers.length > 0 && !geoApplied) {
-      var fg = L.featureGroup(visibleLayers);
-      map.fitBounds(fg.getBounds(), {
-        padding: [40, 40],
-        maxZoom: 14,
-        animate: true
-      });
-    }
-  }
-
-  if (searchInput) {
-    searchInput.addEventListener('input', function (e) {
-      currentSearch = e.target.value.toLowerCase().trim();
-      applyFilters();
-    });
-  }
-
-  filterBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      filterBtns.forEach(function (b) { b.classList.remove('active', 'radio'); });
-      btn.classList.add('active');
-      if (btn.dataset.filter === 'radio') btn.classList.add('radio');
-      currentFilter = btn.dataset.filter;
-      applyFilters();
-    });
-  });
-
-  applyFilters();
-
-  /* ---------- Reajustar al redimensionar ventana ---------- */
-  var resizeTimer;
-  window.addEventListener('resize', function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      map.invalidateSize();
-      if (!geoApplied) fitAllZones();
-    }, 250);
-  });
-
-  window.addEventListener('orientationchange', function () {
-    setTimeout(function () {
-      map.invalidateSize();
-      if (!geoApplied) fitAllZones();
-    }, 300);
-  });
-
-  /* ---------- Geolocalización ---------- */
-  if (!navigator.geolocation) return;
-
-  function onLocationFound(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
-    var accuracy = position.coords.accuracy;
-
-    userCoords = [lat, lng];
-
-    if (userMarker) map.removeLayer(userMarker);
-    if (userAccuracy) map.removeLayer(userAccuracy);
-
-    userAccuracy = L.circle([lat, lng], {
-      radius: accuracy,
-      color: '#0019FF',
-      fillColor: '#0019FF',
-      fillOpacity: 0.1,
-      weight: 1,
-      opacity: 0.4
-    }).addTo(map);
-
-    var userIcon = L.divIcon({
-      className: 'user-location-marker',
-      html: '<div class="user-pulse"></div><div class="user-dot"></div>',
-      iconSize: [24, 24],
-      iconAnchor: [12, 12]
-    });
-
-    userMarker = L.marker([lat, lng], { icon: userIcon })
-      .addTo(map)
-      .bindPopup(
-        '<div class="popup-title"><i class="fas fa-location-dot"></i> Tu ubicación</div>' +
-        '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
-      );
-
-    var zoom = 15;
-    if (accuracy > 500)       zoom = 13;
-    else if (accuracy > 200)  zoom = 14;
-
-    function focusOnUser() {
-      map.invalidateSize();
-      map.setView(userCoords, zoom, { animate: false });
-    }
-
-    setTimeout(focusOnUser, 100);
-    setTimeout(focusOnUser, 600);
-    setTimeout(focusOnUser, 1400);
-
-    setTimeout(function () {
-      focusOnUser();
-      geoApplied = true;
-      if (userMarker) userMarker.openPopup();
-    }, 2200);
-  }
-
-  function onLocationError(error) {
-    console.info('Ubicación no disponible:', error.message);
-  }
-
-  window.addEventListener('load', function () {
-    navigator.geolocation.getCurrentPosition(
-      onLocationFound,
-      onLocationError,
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-    );
-  });
-
-})();
+.geo-toast i {
+  color: var(--gold-dark);
+}
