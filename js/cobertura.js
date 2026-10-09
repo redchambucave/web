@@ -272,10 +272,40 @@
         '<div class="popup-title"><i class="fas fa-location-dot"></i> Tu ubicación</div>' +
         '<div class="popup-desc">Precisión aproximada: ' + Math.round(accuracy) + ' m</div>'
       );
-  }
 
+    /* ---------- Enfocar el mapa en la ubicación del usuario ---------- */
+    var zoom = 15;
+    if (accuracy > 500)       zoom = 13;
+    else if (accuracy > 200)  zoom = 14;
+
+    map.flyTo([lat, lng], zoom, {
+      animate: true,
+      duration: 1.2
+    });
+
+    /* Abrir el popup después de que termine la animación */
+    setTimeout(function () {
+      userMarker.openPopup();
+    }, 1300);
+  }
+   
   function onLocationError(error) {
     console.info('Ubicación no disponible:', error.message);
+
+    /* Aviso visual sutil (opcional) */
+    var note = document.createElement('div');
+    note.className = 'geo-toast';
+    note.innerHTML = '<i class="fas fa-location-dot"></i> No pudimos obtener tu ubicación';
+    document.body.appendChild(note);
+
+    setTimeout(function () {
+      note.classList.add('show');
+    }, 50);
+
+    setTimeout(function () {
+      note.classList.remove('show');
+      setTimeout(function () { note.remove(); }, 300);
+    }, 4000);
   }
 
   window.addEventListener('load', function () {
