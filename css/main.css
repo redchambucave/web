@@ -506,9 +506,9 @@ p { color: var(--text-soft); }
 /* ============================================================
    SECCIONES GENÉRICAS
    ============================================================ */
-.sect { padding: 80px 0; position: relative; }
+.sect { padding: 56px 0; position: relative; }
 
-.sect-head { margin-bottom: 48px; max-width: 720px; }
+.sect-head { margin-bottom: 36px; max-width: 720px; }
 .sect-head.center { text-align: center; margin-left: auto; margin-right: auto; }
 
 .sect-meta {
@@ -758,8 +758,8 @@ p { color: var(--text-soft); }
   .hdr-menu { display: none; }
   .mnav { display: none; }
 
-  .sect { padding: 110px 0; }
-  .sect-head { margin-bottom: 64px; }
+  .sect { padding: 70px 0; }
+  .sect-head { margin-bottom: 44px; }
 
   .ft-top { grid-template-columns: 1fr 1.3fr; gap: 60px; }
   .ft-bottom { flex-direction: row; justify-content: space-between; }
