@@ -459,7 +459,7 @@
     initCounters();
   });
 
-     /* ============================================================
+      /* ============================================================
      RENDERIZADO DE REDES SOCIALES
      ============================================================ */
   function renderSocial() {
@@ -486,12 +486,12 @@
         desc:  "Publicaciones, promos y atención al cliente"
       },
       {
-        key:   "tiktok",
-        label: "TikTok",
+        key:   "x",
+        label: "X",
         user:  "@redchambu",
-        icon:  "fa-brands fa-tiktok",
-        color: "tiktok",
-        desc:  "Tips rápidos y contenido de la red"
+        icon:  "fa-brands fa-x-twitter",
+        color: "x",
+        desc:  "Novedades y avisos en tiempo real"
       },
       {
         key:   "whatsapp",
@@ -506,7 +506,6 @@
     const activas = config.filter(r => redes[r.key] && redes[r.key].trim() !== "");
 
     if (activas.length === 0) {
-      // Si no hay ninguna red configurada, ocultar la sección
       const section = document.getElementById('redes');
       if (section) section.hidden = true;
       return;
@@ -514,10 +513,9 @@
 
     grid.innerHTML = activas.map(r => {
       const url = redes[r.key];
-      const externa = r.key !== "whatsapp" ? 'target="_blank" rel="noopener noreferrer"' : 'target="_blank" rel="noopener noreferrer"';
-
       return `
-        <a href="${url}" ${externa} class="social-card ${r.color}" aria-label="${r.label}">
+        <a href="${url}" target="_blank" rel="noopener noreferrer"
+           class="social-card ${r.color}" aria-label="${r.label}">
           <div class="social-icon">
             <i class="${r.icon}"></i>
           </div>
