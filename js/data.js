@@ -25,8 +25,8 @@ horario: {
 },
      redes: {
   instagram: "https://instagram.com/redchambu",
-  facebook:  "https://facebook.com/redchambu",
-  tiktok:    "https://tiktok.com/@redchambu",
+  facebook:  "https://www.facebook.com/profile.php?id=61553292286316",
+  x:    "https://x.com/redchambu",
   whatsapp:  "https://wa.me/584268731872"
 }
   },
