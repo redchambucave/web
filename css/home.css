@@ -1032,8 +1032,15 @@
 }
 
 .social-card.x .social-icon {
-  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  background: #000;
+  color: #ffffff;
 }
+
+.social-card.x:hover .social-icon {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
 .social-card.x:hover::before {
   background: #000;
 }
