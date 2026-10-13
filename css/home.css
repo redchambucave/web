@@ -1031,11 +1031,11 @@
   background: #1877f2;
 }
 
-.social-card.tiktok .social-icon {
-  background: linear-gradient(135deg, #000 0%, #25f4ee 50%, #fe2c55 100%);
+.social-card.x .social-icon {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
 }
-.social-card.tiktok:hover::before {
-  background: linear-gradient(180deg, #25f4ee, #fe2c55);
+.social-card.x:hover::before {
+  background: #000;
 }
 
 .social-card.whatsapp .social-icon {
