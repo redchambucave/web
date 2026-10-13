@@ -453,6 +453,7 @@
     renderPlanes();
     renderContacto();
     renderZonasTags();
+     renderSocial();          // ← NUEVO
     await renderFallas();
     initMeter();
     initCounters();
