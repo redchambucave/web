@@ -23,10 +23,12 @@ horario: {
     horas: "7:00 am – 10:00 pm"
   }
 },
-    redes: {
-      instagram: "",
-      facebook:  ""
-    }
+     redes: {
+  instagram: "https://instagram.com/redchambu",
+  facebook:  "https://facebook.com/redchambu",
+  tiktok:    "https://tiktok.com/@redchambu",
+  whatsapp:  "https://wa.me/584268731872"
+}
   },
 
   /* ---------- PLANES ---------- */
