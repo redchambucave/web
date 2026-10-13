@@ -458,4 +458,77 @@
     initCounters();
   });
 
+     /* ============================================================
+     RENDERIZADO DE REDES SOCIALES
+     ============================================================ */
+  function renderSocial() {
+    const grid = document.querySelector('[data-social]');
+    if (!grid || !window.REDCHAMBU) return;
+
+    const redes = window.REDCHAMBU.empresa.redes || {};
+
+    const config = [
+      {
+        key:   "instagram",
+        label: "Instagram",
+        user:  "@redchambu",
+        icon:  "fa-brands fa-instagram",
+        color: "instagram",
+        desc:  "Fotos de instalaciones y zonas cubiertas"
+      },
+      {
+        key:   "facebook",
+        label: "Facebook",
+        user:  "REDCHAMBU CA",
+        icon:  "fa-brands fa-facebook-f",
+        color: "facebook",
+        desc:  "Publicaciones, promos y atención al cliente"
+      },
+      {
+        key:   "tiktok",
+        label: "TikTok",
+        user:  "@redchambu",
+        icon:  "fa-brands fa-tiktok",
+        color: "tiktok",
+        desc:  "Tips rápidos y contenido de la red"
+      },
+      {
+        key:   "whatsapp",
+        label: "WhatsApp",
+        user:  "+58 426 8731 872",
+        icon:  "fa-brands fa-whatsapp",
+        color: "whatsapp",
+        desc:  "Atención directa y soporte técnico"
+      }
+    ];
+
+    const activas = config.filter(r => redes[r.key] && redes[r.key].trim() !== "");
+
+    if (activas.length === 0) {
+      // Si no hay ninguna red configurada, ocultar la sección
+      const section = document.getElementById('redes');
+      if (section) section.hidden = true;
+      return;
+    }
+
+    grid.innerHTML = activas.map(r => {
+      const url = redes[r.key];
+      const externa = r.key !== "whatsapp" ? 'target="_blank" rel="noopener noreferrer"' : 'target="_blank" rel="noopener noreferrer"';
+
+      return `
+        <a href="${url}" ${externa} class="social-card ${r.color}" aria-label="${r.label}">
+          <div class="social-icon">
+            <i class="${r.icon}"></i>
+          </div>
+          <div class="social-body">
+            <div class="social-label mono">${r.label}</div>
+            <div class="social-user">${r.user}</div>
+            <div class="social-desc">${r.desc}</div>
+          </div>
+          <i class="fas fa-arrow-up-right-from-square social-arrow"></i>
+        </a>
+      `;
+    }).join('');
+  }
+
 })();
