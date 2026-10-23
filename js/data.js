@@ -60,8 +60,8 @@ horario: {
       ]
     },
     plus: {
-      id:       "plus",
-      nombre:   "Plus",
+      id:       "Premium",
+      nombre:   "Premium",
       tipo:     "fibra",
       mbps:     400,
       usd:      35,
