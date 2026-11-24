@@ -73,18 +73,7 @@ horario: {
         "1 mes gratis del servicio"
       ]
     },
-    antena: {
-      id:       "antena",
-      nombre:   "Radio Enlace",
-      tipo:     "radio",
-      mbps:     20,
-      usd:      23.2,
-      features: [
-        "Ideal para navegación y redes sociales",
-        "Cobertura en zonas rurales",
-        "Soporte técnico 7am a 10pm"
-      ]
-    }
+
   },
 
   /* ---------- ZONAS ---------- */
@@ -94,10 +83,6 @@ horario: {
     "El Palmar", "5 y 7 Casas", "Los Patios", "Los Tubos"
   ],
 
-  zonasRadio: [
-    "Agua Negra", "Tapa La Lucha", "Maporita", "CDI",
-    "Valles de Peña", "San José", "El Cardón"
-  ],
 
   /* Coordenadas para el mapa */
   zonasMapa: [
@@ -136,6 +121,4 @@ horario: {
     "Administración":  "584268731872"
   },
 
-  /* ---------- COSTO RADIO ENLACE ---------- */
-  costoRadioEnlace: 23.2
 };
