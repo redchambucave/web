@@ -239,23 +239,17 @@
   /* ============================================================
      6. RENDERIZADO DE TAGS DE ZONAS
      ============================================================ */
-  function renderZonasTags() {
-    if (!window.REDCHAMBU) return;
+function renderZonasTags() {
+  if (!window.REDCHAMBU) return;
 
-    const { zonasFibra, zonasRadio } = window.REDCHAMBU;
+  const { zonasFibra } = window.REDCHAMBU;
 
-    const fibraCont = document.querySelector('[data-zonas-fibra]');
-    if (fibraCont) {
-      fibraCont.innerHTML = zonasFibra
-        .map(z => `<span class="coverage-tag">${z}</span>`).join('');
-    }
-
-    const radioCont = document.querySelector('[data-zonas-radio]');
-    if (radioCont) {
-      radioCont.innerHTML = zonasRadio
-        .map(z => `<span class="coverage-tag">${z}</span>`).join('');
-    }
+  const fibraCont = document.querySelector('[data-zonas-fibra]');
+  if (fibraCont) {
+    fibraCont.innerHTML = zonasFibra
+      .map(z => `<span class="coverage-tag">${z}</span>`).join('');
   }
+}
 
   /* ============================================================
      7. RENDERIZADO DE AVISOS DE LA RED (desde Google Sheets)
