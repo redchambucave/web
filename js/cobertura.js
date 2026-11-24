@@ -1,5 +1,6 @@
 /* ============================================================
    COBERTURA.JS — Mapa interactivo, filtros y geolocalización
+   Solo Fibra Óptica (FTTH).
    Requiere: js/data.js y Leaflet cargados antes.
    ============================================================ */
 
@@ -22,10 +23,10 @@
     return;
   }
 
-  var ZONAS = JSON.parse(JSON.stringify(window.REDCHAMBU.zonasMapa));
+  var ZONAS = JSON.parse(JSON.stringify(window.REDCHAMBU.zonasMapa || []));
 
   var COLORS = {
-    ftth:  { fill: "#0019FF", stroke: "#1F10B7", label: "Fibra Óptica (FTTH)" }
+    ftth: { fill: "#0019FF", stroke: "#1F10B7", label: "Fibra Óptica (FTTH)" }
   };
 
   /* ---------- Separar zonas con coordenadas idénticas ---------- */
@@ -48,8 +49,7 @@
         var angle = i * angleStep;
         z.coords = [
           center[0] + R * Math.cos(angle),
-          center[1] + R * Math.sin(angle)legend.onAdd = function () {
-
+          center[1] + R * Math.sin(angle)
         ];
       });
     });
@@ -75,7 +75,7 @@
   legend.onAdd = function () {
     var div = L.DomUtil.create('div', 'legend');
     div.innerHTML =
-      '<div class="zone-type">Fibra Óptica</div>' +
+      '<div class="legend-item"><span class="legend-swatch ftth"></span> Fibra Óptica</div>';
     return div;
   };
   legend.addTo(map);
@@ -83,7 +83,7 @@
   /* ---------- Dibujar zonas ---------- */
   var layers = [];
   ZONAS.forEach(function (z) {
-    var color = COLORS[z.type];
+    var color = COLORS[z.type] || COLORS.ftth;
 
     var circle = L.circle(z.coords, {
       radius: z.radius,
@@ -93,12 +93,12 @@
       weight: 2,
       opacity: 0.85
     }).addTo(map);
-     
-     circle.bindPopup(
-        '<div class="popup-title">' + z.name + '</div>' +
-        '<span class="popup-type ftth"><i class="fas fa-network-wired"></i> ' + color.label + '</span>' +
-        '<div class="popup-desc">Servicio disponible en esta zona.</div>'
-     );
+
+    circle.bindPopup(
+      '<div class="popup-title">' + z.name + '</div>' +
+      '<span class="popup-type ftth"><i class="fas fa-network-wired"></i> ' + color.label + '</span>' +
+      '<div class="popup-desc">Servicio disponible en esta zona.</div>'
+    );
 
     circle.on('mouseover', function () { circle.setStyle({ fillOpacity: 0.55 }); });
     circle.on('mouseout',  function () { circle.setStyle({ fillOpacity: 0.35 }); });
@@ -115,6 +115,7 @@
   /* ---------- Ajustar vista a TODAS las zonas ---------- */
   function fitAllZones() {
     if (geoApplied && userCoords) return;
+    if (layers.length === 0) return;
 
     var featureGroup = L.featureGroup(layers.map(function (l) { return l.layer; }));
     var bounds = featureGroup.getBounds();
@@ -144,10 +145,10 @@
       li.dataset.name = zone.name.toLowerCase();
       li.dataset.type = zone.type;
       li.innerHTML =
-        '<span class="zone-dot ' + zone.type + '"></span>' +
+        '<span class="zone-dot ftth"></span>' +
         '<div class="zone-info">' +
           '<div class="zone-name">' + zone.name + '</div>' +
-          '<div class="zone-type">' + (zone.type === 'ftth' ? 'Fibra Óptica' : 'Radio Enlace') + '</div>' +
+          '<div class="zone-type">Fibra Óptica</div>' +
         '</div>' +
         '<i class="fas fa-chevron-right zone-arrow"></i>';
 
@@ -227,9 +228,8 @@
 
   filterBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      filterBtns.forEach(function (b) { b.classList.remove('active', 'radio'); });
+      filterBtns.forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      if (btn.dataset.filter === 'radio') btn.classList.add('radio');
       currentFilter = btn.dataset.filter;
       applyFilters();
     });
