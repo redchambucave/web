@@ -14,9 +14,8 @@
         basico:   window.REDCHAMBU.planes.basico.usd,
         avanzado: window.REDCHAMBU.planes.avanzado.usd,
         plus:     window.REDCHAMBU.planes.plus.usd,
-        antena:   window.REDCHAMBU.planes.antena.usd
       }
-    : { basico: 23.2, avanzado: 29, plus: 35, antena: 23.2 };
+    : { basico: 23.2, avanzado: 29, plus: 35};
 
   const TASA_FALLBACK = {
     valor: 0.0,
@@ -86,7 +85,6 @@
     document.getElementById('planBasicBs').textContent    = fmtBs(PLANES_USD.basico   * valor);
     document.getElementById('planAdvancedBs').textContent = fmtBs(PLANES_USD.avanzado * valor);
     document.getElementById('planPlusBs').textContent     = fmtBs(PLANES_USD.plus     * valor);
-    document.getElementById('planAntennaBs').textContent  = fmtBs(PLANES_USD.antena   * valor);
   }
 
   /* ---------- CACHÉ ---------- */
