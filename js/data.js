@@ -98,14 +98,7 @@ horario: {
     { name: "El Palmar",      type: "ftth",  coords: [9.902574, -69.121942], radius: 700 },
     { name: "5 y 7 Casas",    type: "ftth",  coords: [9.894283, -69.123181], radius: 500 },
     { name: "Los Patios",     type: "ftth",  coords: [9.892633, -69.119593], radius: 500 },
-    { name: "Los Tubos",      type: "ftth",  coords: [9.888188, -69.103477], radius: 600 },
-    { name: "Agua Negra",     type: "radio", coords: [10.062715, -69.157018], radius: 1200 },
-    { name: "Tapa La Lucha",  type: "radio", coords: [10.048610, -69.110794], radius: 1000 },
-    { name: "Maporita",       type: "radio", coords: [10.11705,  -69.16246],  radius: 1000 },
-    { name: "CDI",            type: "radio", coords: [10.080789, -69.129513], radius: 700 },
-    { name: "Valles de Peña", type: "radio", coords: [10.066453, -69.146533], radius: 1000 },
-    { name: "San José",       type: "radio", coords: [10.089709, -69.119292], radius: 900 },
-    { name: "El Cardón (R)",  type: "radio", coords: [10.154724, -69.169248], radius: 1000 }
+    { name: "Los Tubos",      type: "ftth",  coords: [9.888188, -69.103477], radius: 600 }
   ],
 
   /* ---------- PROMOCIONES ---------- */
