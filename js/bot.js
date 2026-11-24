@@ -1,5 +1,6 @@
 /* ============================================================
    BOT.JS — ChambuBot de REDCHAMBU CA
+   Solo FIBRA ÓPTICA. Sin radio enlace ni antena.
    Consume datos desde js/data.js
    ============================================================ */
 
@@ -14,21 +15,19 @@
   const CFG = window.REDCHAMBU;
 
   const WHATSAPP = CFG.whatsappPorDepto;
+
   const PLANES = {
     "Básico":   CFG.planes.basico.usd,
     "Avanzado": CFG.planes.avanzado.usd,
-    "Plus":     CFG.planes.plus.usd
+    "Premium":  CFG.planes.plus.usd
   };
 
-  const ZONAS_FIBRA = CFG.zonasFibra.map(z => z.toLowerCase());
-  const ZONAS_RADIO_ENLACE = CFG.zonasRadio.map(z => z.toLowerCase());
+  const ZONAS_FIBRA = (CFG.zonasFibra || []).map(z => z.toLowerCase());
 
   const PROMO = {
-    costo: CFG.promo.costoInstalacion,
-    excepcion: CFG.promo.excepcion.toLowerCase()
+    costo:     CFG.promo.costoInstalacion,
+    excepcion: (CFG.promo.excepcion || "").toLowerCase()
   };
-
-  const COSTO_RADIO_ENLACE = CFG.costoRadioEnlace;
 
   const CASOS_DERIVACION = [
     "instalacion", "instalar", "instalación",
@@ -88,9 +87,6 @@
       { etiqueta: "Cortes de conexión",
         claves: ["se corta", "cortes", "se va", "intermitente", "inestable"],
         respuesta: "Entiendo, la conexión se corta. ¿Los cortes son frecuentes o cada cierto tiempo?" },
-      { etiqueta: "Falla de radio enlace",
-        claves: ["radio enlace", "radioenlace", "antena", "antena caida", "antena no funciona"],
-        respuesta: "Vamos a revisar tu radio enlace. ¿La señal se perdió por completo o va intermitente?" },
       { etiqueta: "WhatsApp",
         claves: ["mensaje", "fotos", "videos", "estados", "audios", "no envia", "no recibe"],
         respuesta: "Cuéntame sobre tu WhatsApp. ¿No puedes enviar, no recibes mensajes, o no cargan los estados?" },
@@ -119,7 +115,7 @@
         respuesta: "Cuéntame sobre tu pago. ¿Quieres confirmar si se recibió, o tienes dudas con un cobro?" },
       { etiqueta: "Cambio de plan",
         claves: ["plan", "cambiar", "cambio de plan", "cambiar plan", "mejorar", "upgrade", "subir plan", "otro plan"],
-        respuesta: "¿Qué plan tienes actualmente y a cuál te gustaría cambiarte? Tenemos Básico 23.2, Avanzado 29 y Plus 35." },
+        respuesta: "¿Qué plan tienes actualmente y a cuál te gustaría cambiarte? Tenemos Básico 23.2, Avanzado 29 y Premium 35." },
       { etiqueta: "Cancelar servicio",
         claves: ["cancelar", "baja", "retirar", "no quiero"],
         respuesta: "Lamentamos que te vayas. ¿Podemos saber el motivo para mejorar?" },
@@ -127,14 +123,8 @@
         claves: ["datos", "actualizar", "cambiar correo", "direccion", "telefono"],
         respuesta: "¿Qué dato necesitas actualizar? (correo, dirección, teléfono, etc.)" },
       { etiqueta: "Precios y planes de fibra",
-        claves: ["precio fibra", "plan fibra", "planes fibra", "costo fibra"],
-        respuesta: "Tenemos 3 planes de fibra: Básico 23.2, Avanzado 29 y Plus 35." },
-      { etiqueta: "Precios y planes de radio enlace",
-        claves: ["precio radio enlace", "plan radio enlace", "costo radio enlace", "precio antena"],
-        respuesta: "El servicio por radio enlace tiene un costo de 23.2. Próximamente tendremos migración a fibra." },
-      { etiqueta: "Migración a fibra",
-        claves: ["migracion", "migración", "pasar a fibra", "cambiar a fibra", "cuando fibra"],
-        respuesta: "Próximamente tendremos migración a fibra para los clientes de radio enlace. ¿En qué zona estás?" },
+        claves: ["precio", "plan", "planes", "costo", "tarifa", "cuanto", "cuánto"],
+        respuesta: "Tenemos 3 planes de fibra: Básico 23.2, Avanzado 29 y Premium 35." },
       { etiqueta: "Reembolso",
         claves: ["reembolso", "devolucion", "devolver", "dinero"],
         respuesta: "Los reembolsos se procesan en 5-7 días hábiles. ¿Tienes a mano el número de factura?" },
@@ -143,7 +133,7 @@
         respuesta: "Podemos gestionar tu instalación o cambio de plan. ¿Qué servicio te interesa?" },
       { etiqueta: "Información de cobertura",
         claves: ["cobertura", "zona", "sector", "disponible", "llega"],
-        respuesta: "¿En qué zona estás? Así te confirmo si tenemos fibra o radio enlace disponible." },
+        respuesta: "¿En qué zona estás? Así te confirmo si tenemos fibra disponible." },
       { etiqueta: "Otra consulta",
         claves: ["otro", "otra", "diferente", "no se", "no sé"],
         respuesta: "Cuéntame con tus palabras tu consulta y te oriento." }
@@ -155,14 +145,12 @@
       { claves: ["cambio de plan", "cambiar plan", "mejorar plan", "upgrade", "subir plan"], destino: "Administración" },
       { claves: ["factura", "recibo", "comprobante", "pago", "cobro", "reembolso"], destino: "Administración" },
       { claves: ["cancelar", "baja", "retirar"], destino: "Administración" },
-      { claves: ["precio", "costo", "cuanto", "cuánto", "tarifa", "planes"], destino: "Administración" },
-      { claves: ["migracion", "migración", "pasar a fibra", "cambiar a fibra"], destino: "Administración" }
+      { claves: ["precio", "costo", "cuanto", "cuánto", "tarifa", "planes"], destino: "Administración" }
     ],
     "Administración": [
       { claves: ["falla", "fallo", "averia", "avería", "no funciona", "no sirve", "sin internet", "no conecta"], destino: "Soporte Técnico" },
       { claves: ["internet", "router", "wifi", "conexion", "señal", "modem", "módem"], destino: "Soporte Técnico" },
-      { claves: ["lentitud", "lento", "va lento", "tarda", "demora"], destino: "Soporte Técnico" },
-      { claves: ["radio enlace", "radioenlace", "antena caida", "señal antena"], destino: "Soporte Técnico" }
+      { claves: ["lentitud", "lento", "va lento", "tarda", "demora"], destino: "Soporte Técnico" }
     ]
   };
 
@@ -335,9 +323,6 @@
     for (const z of ZONAS_FIBRA) {
       if (t.includes(normalizar(z))) return { zona: z, servicio: "Fibra" };
     }
-    for (const z of ZONAS_RADIO_ENLACE) {
-      if (t.includes(normalizar(z))) return { zona: z, servicio: "Radio Enlace" };
-    }
     return { zona: texto, servicio: "Sin cobertura" };
   }
 
@@ -460,12 +445,10 @@
         let msg = "";
         if (resultado.servicio === "Fibra") {
           if (esElCardon(resultado.zona)) {
-            msg = `¡Buenas noticias! Tenemos fibra en ${resultado.zona}. 🎉\n\nPlanes:\n• Básico: 23.2\n• Avanzado: 29\n• Plus: 35\n\nLa instalación en El Cardón no aplica para la promoción.`;
+            msg = `¡Buenas noticias! Tenemos fibra en ${resultado.zona}. 🎉\n\nPlanes:\n• Básico: 23.2\n• Avanzado: 29\n• Premium: 35\n\nLa instalación en El Cardón no aplica para la promoción.`;
           } else {
-            msg = `¡Buenas noticias! Tenemos fibra en ${resultado.zona}. 🎉\n\nPlanes:\n• Básico: 23.2\n• Avanzado: 29\n• Plus: 35\n\n🎁 ${CFG.promo.texto}`;
+            msg = `¡Buenas noticias! Tenemos fibra en ${resultado.zona}. 🎉\n\nPlanes:\n• Básico: 23.2\n• Avanzado: 29\n• Premium: 35\n\n🎁 ${CFG.promo.texto}`;
           }
-        } else if (resultado.servicio === "Radio Enlace") {
-          msg = `En ${resultado.zona} tenemos radio enlace. 📡\n\nCosto: ${COSTO_RADIO_ENLACE}\n\n🔜 Próximamente migración a fibra.`;
         } else {
           msg = `Aún no tenemos cobertura en ${resultado.zona}. 😔\n\nEstamos expandiéndonos, pronto tendremos novedades.`;
         }
