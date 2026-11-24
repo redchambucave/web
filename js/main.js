@@ -118,7 +118,7 @@
     if (!grid || !window.REDCHAMBU) return;
 
     const { planes } = window.REDCHAMBU;
-    const order = ['basico', 'avanzado', 'plus', 'antena'];
+    const order = ['basico', 'avanzado', 'plus'];
 
     grid.innerHTML = order.map(key => {
       const p = planes[key];
