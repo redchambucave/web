@@ -73,7 +73,7 @@ horario: {
         "1 mes gratis del servicio"
       ]
     },
-
+     
   },
 
   /* ---------- ZONAS ---------- */
