@@ -25,8 +25,7 @@
   var ZONAS = JSON.parse(JSON.stringify(window.REDCHAMBU.zonasMapa));
 
   var COLORS = {
-    ftth:  { fill: "#0019FF", stroke: "#1F10B7", label: "Fibra Óptica (FTTH)" },
-    radio: { fill: "#e6b422", stroke: "#c99f1a", label: "Radio Enlace" }
+    ftth:  { fill: "#0019FF", stroke: "#1F10B7", label: "Fibra Óptica (FTTH)" }
   };
 
   /* ---------- Separar zonas con coordenadas idénticas ---------- */
@@ -49,7 +48,8 @@
         var angle = i * angleStep;
         z.coords = [
           center[0] + R * Math.cos(angle),
-          center[1] + R * Math.sin(angle)
+          center[1] + R * Math.sin(angle)legend.onAdd = function () {
+
         ];
       });
     });
@@ -75,8 +75,7 @@
   legend.onAdd = function () {
     var div = L.DomUtil.create('div', 'legend');
     div.innerHTML =
-      '<div class="legend-item"><span class="legend-swatch ftth"></span> Fibra Óptica</div>' +
-      '<div class="legend-item"><span class="legend-swatch radio"></span> Radio Enlace</div>';
+      '<div class="zone-type">Fibra Óptica</div>' +
     return div;
   };
   legend.addTo(map);
@@ -94,15 +93,12 @@
       weight: 2,
       opacity: 0.85
     }).addTo(map);
-
-    circle.bindPopup(
-      '<div class="popup-title">' + z.name + '</div>' +
-      '<span class="popup-type ' + z.type + '">' +
-        (z.type === 'ftth' ? '<i class="fas fa-network-wired"></i> ' : '<i class="fas fa-satellite-dish"></i> ') +
-        color.label +
-      '</span>' +
-      '<div class="popup-desc">Servicio disponible en esta zona.</div>'
-    );
+     
+     circle.bindPopup(
+        '<div class="popup-title">' + z.name + '</div>' +
+        '<span class="popup-type ftth"><i class="fas fa-network-wired"></i> ' + color.label + '</span>' +
+        '<div class="popup-desc">Servicio disponible en esta zona.</div>'
+     );
 
     circle.on('mouseover', function () { circle.setStyle({ fillOpacity: 0.55 }); });
     circle.on('mouseout',  function () { circle.setStyle({ fillOpacity: 0.35 }); });
